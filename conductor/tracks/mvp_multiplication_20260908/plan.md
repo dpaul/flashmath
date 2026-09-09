@@ -9,7 +9,7 @@
   - [x] Verify baseline test and development server build
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 9dad477
 
-## Phase 2: Core Math Engine & Problem Generation (TDD)
+## Phase 2: Core Math Engine & Problem Generation (TDD) [checkpoint: 2b0c0b3]
 - [x] Task: Write unit tests for problem generator and answer evaluation (Red Phase) e98d035
   - [x] Test problem generator produces factors in range [2, 12]
   - [x] Test problem generator avoids immediate identical consecutive problems
@@ -17,7 +17,7 @@
 - [x] Task: Implement core math engine (Green & Refactor Phase) 2b0c0b3
   - [x] Implement `generateProblem` and `evaluateAnswer` utilities
   - [x] Verify all tests pass with >70% code coverage
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 2b0c0b3
 
 ## Phase 3: Sprint Timer & State Management (TDD)
 - [ ] Task: Write unit tests for sprint timer and scoring state (Red Phase)
