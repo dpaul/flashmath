@@ -13,11 +13,11 @@
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 15d64e4
 
 ## Phase 2: Score Trend SVG Chart Component (TDD)
-- [ ] Task: Write unit tests for `ScoreTrendChart` (Red Phase)
-  - [ ] Test empty state rendering when fewer than 2 runs exist
-  - [ ] Test SVG coordinates, polyline path math, and average score benchmark line
-  - [ ] Test hover/focus interactions and tooltip data rendering
-- [ ] Task: Implement `ScoreTrendChart` component (Green & Refactor Phase)
+- [x] Task: Write unit tests for `ScoreTrendChart` (Red Phase) 8e74447
+  - [x] Test empty state rendering when fewer than 2 runs exist
+  - [x] Test SVG coordinates, polyline path math, and average score benchmark line
+  - [x] Test hover/focus interactions and tooltip data rendering
+- [~] Task: Implement `ScoreTrendChart` component (Green & Refactor Phase)
   - [ ] Build pure SVG line chart with dynamic viewBox, gridlines, and gradient fill
   - [ ] Implement interactive data points with keyboard focus and floating tooltip
   - [ ] Verify all tests pass with >70% code coverage
