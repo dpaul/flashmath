@@ -17,7 +17,11 @@ export const TimerBar: React.FC<TimerBarProps> = ({ timeRemaining }) => {
   const isUrgent = timeRemaining <= 10;
 
   return (
-    <div className="w-full max-w-sm sm:max-w-md mx-auto mb-6">
+    <div
+      role="timer"
+      aria-label={`Time remaining: ${formatted}`}
+      className="w-full max-w-sm sm:max-w-md mx-auto mb-6"
+    >
       <div className="flex justify-between items-center mb-2">
         <div className="inline-flex items-center gap-2 text-slate-300 font-medium text-sm">
           <Timer className={`w-4 h-4 ${isWarning ? 'text-amber-400 animate-spin' : 'text-slate-400'}`} />

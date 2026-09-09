@@ -21,6 +21,9 @@ export const Flashcard: React.FC<FlashcardProps> = ({ problem, streak, lastAnswe
 
   return (
     <div
+      role="region"
+      aria-label={`Problem: ${problem.factorA} times ${problem.factorB}`}
+      aria-live="polite"
       className={`relative w-full max-w-sm sm:max-w-md mx-auto p-8 rounded-3xl border-2 backdrop-blur transition-all duration-200 ${getFeedbackClass()}`}
     >
       {/* Top Bar: Streak Indicator */}

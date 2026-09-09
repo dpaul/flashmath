@@ -61,6 +61,8 @@ export const AnswerInput: React.FC<AnswerInputProps> = ({
       <div className="relative flex-1">
         <input
           ref={inputRef}
+          id="math-answer-input"
+          aria-label="Your calculation answer"
           type="text"
           inputMode="numeric"
           pattern="[0-9]*"
