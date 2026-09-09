@@ -1,0 +1,2 @@
+Task: Write unit tests for RunHistoryList and ClearHistoryModal (Red Phase)
+Summary: Added tests covering RunHistoryList empty states, chronological ordering, stats breakdown, high score Personal Best badge, and ClearHistoryModal accessibility and confirmation flows.
