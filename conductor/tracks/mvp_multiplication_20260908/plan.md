@@ -1,0 +1,57 @@
+# Implementation Plan: FlashMath MVP - 3-Minute Multiplication Challenge
+
+## Phase 1: Project Scaffolding & Environment Setup
+- [ ] Task: Initialize Vite React TypeScript project and configure build tooling
+  - [ ] Initialize Vite project structure with React and TypeScript
+  - [ ] Configure Tailwind CSS for styling and typography
+  - [ ] Configure Vitest, jsdom, and React Testing Library
+  - [ ] Install Lucide React for UI iconography
+  - [ ] Verify baseline test and development server build
+- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+
+## Phase 2: Core Math Engine & Problem Generation (TDD)
+- [ ] Task: Write unit tests for problem generator and answer evaluation (Red Phase)
+  - [ ] Test problem generator produces factors in range [2, 12]
+  - [ ] Test problem generator avoids immediate identical consecutive problems
+  - [ ] Test answer validation logic for correct and incorrect answers
+- [ ] Task: Implement core math engine (Green & Refactor Phase)
+  - [ ] Implement `generateProblem` and `evaluateAnswer` utilities
+  - [ ] Verify all tests pass with >70% code coverage
+- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+
+## Phase 3: Sprint Timer & State Management (TDD)
+- [ ] Task: Write unit tests for sprint timer and scoring state (Red Phase)
+  - [ ] Test 180-second countdown timer hook and expiration triggers
+  - [ ] Test scoring metrics calculation (accuracy %, PPM, consecutive streak)
+  - [ ] Test missed problems logging (storing problem, submitted answer, correct answer)
+  - [ ] Test local storage adapter for saving and loading personal best records
+- [ ] Task: Implement timer hook and game state store (Green & Refactor Phase)
+  - [ ] Implement `useSprintTimer` hook with pause, reset, and tick handlers
+  - [ ] Implement `useGameStore` / state reducer managing challenge lifecycle
+  - [ ] Implement `storage` utility with schema fallback for high score persistence
+  - [ ] Verify all tests pass with >70% code coverage
+- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+
+## Phase 4: User Interface & Interaction Flow
+- [ ] Task: Implement flashcard display and input components
+  - [ ] Build `Flashcard` component with large tabular monospace numerals and progress indicator
+  - [ ] Build `AnswerInput` component with autofocus, Enter key submission, and micro-feedback pulse
+  - [ ] Build responsive on-screen numeric keypad for mobile/tablet input
+- [ ] Task: Implement start screen and post-sprint analytics screen
+  - [ ] Build `StartScreen` with challenge rules and current personal best stats
+  - [ ] Build `ResultsScreen` displaying total correct, accuracy %, PPM, and personal best banner
+  - [ ] Build `MissedProblemsReview` component detailing incorrect attempts with correct solutions
+  - [ ] Implement instant restart controls (Space / Enter hotkey and button)
+- [ ] Task: End-to-end component integration tests
+  - [ ] Write integration test simulating full sprint flow from start to results screen
+  - [ ] Verify keyboard interactions and autofocus behavior
+- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+
+## Phase 5: Final Polish, Accessibility & Quality Gate
+- [ ] Task: Visual polish, accessibility audit, and theme styling
+  - [ ] Verify WCAG AAA color contrast and responsive viewport layouts (mobile, tablet, desktop)
+  - [ ] Audit keyboard accessibility and ARIA live regions for countdown and score announcements
+- [ ] Task: Full verification and coverage report
+  - [ ] Run full test suite and verify coverage meets >70% target
+  - [ ] Run TypeScript typecheck and ESLint static analysis with zero errors
+- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
