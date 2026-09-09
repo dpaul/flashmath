@@ -1,0 +1,2 @@
+Task: Implement core math engine (Green & Refactor Phase)
+Summary: Implemented generateProblem with consecutive-duplicate avoidance, evaluateAnswer supporting both string and numeric inputs, and formatProblem. 100% test coverage achieved.
