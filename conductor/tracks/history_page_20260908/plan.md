@@ -17,10 +17,10 @@
   - [x] Test empty state rendering when fewer than 2 runs exist
   - [x] Test SVG coordinates, polyline path math, and average score benchmark line
   - [x] Test hover/focus interactions and tooltip data rendering
-- [~] Task: Implement `ScoreTrendChart` component (Green & Refactor Phase)
-  - [ ] Build pure SVG line chart with dynamic viewBox, gridlines, and gradient fill
-  - [ ] Implement interactive data points with keyboard focus and floating tooltip
-  - [ ] Verify all tests pass with >70% code coverage
+- [x] Task: Implement `ScoreTrendChart` component (Green & Refactor Phase) 137c70e
+  - [x] Build pure SVG line chart with dynamic viewBox, gridlines, and gradient fill
+  - [x] Implement interactive data points with keyboard focus and floating tooltip
+  - [x] Verify all tests pass with >70% code coverage
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: Run History List & Clear Confirmation Modal (TDD)
