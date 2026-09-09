@@ -34,15 +34,15 @@
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 79c2d11
 
 ## Phase 4: History Page View & App Navigation Integration
-- [ ] Task: Implement `HistoryPage` container view
-  - [ ] Build `HistoryPage` component assembling chart, summary statistics, and history log
-  - [ ] Add quick "Back to Sprint" button
-- [ ] Task: Integrate navigation into `App.tsx` and header
-  - [ ] Add "History" button with icon in top navigation header
-  - [ ] Add "View History & Trends" shortcut on Results screen
-  - [ ] Wire active view state ('game' | 'history')
-- [ ] Task: End-to-end integration tests for History view
-  - [ ] Test full journey: completing sprint -> navigating to history -> viewing score point -> clearing history
+- [x] Task: Implement `HistoryPage` container view 15f76af
+  - [x] Build `HistoryPage` component assembling chart, summary statistics, and history log
+  - [x] Add quick "Back to Sprint" button
+- [x] Task: Integrate navigation into `App.tsx` and header 15f76af
+  - [x] Add "History" button with icon in top navigation header
+  - [x] Add "View History & Trends" shortcut on Results screen
+  - [x] Wire active view state ('game' | 'history')
+- [x] Task: End-to-end integration tests for History view 15f76af
+  - [x] Test full journey: completing sprint -> navigating to history -> viewing score point -> clearing history
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 5: Final Polish, Accessibility & Quality Gate
