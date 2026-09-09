@@ -10,11 +10,11 @@
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 9dad477
 
 ## Phase 2: Core Math Engine & Problem Generation (TDD)
-- [ ] Task: Write unit tests for problem generator and answer evaluation (Red Phase)
-  - [ ] Test problem generator produces factors in range [2, 12]
-  - [ ] Test problem generator avoids immediate identical consecutive problems
-  - [ ] Test answer validation logic for correct and incorrect answers
-- [ ] Task: Implement core math engine (Green & Refactor Phase)
+- [x] Task: Write unit tests for problem generator and answer evaluation (Red Phase) e98d035
+  - [x] Test problem generator produces factors in range [2, 12]
+  - [x] Test problem generator avoids immediate identical consecutive problems
+  - [x] Test answer validation logic for correct and incorrect answers
+- [~] Task: Implement core math engine (Green & Refactor Phase)
   - [ ] Implement `generateProblem` and `evaluateAnswer` utilities
   - [ ] Verify all tests pass with >70% code coverage
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
