@@ -45,9 +45,9 @@
   - [x] Test full journey: completing sprint -> navigating to history -> viewing score point -> clearing history
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) bb4ccd5
 
-## Phase 5: Final Polish, Accessibility & Quality Gate
-- [ ] Task: Responsive styling audit, ARIA accessibility, and quality verification
-  - [ ] Verify SVG chart scaling and touch responsiveness on mobile viewports
-  - [ ] Ensure full test suite passes with >70% coverage
-  - [ ] Run TypeScript typecheck and build with zero errors
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+## Phase 5: Final Polish, Accessibility & Quality Gate [checkpoint: bb4ccd5]
+- [x] Task: Responsive styling audit, ARIA accessibility, and quality verification bb4ccd5
+  - [x] Verify SVG chart scaling and touch responsiveness on mobile viewports
+  - [x] Ensure full test suite passes with >70% coverage
+  - [x] Run TypeScript typecheck and build with zero errors
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) bb4ccd5
