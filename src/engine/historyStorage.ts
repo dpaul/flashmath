@@ -33,18 +33,37 @@ export function loadRunHistory(): SprintRunRecord[] {
 
 /**
  * Records a new sprint run, applying a FIFO cap at MAX_HISTORY_ENTRIES (100).
+ * Prevents duplicates from duplicate IDs or rapid successive invocations (e.g. React StrictMode).
  */
 export function recordSprintRun(
-  run: Omit<SprintRunRecord, 'id' | 'timestamp'>
+  run: Omit<SprintRunRecord, 'id' | 'timestamp'> & { id?: string; timestamp?: string }
 ): SprintRunRecord {
   const current = loadRunHistory();
-  const id = `run-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
-  const timestamp = new Date().toISOString();
+  const id = run.id || `run-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+  const timestamp = run.timestamp || new Date().toISOString();
+
+  // If a record with this exact ID already exists, do not duplicate
+  const existingRecord = current.find((r) => r.id === id);
+  if (existingRecord) {
+    return existingRecord;
+  }
+
+  // Deduplicate identical rapid recording (protect against StrictMode double-reducer execution)
+  const lastRecord = current[current.length - 1];
+  if (
+    lastRecord &&
+    lastRecord.score === run.score &&
+    lastRecord.totalAttempted === run.totalAttempted &&
+    lastRecord.accuracyPercentage === run.accuracyPercentage &&
+    Date.now() - new Date(lastRecord.timestamp).getTime() < 3000
+  ) {
+    return lastRecord;
+  }
 
   const newRecord: SprintRunRecord = {
+    ...run,
     id,
     timestamp,
-    ...run,
   };
 
   const updated = [...current, newRecord];

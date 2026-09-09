@@ -45,11 +45,13 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     case 'START_GAME': {
       const personalBests = loadPersonalBests();
       const firstProblem = generateProblem();
+      const runId = `sprint-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
       return {
         ...state,
         phase: 'running',
         timeRemaining: SPRINT_DURATION_SECONDS,
         currentProblem: firstProblem,
+        runId,
         stats: {
           ...emptyStats,
           missedProblems: [],
@@ -81,6 +83,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         });
 
         recordSprintRun({
+          id: state.runId,
           score: state.stats.correctCount,
           totalAttempted: state.stats.totalAttempted,
           accuracyPercentage: accuracy,
@@ -166,6 +169,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       });
 
       recordSprintRun({
+        id: state.runId,
         score: state.stats.correctCount,
         totalAttempted: state.stats.totalAttempted,
         accuracyPercentage: accuracy,

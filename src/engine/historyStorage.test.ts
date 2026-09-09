@@ -75,4 +75,39 @@ describe('History Storage Module', () => {
     clearRunHistory();
     expect(loadRunHistory()).toEqual([]);
   });
+
+  it('deduplicates recording when given identical run id or rapid duplicate invocations', () => {
+    const runData = {
+      id: 'sprint-12345',
+      score: 30,
+      totalAttempted: 32,
+      accuracyPercentage: 93.8,
+      problemsPerMinute: 10,
+      bestStreak: 12,
+      missedCount: 2,
+      durationSeconds: 180,
+    };
+
+    // First call records
+    const record1 = recordSprintRun(runData);
+    expect(loadRunHistory().length).toBe(1);
+
+    // Second call with same id returns existing without appending
+    const record2 = recordSprintRun(runData);
+    expect(record2.id).toBe(record1.id);
+    expect(loadRunHistory().length).toBe(1);
+
+    // Third call without explicit id but identical data within 3 seconds
+    const record3 = recordSprintRun({
+      score: 30,
+      totalAttempted: 32,
+      accuracyPercentage: 93.8,
+      problemsPerMinute: 10,
+      bestStreak: 12,
+      missedCount: 2,
+      durationSeconds: 180,
+    });
+    expect(record3.id).toBe(record1.id);
+    expect(loadRunHistory().length).toBe(1);
+  });
 });

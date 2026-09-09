@@ -36,6 +36,7 @@ export interface GameState {
   isNewHighScore: boolean;
   isNewBestStreak: boolean;
   lastAnswerCorrect: boolean | null;
+  runId?: string;
 }
 
 export type GameAction =
