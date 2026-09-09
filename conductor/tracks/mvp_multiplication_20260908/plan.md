@@ -20,12 +20,12 @@
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 2b0c0b3
 
 ## Phase 3: Sprint Timer & State Management (TDD)
-- [ ] Task: Write unit tests for sprint timer and scoring state (Red Phase)
-  - [ ] Test 180-second countdown timer hook and expiration triggers
-  - [ ] Test scoring metrics calculation (accuracy %, PPM, consecutive streak)
-  - [ ] Test missed problems logging (storing problem, submitted answer, correct answer)
-  - [ ] Test local storage adapter for saving and loading personal best records
-- [ ] Task: Implement timer hook and game state store (Green & Refactor Phase)
+- [x] Task: Write unit tests for sprint timer and scoring state (Red Phase) a7b3c83
+  - [x] Test 180-second countdown timer hook and expiration triggers
+  - [x] Test scoring metrics calculation (accuracy %, PPM, consecutive streak)
+  - [x] Test missed problems logging (storing problem, submitted answer, correct answer)
+  - [x] Test local storage adapter for saving and loading personal best records
+- [~] Task: Implement timer hook and game state store (Green & Refactor Phase)
   - [ ] Implement `useSprintTimer` hook with pause, reset, and tick handlers
   - [ ] Implement `useGameStore` / state reducer managing challenge lifecycle
   - [ ] Implement `storage` utility with schema fallback for high score persistence
