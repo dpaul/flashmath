@@ -1,4 +1,5 @@
 import { MultiplicationProblem } from './math';
+export type { SprintRunRecord } from './historyStorage';
 
 export type GamePhase = 'idle' | 'running' | 'completed';
 
