@@ -32,7 +32,7 @@
   - [x] Verify all tests pass with >70% code coverage
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 498d3b5
 
-## Phase 4: User Interface & Interaction Flow
+## Phase 4: User Interface & Interaction Flow [checkpoint: 587f8e0]
 - [x] Task: Implement flashcard display and input components afca07d
   - [x] Build `Flashcard` component with large tabular monospace numerals and progress indicator
   - [x] Build `AnswerInput` component with autofocus, Enter key submission, and micro-feedback pulse
@@ -45,7 +45,7 @@
 - [x] Task: End-to-end component integration tests 587f8e0
   - [x] Write integration test simulating full sprint flow from start to results screen
   - [x] Verify keyboard interactions and autofocus behavior
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 587f8e0
 
 ## Phase 5: Final Polish, Accessibility & Quality Gate
 - [ ] Task: Visual polish, accessibility audit, and theme styling
