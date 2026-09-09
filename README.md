@@ -1,6 +1,10 @@
 # FlashMath ⚡
 
+[![Deploy to GitHub Pages](https://github.com/dpaul/flashmath/actions/workflows/deploy.yml/badge.svg)](https://github.com/dpaul/flashmath/actions/workflows/deploy.yml)
+
 A fast-paced, 3-minute multiplication sprint challenge web application built with **React 18**, **TypeScript**, **Tailwind CSS**, and **Vitest**.
+
+🎮 **Live Demo**: [https://dpaul.github.io/flashmath/](https://dpaul.github.io/flashmath/)
 
 Practice multiplication tables from **2 to 12**, build streaks, review missed problems, and track your speed and accuracy over time with responsive score trend analytics.
 
