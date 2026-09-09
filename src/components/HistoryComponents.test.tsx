@@ -63,6 +63,29 @@ describe('RunHistoryList Component', () => {
     expect(screen.getByText('97.2%')).toBeInTheDocument();
     expect(screen.getByText('35 / 36')).toBeInTheDocument();
   });
+
+  it('triggers onClearRequest callback when clear button is clicked', () => {
+    const onClearRequest = vi.fn();
+    const mockRuns: SprintRunRecord[] = [
+      {
+        id: 'run-1',
+        timestamp: '2026-09-08T10:00:00.000Z',
+        score: 18,
+        accuracy: 90,
+        totalAnswered: 20,
+        correctCount: 18,
+        missedCount: 2,
+        durationSeconds: 180,
+      },
+    ];
+
+    render(<RunHistoryList runs={mockRuns} onClearRequest={onClearRequest} />);
+
+    const clearBtn = screen.getByRole('button', { name: /clear sprint history/i });
+    expect(clearBtn).toBeInTheDocument();
+    fireEvent.click(clearBtn);
+    expect(onClearRequest).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe('ClearHistoryModal Component', () => {
