@@ -1,0 +1,2 @@
+Task: Write unit tests for sprint timer and scoring state (Red Phase)
+Summary: Added unit tests covering storage load/save/fallback, gameReducer states (idle, running, completed), 180s countdown ticks, accuracy percentage calculation, PPM calculation, and missed problems recording. Verified failing red phase.
