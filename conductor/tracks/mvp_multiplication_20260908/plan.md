@@ -48,10 +48,10 @@
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 587f8e0
 
 ## Phase 5: Final Polish, Accessibility & Quality Gate
-- [ ] Task: Visual polish, accessibility audit, and theme styling
-  - [ ] Verify WCAG AAA color contrast and responsive viewport layouts (mobile, tablet, desktop)
-  - [ ] Audit keyboard accessibility and ARIA live regions for countdown and score announcements
-- [ ] Task: Full verification and coverage report
+- [x] Task: Visual polish, accessibility audit, and theme styling f601aa9
+  - [x] Verify WCAG AAA color contrast and responsive viewport layouts (mobile, tablet, desktop)
+  - [x] Audit keyboard accessibility and ARIA live regions for countdown and score announcements
+- [~] Task: Full verification and coverage report
   - [ ] Run full test suite and verify coverage meets >70% target
   - [ ] Run TypeScript typecheck and ESLint static analysis with zero errors
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
