@@ -1,0 +1,2 @@
+Task: Visual polish, accessibility audit, and theme styling
+Summary: Added ARIA live regions and labels for Flashcard problem and Timer countdown, labeled input field, and custom CSS shake animation for incorrect micro-feedback. All 27 tests pass.
