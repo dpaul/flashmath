@@ -42,9 +42,9 @@
   - [x] Build `ResultsScreen` displaying total correct, accuracy %, PPM, and personal best banner
   - [x] Build `MissedProblemsReview` component detailing incorrect attempts with correct solutions
   - [x] Implement instant restart controls (Space / Enter hotkey and button)
-- [~] Task: End-to-end component integration tests
-  - [ ] Write integration test simulating full sprint flow from start to results screen
-  - [ ] Verify keyboard interactions and autofocus behavior
+- [x] Task: End-to-end component integration tests 587f8e0
+  - [x] Write integration test simulating full sprint flow from start to results screen
+  - [x] Verify keyboard interactions and autofocus behavior
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 5: Final Polish, Accessibility & Quality Gate
