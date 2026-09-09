@@ -1,6 +1,6 @@
 # Implementation Plan: History Page & Score-Over-Time Graph
 
-## Phase 1: History Data Storage & Run Recording (TDD)
+## Phase 1: History Data Storage & Run Recording (TDD) [checkpoint: 15d64e4]
 - [x] Task: Write unit tests for run history persistence and recording (Red Phase) 30536e5
   - [x] Test `loadRunHistory` returns empty array by default and handles corrupted data safely
   - [x] Test `recordSprintRun` appends new runs and enforces 100-run FIFO cap
@@ -10,7 +10,7 @@
   - [x] Implement `src/engine/historyStorage.ts` with typed storage utilities
   - [x] Update `gameReducer.ts` to record completed runs upon sprint end
   - [x] Verify all tests pass with >70% code coverage
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 15d64e4
 
 ## Phase 2: Score Trend SVG Chart Component (TDD)
 - [ ] Task: Write unit tests for `ScoreTrendChart` (Red Phase)
