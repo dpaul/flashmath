@@ -1,0 +1,2 @@
+Task: Implement start screen and post-sprint analytics screen
+Summary: Created StartScreen with high score cards and rules, MissedProblemsReview with problem details and user vs correct solutions, and ResultsScreen with metrics, celebration banner, and restart controls. 26/26 tests passing.
