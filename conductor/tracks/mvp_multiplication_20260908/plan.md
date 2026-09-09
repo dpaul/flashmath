@@ -19,7 +19,7 @@
   - [x] Verify all tests pass with >70% code coverage
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 2b0c0b3
 
-## Phase 3: Sprint Timer & State Management (TDD)
+## Phase 3: Sprint Timer & State Management (TDD) [checkpoint: 498d3b5]
 - [x] Task: Write unit tests for sprint timer and scoring state (Red Phase) a7b3c83
   - [x] Test 180-second countdown timer hook and expiration triggers
   - [x] Test scoring metrics calculation (accuracy %, PPM, consecutive streak)
@@ -30,7 +30,7 @@
   - [x] Implement `useGameStore` / state reducer managing challenge lifecycle
   - [x] Implement `storage` utility with schema fallback for high score persistence
   - [x] Verify all tests pass with >70% code coverage
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 498d3b5
 
 ## Phase 4: User Interface & Interaction Flow
 - [ ] Task: Implement flashcard display and input components
