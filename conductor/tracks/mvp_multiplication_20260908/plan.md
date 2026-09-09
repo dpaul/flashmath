@@ -33,11 +33,11 @@
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 498d3b5
 
 ## Phase 4: User Interface & Interaction Flow
-- [ ] Task: Implement flashcard display and input components
-  - [ ] Build `Flashcard` component with large tabular monospace numerals and progress indicator
-  - [ ] Build `AnswerInput` component with autofocus, Enter key submission, and micro-feedback pulse
-  - [ ] Build responsive on-screen numeric keypad for mobile/tablet input
-- [ ] Task: Implement start screen and post-sprint analytics screen
+- [x] Task: Implement flashcard display and input components afca07d
+  - [x] Build `Flashcard` component with large tabular monospace numerals and progress indicator
+  - [x] Build `AnswerInput` component with autofocus, Enter key submission, and micro-feedback pulse
+  - [x] Build responsive on-screen numeric keypad for mobile/tablet input
+- [~] Task: Implement start screen and post-sprint analytics screen
   - [ ] Build `StartScreen` with challenge rules and current personal best stats
   - [ ] Build `ResultsScreen` displaying total correct, accuracy %, PPM, and personal best banner
   - [ ] Build `MissedProblemsReview` component detailing incorrect attempts with correct solutions
