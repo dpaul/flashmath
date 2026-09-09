@@ -1,5 +1,6 @@
 import { generateProblem, evaluateAnswer } from './math';
 import { loadPersonalBests, savePersonalBests } from './storage';
+import { recordSprintRun } from './historyStorage';
 import { GameState, GameAction, GameStats } from './types';
 
 export const SPRINT_DURATION_SECONDS = 180;
@@ -79,6 +80,16 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
           totalGamesPlayed: currentBests.totalGamesPlayed + 1,
         });
 
+        recordSprintRun({
+          score: state.stats.correctCount,
+          totalAttempted: state.stats.totalAttempted,
+          accuracyPercentage: accuracy,
+          problemsPerMinute: ppm,
+          bestStreak: state.stats.bestStreak,
+          missedCount: state.stats.missedProblems.length,
+          durationSeconds: SPRINT_DURATION_SECONDS,
+        });
+
         return {
           ...state,
           phase: 'completed',
@@ -152,6 +163,16 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         highScore: Math.max(currentBests.highScore, state.stats.correctCount),
         bestStreak: Math.max(currentBests.bestStreak, state.stats.bestStreak),
         totalGamesPlayed: currentBests.totalGamesPlayed + 1,
+      });
+
+      recordSprintRun({
+        score: state.stats.correctCount,
+        totalAttempted: state.stats.totalAttempted,
+        accuracyPercentage: accuracy,
+        problemsPerMinute: ppm,
+        bestStreak: state.stats.bestStreak,
+        missedCount: state.stats.missedProblems.length,
+        durationSeconds: elapsed > 0 ? elapsed : SPRINT_DURATION_SECONDS,
       });
 
       return {
