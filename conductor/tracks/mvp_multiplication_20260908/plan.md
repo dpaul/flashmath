@@ -14,9 +14,9 @@
   - [x] Test problem generator produces factors in range [2, 12]
   - [x] Test problem generator avoids immediate identical consecutive problems
   - [x] Test answer validation logic for correct and incorrect answers
-- [~] Task: Implement core math engine (Green & Refactor Phase)
-  - [ ] Implement `generateProblem` and `evaluateAnswer` utilities
-  - [ ] Verify all tests pass with >70% code coverage
+- [x] Task: Implement core math engine (Green & Refactor Phase) 2b0c0b3
+  - [x] Implement `generateProblem` and `evaluateAnswer` utilities
+  - [x] Verify all tests pass with >70% code coverage
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: Sprint Timer & State Management (TDD)
