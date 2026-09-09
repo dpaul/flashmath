@@ -24,9 +24,9 @@
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 137c70e
 
 ## Phase 3: Run History List & Clear Confirmation Modal (TDD)
-- [ ] Task: Write unit tests for `RunHistoryList` and `ClearHistoryModal` (Red Phase)
-  - [ ] Test history list rendering sorted newest-to-oldest with high-score badge
-  - [ ] Test clear history confirmation modal cancel and confirm flows
+- [x] Task: Write unit tests for `RunHistoryList` and `ClearHistoryModal` (Red Phase) 1d074c2
+  - [x] Test history list rendering sorted newest-to-oldest with high-score badge
+  - [x] Test clear history confirmation modal cancel and confirm flows
 - [ ] Task: Implement `RunHistoryList` and `ClearHistoryModal` components (Green & Refactor Phase)
   - [ ] Build `RunHistoryList` component with responsive cards and stats breakdown
   - [ ] Build `ClearHistoryModal` component with backdrop and confirmation dialog
