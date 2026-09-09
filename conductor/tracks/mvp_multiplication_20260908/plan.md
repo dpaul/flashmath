@@ -37,12 +37,12 @@
   - [x] Build `Flashcard` component with large tabular monospace numerals and progress indicator
   - [x] Build `AnswerInput` component with autofocus, Enter key submission, and micro-feedback pulse
   - [x] Build responsive on-screen numeric keypad for mobile/tablet input
-- [~] Task: Implement start screen and post-sprint analytics screen
-  - [ ] Build `StartScreen` with challenge rules and current personal best stats
-  - [ ] Build `ResultsScreen` displaying total correct, accuracy %, PPM, and personal best banner
-  - [ ] Build `MissedProblemsReview` component detailing incorrect attempts with correct solutions
-  - [ ] Implement instant restart controls (Space / Enter hotkey and button)
-- [ ] Task: End-to-end component integration tests
+- [x] Task: Implement start screen and post-sprint analytics screen daebac9
+  - [x] Build `StartScreen` with challenge rules and current personal best stats
+  - [x] Build `ResultsScreen` displaying total correct, accuracy %, PPM, and personal best banner
+  - [x] Build `MissedProblemsReview` component detailing incorrect attempts with correct solutions
+  - [x] Implement instant restart controls (Space / Enter hotkey and button)
+- [~] Task: End-to-end component integration tests
   - [ ] Write integration test simulating full sprint flow from start to results screen
   - [ ] Verify keyboard interactions and autofocus behavior
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
