@@ -33,7 +33,7 @@
   - [x] Verify all tests pass with >70% code coverage
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 79c2d11
 
-## Phase 4: History Page View & App Navigation Integration
+## Phase 4: History Page View & App Navigation Integration [checkpoint: bb4ccd5]
 - [x] Task: Implement `HistoryPage` container view 15f76af
   - [x] Build `HistoryPage` component assembling chart, summary statistics, and history log
   - [x] Add quick "Back to Sprint" button
@@ -43,7 +43,7 @@
   - [x] Wire active view state ('game' | 'history')
 - [x] Task: End-to-end integration tests for History view 15f76af
   - [x] Test full journey: completing sprint -> navigating to history -> viewing score point -> clearing history
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) bb4ccd5
 
 ## Phase 5: Final Polish, Accessibility & Quality Gate
 - [ ] Task: Responsive styling audit, ARIA accessibility, and quality verification
