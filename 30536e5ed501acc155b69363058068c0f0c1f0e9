@@ -1,0 +1,2 @@
+Task: Write unit tests for run history persistence and recording (Red Phase)
+Summary: Created unit tests for loadRunHistory, recordSprintRun with 100-entry FIFO limit, and clearRunHistory. Verified Red Phase.
