@@ -8,6 +8,9 @@ export interface SprintRunRecord {
   bestStreak: number;
   missedCount: number;
   durationSeconds: number;
+  accuracy?: number;
+  totalAnswered?: number;
+  correctCount?: number;
 }
 
 export const HISTORY_STORAGE_KEY = 'flashmath_run_history_v1';

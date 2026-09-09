@@ -95,8 +95,11 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearReq
       <div className="space-y-3" role="list" aria-label="Past sprint runs">
         {sortedRuns.map((run) => {
           const isPersonalBest = maxScore > 0 && run.score === maxScore;
+          const accuracy = run.accuracyPercentage ?? run.accuracy ?? 0;
+          const total = run.totalAttempted ?? run.totalAnswered ?? run.score;
+          const correct = run.correctCount ?? run.score;
           const formattedAccuracy =
-            run.accuracy % 1 === 0 ? `${run.accuracy}%` : `${run.accuracy.toFixed(1)}%`;
+            accuracy % 1 === 0 ? `${accuracy}%` : `${accuracy.toFixed(1)}%`;
 
           return (
             <div
@@ -152,7 +155,7 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearReq
                 <div className="text-left sm:text-right">
                   <div className="text-xs text-slate-400 uppercase font-semibold">Solved</div>
                   <div className="text-sm font-bold text-cyan-400">
-                    {run.correctCount} / {run.totalAnswered}
+                    {correct} / {total}
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { RotateCcw, Trophy, Flame, Target, Gauge, Award } from 'lucide-react';
+import { RotateCcw, Trophy, Flame, Target, Gauge, Award, TrendingUp } from 'lucide-react';
 import { GameStats, PersonalBests } from '../engine/types';
 import { MissedProblemsReview } from './MissedProblemsReview';
 
@@ -9,6 +9,7 @@ interface ResultsScreenProps {
   isNewHighScore: boolean;
   isNewBestStreak: boolean;
   onRestart: () => void;
+  onViewHistory?: () => void;
 }
 
 export const ResultsScreen: React.FC<ResultsScreenProps> = ({
@@ -17,6 +18,7 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
   isNewHighScore,
   isNewBestStreak,
   onRestart,
+  onViewHistory,
 }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -114,6 +116,19 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
         <span className="block text-xs text-slate-500 mt-2 font-medium">
           or press <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">Space</kbd> / <kbd className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">Enter</kbd>
         </span>
+
+        {onViewHistory && (
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={onViewHistory}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-indigo-300 hover:text-indigo-200 border border-indigo-500/30 font-semibold text-sm transition-all focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            >
+              <TrendingUp className="w-4 h-4 text-indigo-400" />
+              <span>View History & Trends</span>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -64,4 +64,58 @@ describe('FlashMath App Integration', () => {
     fireEvent.click(keypadSubmitBtn);
     expect(input.value).toBe('');
   });
+
+  it('navigates to History view from header and back to sprint', () => {
+    render(<App />);
+
+    // Click History in header
+    const historyBtn = screen.getByRole('button', { name: /view history/i });
+    fireEvent.click(historyBtn);
+
+    // Verify History page rendered
+    expect(screen.getByText(/Sprint History & Trends/i)).toBeInTheDocument();
+    expect(screen.getByText(/no sprint history yet/i)).toBeInTheDocument();
+
+    // Click Back to Sprint in header or page
+    const backBtn = screen.getAllByRole('button', { name: /back to sprint/i })[0];
+    fireEvent.click(backBtn);
+
+    // Back on start screen
+    expect(screen.getByText('Start Challenge')).toBeInTheDocument();
+  });
+
+  it('navigates to History view from Results screen and allows clearing history', () => {
+    render(<App />);
+
+    // Start sprint
+    fireEvent.click(screen.getByRole('button', { name: /start challenge/i }));
+
+    // Abort/finish sprint early
+    fireEvent.click(screen.getByRole('button', { name: /end sprint/i }));
+
+    // On Results screen, shortcut button should exist
+    const viewHistoryShortcut = screen.getByRole('button', { name: /view history & trends/i });
+    expect(viewHistoryShortcut).toBeInTheDocument();
+    fireEvent.click(viewHistoryShortcut);
+
+    // Now on History page, we should have 1 run recorded
+    expect(screen.getByText(/Sprint History & Trends/i)).toBeInTheDocument();
+    expect(screen.getByText(/1 run/i)).toBeInTheDocument();
+
+    // Clear history flow
+    const clearBtn = screen.getByRole('button', { name: /clear sprint history/i });
+    fireEvent.click(clearBtn);
+
+    // Modal dialog pops up
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByText(/clear sprint history\?/i)).toBeInTheDocument();
+
+    // Confirm clear
+    const confirmBtn = screen.getByRole('button', { name: /clear all history/i });
+    fireEvent.click(confirmBtn);
+
+    // Dialog closed and empty state shown
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.getByText(/no sprint history yet/i)).toBeInTheDocument();
+  });
 });
