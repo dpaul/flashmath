@@ -1,0 +1,2 @@
+Task: Implement history storage adapter and game reducer integration (Green & Refactor Phase)
+Summary: Implemented historyStorage module with loadRunHistory, recordSprintRun with 100-entry FIFO pruning, and clearRunHistory. Integrated automatic run recording into gameReducer on sprint completion. 31/31 tests passing, 96.77% coverage.
