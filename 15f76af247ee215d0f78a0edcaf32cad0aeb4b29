@@ -1,0 +1,2 @@
+Task: History Page View & App Navigation Integration
+Summary: Implemented HistoryPage container view with summary stats cards, score trend chart, and run history list. Wired navigation in App header and ResultsScreen. Added full E2E integration test suite covering navigation, auto-recording, and history clearance. 42/42 tests passing, 98.03% coverage.
