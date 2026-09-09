@@ -27,10 +27,10 @@
 - [x] Task: Write unit tests for `RunHistoryList` and `ClearHistoryModal` (Red Phase) 1d074c2
   - [x] Test history list rendering sorted newest-to-oldest with high-score badge
   - [x] Test clear history confirmation modal cancel and confirm flows
-- [ ] Task: Implement `RunHistoryList` and `ClearHistoryModal` components (Green & Refactor Phase)
-  - [ ] Build `RunHistoryList` component with responsive cards and stats breakdown
-  - [ ] Build `ClearHistoryModal` component with backdrop and confirmation dialog
-  - [ ] Verify all tests pass with >70% code coverage
+- [x] Task: Implement `RunHistoryList` and `ClearHistoryModal` components (Green & Refactor Phase) 79c2d11
+  - [x] Build `RunHistoryList` component with responsive cards and stats breakdown
+  - [x] Build `ClearHistoryModal` component with backdrop and confirmation dialog
+  - [x] Verify all tests pass with >70% code coverage
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4: History Page View & App Navigation Integration
