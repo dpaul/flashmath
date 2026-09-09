@@ -1,12 +1,12 @@
 # Implementation Plan: History Page & Score-Over-Time Graph
 
 ## Phase 1: History Data Storage & Run Recording (TDD)
-- [ ] Task: Write unit tests for run history persistence and recording (Red Phase)
-  - [ ] Test `loadRunHistory` returns empty array by default and handles corrupted data safely
-  - [ ] Test `recordSprintRun` appends new runs and enforces 100-run FIFO cap
-  - [ ] Test `clearRunHistory` purges stored records
-  - [ ] Test sprint completion dispatches run recording automatically
-- [ ] Task: Implement history storage adapter and game reducer integration (Green & Refactor Phase)
+- [x] Task: Write unit tests for run history persistence and recording (Red Phase) 30536e5
+  - [x] Test `loadRunHistory` returns empty array by default and handles corrupted data safely
+  - [x] Test `recordSprintRun` appends new runs and enforces 100-run FIFO cap
+  - [x] Test `clearRunHistory` purges stored records
+  - [x] Test sprint completion dispatches run recording automatically
+- [~] Task: Implement history storage adapter and game reducer integration (Green & Refactor Phase)
   - [ ] Implement `src/engine/historyStorage.ts` with typed storage utilities
   - [ ] Update `gameReducer.ts` to record completed runs upon sprint end
   - [ ] Verify all tests pass with >70% code coverage
