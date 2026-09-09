@@ -1,0 +1,2 @@
+Task: Implement flashcard display and input components
+Summary: Created Flashcard with streak and feedback styling, AnswerInput with autofocus and Enter handling, on-screen Keypad, and TimerBar with 180s countdown progress. 23/23 tests pass.
