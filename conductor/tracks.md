@@ -5,5 +5,5 @@
   *Link: [./tracks/mvp_multiplication_20260908/index.md](./tracks/mvp_multiplication_20260908/index.md)*
 
 ---
-- [~] **Track: History Page & Score-Over-Time Graph**
+- [x] **Track: History Page & Score-Over-Time Graph**
   *Link: [./tracks/history_page_20260908/index.md](./tracks/history_page_20260908/index.md)*
