@@ -139,51 +139,25 @@ that also concludes a phase in `plan.md`.
             tests **must** validate the functionality described in this phase's
             tasks (`plan.md`).
 
-3.  **Execute Automated Tests with Proactive Debugging:**
+3.  **Execute Automated Tests and Verifications (Autonomous):**
 
-    -   Before execution, you **must** announce the exact shell command you will
-        use to run the tests.
-    -   **Example Announcement:** "I will now run the automated test suite to
-        verify the phase. **Command:** `CI=true npm test`"
-    -   Execute the announced command.
-    -   If tests fail, you **must** inform the user and begin debugging. You may
-        attempt to propose a fix a **maximum of two times**. If the tests still
-        fail after your second proposed fix, you **must stop**, report the
-        persistent failure, and ask the user for guidance.
+    -   The agent executes all test suites, builds, linter checks, and API/CLI verifications directly and autonomously.
+    -   **Zero User Burden:** Never ask the user to run test commands, execute curl calls, or verify terminal outputs that the agent can execute directly.
+    -   If tests or builds fail, the agent autonomously investigates and debugs.
 
-4.  **Propose a Detailed, Actionable Manual Verification Plan:**
+4.  **Autonomous Verification vs. Interactive User Feedback:**
 
-    -   **CRITICAL:** To generate the plan, first analyze `product.md`,
-        `product-guidelines.md`, and `plan.md` to determine the user-facing
-        goals of the completed phase.
-    -   You **must** generate a step-by-step plan that walks the user through
-        the verification process, including any necessary commands and specific,
-        expected outcomes.
-    -   The plan you present to the user **must** follow this format:
+    -   **Automate Everything Feasible:** If a phase consists of internal logic, scaffolding, unit tests, state management, or build tools, the agent verifies it 100% autonomously via automated tests and build checks. Do NOT pause or ask the user for manual verification.
+    -   **Selective Human Feedback (Interactive UI/UX Only):** ONLY involve the user when the phase introduces or changes visual, interactive frontend features where human sensory feedback or tactile interaction is required (e.g. testing the feel of the 3-minute sprint in the browser).
+    -   **When Interactive Feedback is Needed:**
+        -   The agent starts the dev server.
+        -   The agent clearly specifies the URL and the exact interactive scenario for the user to try.
+        -   Ask for user feedback or approval via the interactive dialog.
 
-        **For a Frontend Change:** ``` The automated tests have passed. For
-        manual verification, please follow these steps:
+5.  **Checkpoint Decision:**
 
-        **Manual Verification Steps:** 1. **Start the development server with
-        the command:** `npm run dev` 2. **Open your browser to:**
-        `http://localhost:3000` 3. **Confirm that you see:** The new user
-        profile page, with the user's name and email displayed correctly. ```
-
-        **For a Backend Change:** ``` The automated tests have passed. For
-        manual verification, please follow these steps:
-
-        **Manual Verification Steps:** 1. **Ensure the server is running.** 2.
-        **Execute the following command in your terminal:** `curl -X POST
-        http://localhost:8080/api/v1/users -d '{"name": "test"}'` 3. **Confirm
-        that you receive:** A JSON response with a status of `201 Created`. ```
-
-5.  **Await Explicit User Feedback:**
-
-    -   After presenting the detailed plan, ask the user for confirmation:
-        "**Does this meet your expectations? Please confirm with yes or provide
-        feedback on what needs to be changed.**"
-    -   **PAUSE** and await the user's response. Do not proceed without an
-        explicit yes or confirmation.
+    -   For fully automated phases: Proceed immediately to checkpoint recording.
+    -   For phases requiring interactive user feedback: Await user approval or feedback before recording the checkpoint.
 
 6.  **Identify Target Commit for Report:**
 
@@ -192,9 +166,7 @@ that also concludes a phase in `plan.md`.
 
 7.  **Attach Auditable Verification Report using Git Notes:**
 
-    -   **Step 7.1: Draft Note Content:** Create a detailed verification report
-        including the automated test command, the manual verification steps, and
-        the user's confirmation.
+    -   **Step 7.1: Draft Note Content:** Create a detailed verification report including the automated test results and any interactive user feedback.
     -   **Step 7.2: Attach Note:** Use the `git notes` command to attach the full report to the target commit identified in step 6.
 
 8.  **Get and Record Phase Checkpoint SHA:**
