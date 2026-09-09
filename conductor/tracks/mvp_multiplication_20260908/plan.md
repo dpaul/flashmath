@@ -25,11 +25,11 @@
   - [x] Test scoring metrics calculation (accuracy %, PPM, consecutive streak)
   - [x] Test missed problems logging (storing problem, submitted answer, correct answer)
   - [x] Test local storage adapter for saving and loading personal best records
-- [~] Task: Implement timer hook and game state store (Green & Refactor Phase)
-  - [ ] Implement `useSprintTimer` hook with pause, reset, and tick handlers
-  - [ ] Implement `useGameStore` / state reducer managing challenge lifecycle
-  - [ ] Implement `storage` utility with schema fallback for high score persistence
-  - [ ] Verify all tests pass with >70% code coverage
+- [x] Task: Implement timer hook and game state store (Green & Refactor Phase) 498d3b5
+  - [x] Implement `useSprintTimer` hook with pause, reset, and tick handlers
+  - [x] Implement `useGameStore` / state reducer managing challenge lifecycle
+  - [x] Implement `storage` utility with schema fallback for high score persistence
+  - [x] Verify all tests pass with >70% code coverage
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4: User Interface & Interaction Flow
