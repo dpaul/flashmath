@@ -1,0 +1,2 @@
+Fix: Deduplicate sprint run recordings
+Summary: Added runId to GameState to track unique sprint sessions and added idempotency and rapid duplicate protection to recordSprintRun to eliminate duplicate entries caused by React StrictMode in development.
