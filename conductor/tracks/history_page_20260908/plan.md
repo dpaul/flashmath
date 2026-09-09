@@ -6,10 +6,10 @@
   - [x] Test `recordSprintRun` appends new runs and enforces 100-run FIFO cap
   - [x] Test `clearRunHistory` purges stored records
   - [x] Test sprint completion dispatches run recording automatically
-- [~] Task: Implement history storage adapter and game reducer integration (Green & Refactor Phase)
-  - [ ] Implement `src/engine/historyStorage.ts` with typed storage utilities
-  - [ ] Update `gameReducer.ts` to record completed runs upon sprint end
-  - [ ] Verify all tests pass with >70% code coverage
+- [x] Task: Implement history storage adapter and game reducer integration (Green & Refactor Phase) 15d64e4
+  - [x] Implement `src/engine/historyStorage.ts` with typed storage utilities
+  - [x] Update `gameReducer.ts` to record completed runs upon sprint end
+  - [x] Verify all tests pass with >70% code coverage
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2: Score Trend SVG Chart Component (TDD)
