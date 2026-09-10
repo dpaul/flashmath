@@ -1,14 +1,21 @@
 import React from 'react';
 import { Flame } from 'lucide-react';
 import { MultiplicationProblem } from '../engine/math';
+import { FuzzyParticles } from './FuzzyParticles';
 
 interface FlashcardProps {
   problem: MultiplicationProblem;
   streak: number;
   lastAnswerCorrect: boolean | null;
+  submissionCount?: number;
 }
 
-export const Flashcard: React.FC<FlashcardProps> = ({ problem, streak, lastAnswerCorrect }) => {
+export const Flashcard: React.FC<FlashcardProps> = ({
+  problem,
+  streak,
+  lastAnswerCorrect,
+  submissionCount = 0,
+}) => {
   const getFeedbackClass = () => {
     if (lastAnswerCorrect === true) {
       return 'border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.25)] bg-slate-900/90';
@@ -26,6 +33,13 @@ export const Flashcard: React.FC<FlashcardProps> = ({ problem, streak, lastAnswe
       aria-live="polite"
       className={`relative w-full max-w-sm sm:max-w-md mx-auto p-8 rounded-3xl border-2 backdrop-blur transition-all duration-200 ${getFeedbackClass()}`}
     >
+      {/* Fuzzy particle effects on answer submission */}
+      {lastAnswerCorrect !== null && (
+        <FuzzyParticles
+          key={`burst-${submissionCount}-${lastAnswerCorrect}`}
+          type={lastAnswerCorrect ? 'correct' : 'incorrect'}
+        />
+      )}
       {/* Top Bar: Streak Indicator */}
       <div className="flex justify-between items-center mb-6">
         <span className="text-xs font-semibold tracking-wider text-slate-400 uppercase">

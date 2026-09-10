@@ -133,6 +133,7 @@ export const App: React.FC = () => {
                   problem={state.currentProblem}
                   streak={state.stats.streak}
                   lastAnswerCorrect={state.lastAnswerCorrect}
+                  submissionCount={state.stats.totalAttempted}
                 />
 
                 <AnswerInput
