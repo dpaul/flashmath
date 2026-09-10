@@ -1,0 +1,1 @@
+Phase 3: Implemented edge-emanating smoke particles from card perimeter outward with dynamic streak scaling (up to 48 burst particles, 18 ambient clouds) and immediate reset on errors. Full test suite passing (55 tests, 98% coverage).
