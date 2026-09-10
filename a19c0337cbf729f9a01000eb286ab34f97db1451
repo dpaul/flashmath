@@ -1,0 +1,1 @@
+Fix: repositioned particle layers strictly behind the solid opaque card container (z-20 bg-slate-900) and pushed emitter origin outward past the borders so smoke only emanates into the space around the box and never obscures the math problem.
