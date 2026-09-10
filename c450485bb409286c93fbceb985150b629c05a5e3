@@ -1,0 +1,2 @@
+Task: Dense Billowing Smoke & Ambient Drift Enhancements
+Summary: Scaled particles up to 40-110px with heavy 12-26px blur billowing far outside the card. Added continuous ambient floating smoke layer around card perimeter. 54/54 tests passing, 98.28% coverage.
