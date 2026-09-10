@@ -14,6 +14,7 @@ interface FuzzyParticlesProps {
 
 interface AmbientSmokeProps {
   streak?: number;
+  status?: ParticleType;
 }
 
 /**
@@ -53,44 +54,51 @@ export const FuzzyParticles: React.FC<FuzzyParticlesProps> = ({
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-visible flex items-center justify-center z-10 select-none"
     >
-      {particles.map((p) => {
-        const style: React.CSSProperties & { [key: string]: string | number } = {
-          width: `${p.size}px`,
-          height: `${p.size}px`,
-          backgroundColor: p.color,
-          filter: `blur(${p.blur}px)`,
-          boxShadow: `0 0 ${p.size * 0.9}px ${p.color}`,
-          opacity: p.opacity,
-          left: '50%',
-          top: '50%',
-          transform: `translate3d(calc(-50% + ${p.startX}px), calc(-50% + ${p.startY}px), 0)`,
-          '--tx': `${p.dirX}px`,
-          '--ty': `${p.dirY}px`,
-          animation: `fuzzyBurst ${p.durationMs}ms cubic-bezier(0.12, 0.8, 0.25, 1) ${p.delayMs}ms forwards`,
-        };
-
-        return (
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          data-testid="fuzzy-particle"
+          className="absolute pointer-events-none"
+          style={{
+            left: '50%',
+            top: '50%',
+            transform: `translate3d(calc(-50% + ${p.startX}px), calc(-50% + ${p.startY}px), 0)`,
+          }}
+        >
           <span
-            key={p.id}
-            data-testid="fuzzy-particle"
-            className="fuzzy-particle-item absolute rounded-full pointer-events-none will-change-transform mix-blend-screen"
-            style={style}
+            className="fuzzy-particle-item block rounded-full pointer-events-none will-change-transform mix-blend-screen"
+            style={
+              {
+                width: `${p.size}px`,
+                height: `${p.size}px`,
+                backgroundColor: p.color,
+                filter: `blur(${p.blur}px)`,
+                boxShadow: `0 0 ${Math.round(p.size * 0.9)}px ${p.color}`,
+                opacity: p.opacity,
+                '--tx': `${p.dirX}px`,
+                '--ty': `${p.dirY}px`,
+                animation: `fuzzyBurst ${p.durationMs}ms cubic-bezier(0.12, 0.8, 0.25, 1) ${p.delayMs}ms forwards`,
+              } as React.CSSProperties
+            }
           />
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
 };
 
 /**
- * Continuous ambient drifting smoke clouds along and outside the card edges, scaling with streak.
+ * Continuous ambient drifting smoke clouds along and outside all 4 edges.
  */
-export const AmbientSmoke: React.FC<AmbientSmokeProps> = ({ streak = 0 }) => {
-  const [orbs, setOrbs] = useState(() => createAmbientSmoke(undefined, streak));
+export const AmbientSmoke: React.FC<AmbientSmokeProps> = ({
+  streak = 0,
+  status = 'correct',
+}) => {
+  const [orbs, setOrbs] = useState(() => createAmbientSmoke(undefined, streak, status));
 
   useEffect(() => {
-    setOrbs(createAmbientSmoke(undefined, streak));
-  }, [streak]);
+    setOrbs(createAmbientSmoke(undefined, streak, status));
+  }, [streak, status]);
 
   return (
     <div
@@ -98,29 +106,35 @@ export const AmbientSmoke: React.FC<AmbientSmokeProps> = ({ streak = 0 }) => {
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-visible flex items-center justify-center z-0 select-none"
     >
-      {orbs.map((orb) => {
-        const style: React.CSSProperties & { [key: string]: string | number } = {
-          width: `${orb.size}px`,
-          height: `${orb.size}px`,
-          backgroundColor: orb.color,
-          filter: `blur(${orb.blur}px)`,
-          boxShadow: `0 0 ${orb.size}px ${orb.color}`,
-          opacity: orb.opacity,
-          left: '50%',
-          top: '50%',
-          transform: `translate3d(calc(-50% + ${orb.startX}px), calc(-50% + ${orb.startY}px), 0)`,
-          animation: `ambientDrift ${orb.durationSeconds}s ease-in-out ${orb.delaySeconds}s infinite alternate`,
-        };
-
-        return (
+      {orbs.map((orb) => (
+        <div
+          key={orb.id}
+          data-testid="ambient-smoke-orb"
+          className="absolute pointer-events-none"
+          style={{
+            left: '50%',
+            top: '50%',
+            transform: `translate3d(calc(-50% + ${orb.startX}px), calc(-50% + ${orb.startY}px), 0)`,
+          }}
+        >
           <span
-            key={orb.id}
-            data-testid="ambient-smoke-orb"
-            className="ambient-smoke-orb absolute rounded-full pointer-events-none will-change-transform mix-blend-screen"
-            style={style}
+            className="ambient-smoke-orb block rounded-full pointer-events-none will-change-transform mix-blend-screen"
+            style={
+              {
+                width: `${orb.size}px`,
+                height: `${orb.size}px`,
+                backgroundColor: orb.color,
+                filter: `blur(${orb.blur}px)`,
+                boxShadow: `0 0 ${orb.size}px ${orb.color}`,
+                opacity: orb.opacity,
+                '--drift-x': `${orb.dirX}px`,
+                '--drift-y': `${orb.dirY}px`,
+                animation: `ambientDrift ${orb.durationSeconds}s ease-in-out ${orb.delaySeconds}s infinite alternate`,
+              } as React.CSSProperties
+            }
           />
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
 };

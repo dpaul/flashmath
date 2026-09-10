@@ -29,7 +29,10 @@ export const Flashcard: React.FC<FlashcardProps> = ({
   return (
     <div className="relative w-full max-w-sm sm:max-w-md mx-auto my-3 overflow-visible">
       {/* Continuous ambient smoke floating behind the card edges, scaling with streak */}
-      <AmbientSmoke streak={streak} />
+      <AmbientSmoke
+        streak={streak}
+        status={lastAnswerCorrect === false ? 'incorrect' : 'correct'}
+      />
 
       {/* Dense fuzzy smoke pulse/burst billowing outward from behind the edges on answer submission */}
       {lastAnswerCorrect !== null && (

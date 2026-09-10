@@ -19,8 +19,8 @@ describe('Particle Generator Module', () => {
       expect(typeof p.startY).toBe('number');
       expect(typeof p.dirX).toBe('number');
       expect(typeof p.dirY).toBe('number');
-      expect(p.size).toBeGreaterThanOrEqual(45);
-      expect(p.size).toBeLessThanOrEqual(115);
+      expect(p.size).toBeGreaterThanOrEqual(50);
+      expect(p.size).toBeLessThanOrEqual(130);
       expect(p.blur).toBeGreaterThanOrEqual(14);
       expect(p.blur).toBeLessThanOrEqual(28);
       expect(p.durationMs).toBeGreaterThanOrEqual(750);
@@ -53,23 +53,29 @@ describe('Particle Generator Module', () => {
     expect(calculateParticleCount('incorrect', 10)).toBe(14);
   });
 
-  it('scales ambient smoke count with streak', () => {
-    expect(calculateAmbientCount(0)).toBe(6);
-    expect(calculateAmbientCount(3)).toBe(12);
-    expect(calculateAmbientCount(10)).toBe(18);
+  it('scales ambient smoke count with streak across all 4 sides', () => {
+    expect(calculateAmbientCount(0)).toBe(8);
+    expect(calculateAmbientCount(3)).toBe(14);
+    expect(calculateAmbientCount(10)).toBe(20);
   });
 
-  it('generates ambient smoke orbs for continuous subtle perimeter aura', () => {
-    const ambientOrbs = createAmbientSmoke(8);
+  it('generates ambient smoke orbs for continuous perimeter aura with dynamic motion', () => {
+    const ambientOrbs = createAmbientSmoke(8, 0, 'correct');
     expect(ambientOrbs).toHaveLength(8);
 
     ambientOrbs.forEach((orb) => {
       expect(orb.id).toBeTruthy();
-      expect(orb.size).toBeGreaterThanOrEqual(75);
-      expect(orb.size).toBeLessThanOrEqual(140);
-      expect(orb.blur).toBeGreaterThanOrEqual(20);
-      expect(orb.blur).toBeLessThanOrEqual(34);
-      expect(orb.durationSeconds).toBeGreaterThanOrEqual(4.5);
+      expect(orb.size).toBeGreaterThanOrEqual(80);
+      expect(orb.size).toBeLessThanOrEqual(145);
+      expect(orb.blur).toBeGreaterThanOrEqual(18);
+      expect(orb.blur).toBeLessThanOrEqual(30);
+      expect(orb.durationSeconds).toBeGreaterThanOrEqual(2.8);
+      expect(CORRECT_PALETTE).toContain(orb.color);
+    });
+
+    const incorrectOrbs = createAmbientSmoke(4, 0, 'incorrect');
+    incorrectOrbs.forEach((orb) => {
+      expect(INCORRECT_PALETTE).toContain(orb.color);
     });
   });
 });

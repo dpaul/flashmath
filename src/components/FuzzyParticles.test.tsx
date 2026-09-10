@@ -51,6 +51,6 @@ describe('FuzzyParticles Component', () => {
     expect(container).toHaveAttribute('aria-hidden', 'true');
 
     const orbs = screen.getAllByTestId('ambient-smoke-orb');
-    expect(orbs).toHaveLength(6);
+    expect(orbs).toHaveLength(8);
   });
 });
