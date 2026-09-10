@@ -17,3 +17,28 @@
 .animate-shake {
   animation: shake 0.35s ease-in-out;
 }
+
+@keyframes fuzzyBurst {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.2);
+  }
+  25% {
+    opacity: 1;
+    transform: translate3d(calc(var(--tx) * 0.35), calc(var(--ty) * 0.35), 0) scale(1.2);
+  }
+  65% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--tx), var(--ty), 0) scale(0.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fuzzy-particle-item {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
