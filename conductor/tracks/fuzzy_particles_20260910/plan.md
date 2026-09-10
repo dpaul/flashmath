@@ -11,15 +11,15 @@
   - [x] Verify all tests pass with >70% code coverage
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 2716b1c
 
-## Phase 2: Game Screen Integration & Trigger Wiring (TDD)
+## Phase 2: Game Screen Integration & Trigger Wiring (TDD) [checkpoint: 7f64a5f]
 - [x] Task: Write integration tests for answer submission triggers (Red Phase) b9ebaa1
   - [x] Test particle emission on correct answer submission with emerald/cyan theme
   - [x] Test particle emission on incorrect answer submission with rose/amber theme
-- [ ] Task: Wire particle emission to sprint view (Green & Refactor Phase)
-  - [ ] Integrate `FuzzyParticles` into `Flashcard.tsx` or `App.tsx` relative to card center
-  - [ ] Ensure `pointer-events-none` and zero layout shifting
-  - [ ] Verify all tests pass with >70% code coverage
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Wire particle emission to sprint view (Green & Refactor Phase) 7f64a5f
+  - [x] Integrate `FuzzyParticles` into `Flashcard.tsx` or `App.tsx` relative to card center
+  - [x] Ensure `pointer-events-none` and zero layout shifting
+  - [x] Verify all tests pass with >70% code coverage
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 7f64a5f
 
 ## Phase 3: Visual Polish, Performance & Browser Verification
 - [ ] Task: Mobile responsiveness, CSS keyframe fine-tuning, and quality verification
