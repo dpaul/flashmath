@@ -1,6 +1,6 @@
 import { render, screen, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { FuzzyParticles } from './FuzzyParticles';
+import { FuzzyParticles, AmbientSmoke } from './FuzzyParticles';
 
 describe('FuzzyParticles Component', () => {
   beforeEach(() => {
@@ -29,9 +29,9 @@ describe('FuzzyParticles Component', () => {
     expect(screen.getByTestId('fuzzy-particles-container')).toBeInTheDocument();
     expect(onComplete).not.toHaveBeenCalled();
 
-    // Fast-forward past max animation duration (850ms)
+    // Fast-forward past max smoke animation duration (up to 1180ms + 30ms)
     act(() => {
-      vi.advanceTimersByTime(900);
+      vi.advanceTimersByTime(1500);
     });
 
     expect(onComplete).toHaveBeenCalledTimes(1);
@@ -42,5 +42,15 @@ describe('FuzzyParticles Component', () => {
     render(<FuzzyParticles type="incorrect" count={8} />);
     const particleElements = screen.getAllByTestId('fuzzy-particle');
     expect(particleElements).toHaveLength(8);
+  });
+
+  it('renders AmbientSmoke with continuous floating smoke orbs', () => {
+    render(<AmbientSmoke />);
+    const container = screen.getByTestId('ambient-smoke-container');
+    expect(container).toBeInTheDocument();
+    expect(container).toHaveAttribute('aria-hidden', 'true');
+
+    const orbs = screen.getAllByTestId('ambient-smoke-orb');
+    expect(orbs).toHaveLength(8);
   });
 });

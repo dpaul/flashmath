@@ -5,7 +5,7 @@ import { Flashcard } from './Flashcard';
 describe('Flashcard Component with Fuzzy Particles', () => {
   const sampleProblem = { id: 'p1', factorA: 6, factorB: 7, product: 42 };
 
-  it('does not render fuzzy particles initially when lastAnswerCorrect is null', () => {
+  it('renders ambient smoke container continuously while suppressing burst initially', () => {
     render(
       <Flashcard
         problem={sampleProblem}
@@ -14,6 +14,7 @@ describe('Flashcard Component with Fuzzy Particles', () => {
         submissionCount={0}
       />
     );
+    expect(screen.getByTestId('ambient-smoke-container')).toBeInTheDocument();
     expect(screen.queryByTestId('fuzzy-particles-container')).not.toBeInTheDocument();
   });
 

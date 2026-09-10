@@ -21,23 +21,40 @@
 @keyframes fuzzyBurst {
   0% {
     opacity: 0;
-    transform: translate3d(0, 0, 0) scale(0.2);
+    transform: translate3d(0, 0, 0) scale(0.3);
   }
-  25% {
-    opacity: 1;
-    transform: translate3d(calc(var(--tx) * 0.35), calc(var(--ty) * 0.35), 0) scale(1.2);
+  20% {
+    opacity: 0.9;
+    transform: translate3d(calc(var(--tx) * 0.35), calc(var(--ty) * 0.35), 0) scale(1.25);
   }
-  65% {
-    opacity: 0.85;
+  60% {
+    opacity: 0.65;
+    transform: translate3d(calc(var(--tx) * 0.8), calc(var(--ty) * 0.8), 0) scale(1.45);
   }
   100% {
     opacity: 0;
-    transform: translate3d(var(--tx), var(--ty), 0) scale(0.2);
+    transform: translate3d(var(--tx), var(--ty), 0) scale(1.7);
+  }
+}
+
+@keyframes ambientDrift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate3d(12px, -15px, 0) scale(1.15) rotate(15deg);
+  }
+  66% {
+    transform: translate3d(-10px, 10px, 0) scale(0.9) rotate(-10deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fuzzy-particle-item {
+  .fuzzy-particle-item,
+  .ambient-smoke-orb {
     animation: none !important;
     opacity: 0 !important;
   }

@@ -1,39 +1,57 @@
 import { describe, it, expect } from 'vitest';
-import { createFuzzyParticles, CORRECT_PALETTE, INCORRECT_PALETTE } from './particles';
+import {
+  createFuzzyParticles,
+  createAmbientSmoke,
+  CORRECT_PALETTE,
+  INCORRECT_PALETTE,
+} from './particles';
 
 describe('Particle Generator Module', () => {
-  it('generates the expected number of particles with valid properties for correct answers', () => {
-    const particles = createFuzzyParticles('correct', 16);
-    expect(particles).toHaveLength(16);
+  it('generates dense smoke particles with large size and heavy blur for correct answers', () => {
+    const particles = createFuzzyParticles('correct', 24);
+    expect(particles).toHaveLength(24);
 
     particles.forEach((p) => {
       expect(p.id).toBeTruthy();
       expect(typeof p.x).toBe('number');
       expect(typeof p.y).toBe('number');
-      expect(p.size).toBeGreaterThanOrEqual(8);
-      expect(p.size).toBeLessThanOrEqual(26);
-      expect(p.blur).toBeGreaterThanOrEqual(2);
-      expect(p.blur).toBeLessThanOrEqual(6);
-      expect(p.durationMs).toBeGreaterThanOrEqual(450);
-      expect(p.durationMs).toBeLessThanOrEqual(800);
+      expect(p.size).toBeGreaterThanOrEqual(40);
+      expect(p.size).toBeLessThanOrEqual(110);
+      expect(p.blur).toBeGreaterThanOrEqual(12);
+      expect(p.blur).toBeLessThanOrEqual(26);
+      expect(p.durationMs).toBeGreaterThanOrEqual(700);
+      expect(p.durationMs).toBeLessThanOrEqual(1100);
       expect(CORRECT_PALETTE).toContain(p.color);
     });
   });
 
   it('generates particles with incorrect palette and muted puff spread for incorrect answers', () => {
-    const particles = createFuzzyParticles('incorrect', 14);
-    expect(particles).toHaveLength(14);
+    const particles = createFuzzyParticles('incorrect', 16);
+    expect(particles).toHaveLength(16);
 
     particles.forEach((p) => {
       expect(INCORRECT_PALETTE).toContain(p.color);
-      // Puff distance is tighter than correct blast
       const distance = Math.sqrt(p.x * p.x + p.y * p.y);
-      expect(distance).toBeLessThanOrEqual(85);
+      expect(distance).toBeLessThanOrEqual(200);
     });
   });
 
-  it('defaults count to 16 if unspecified', () => {
+  it('generates ambient smoke orbs for continuous subtle perimeter aura', () => {
+    const ambientOrbs = createAmbientSmoke(8);
+    expect(ambientOrbs).toHaveLength(8);
+
+    ambientOrbs.forEach((orb) => {
+      expect(orb.id).toBeTruthy();
+      expect(orb.size).toBeGreaterThanOrEqual(80);
+      expect(orb.size).toBeLessThanOrEqual(140);
+      expect(orb.blur).toBeGreaterThanOrEqual(20);
+      expect(orb.blur).toBeLessThanOrEqual(32);
+      expect(orb.durationSeconds).toBeGreaterThanOrEqual(5);
+    });
+  });
+
+  it('defaults count to 24 if unspecified', () => {
     const particles = createFuzzyParticles('correct');
-    expect(particles).toHaveLength(16);
+    expect(particles).toHaveLength(24);
   });
 });
