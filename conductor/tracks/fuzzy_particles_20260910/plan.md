@@ -1,10 +1,10 @@
 # Implementation Plan: Fuzzy Particle Effects on Answer Submission
 
 ## Phase 1: Fuzzy Particle Component & Particle Generator Logic (TDD)
-- [ ] Task: Write unit tests for particle generation and component lifecycle (Red Phase)
-  - [ ] Test particle parameter generation (random velocities, colors, blur, sizes)
-  - [ ] Test `FuzzyParticles` rendering and auto-cleanup timeout
-  - [ ] Test `prefers-reduced-motion` suppression
+- [x] Task: Write unit tests for particle generation and component lifecycle (Red Phase) 832e965
+  - [x] Test particle parameter generation (random velocities, colors, blur, sizes)
+  - [x] Test `FuzzyParticles` rendering and auto-cleanup timeout
+  - [x] Test `prefers-reduced-motion` suppression
 - [ ] Task: Implement particle physics generator and `FuzzyParticles` component (Green & Refactor Phase)
   - [ ] Implement `src/engine/particles.ts` with particle model and palettes
   - [ ] Build `src/components/FuzzyParticles.tsx` with GPU CSS animations and cleanup hook
