@@ -1,0 +1,2 @@
+Task: Write unit tests for particle generation and component lifecycle (Red Phase)
+Summary: Added unit tests for particle physics generation (random angle, spread, colors, blur, duration) and FuzzyParticles React component lifecycle and auto-unmounting.
