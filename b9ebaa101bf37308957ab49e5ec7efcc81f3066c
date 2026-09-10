@@ -1,0 +1,2 @@
+Task: Write integration tests for answer submission triggers (Red Phase)
+Summary: Added integration tests for Flashcard verifying FuzzyParticles burst trigger on correct and incorrect submissions and suppression when lastAnswerCorrect is null.
