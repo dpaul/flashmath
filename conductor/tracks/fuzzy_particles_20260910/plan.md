@@ -12,9 +12,9 @@
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) 2716b1c
 
 ## Phase 2: Game Screen Integration & Trigger Wiring (TDD)
-- [ ] Task: Write integration tests for answer submission triggers (Red Phase)
-  - [ ] Test particle emission on correct answer submission with emerald/cyan theme
-  - [ ] Test particle emission on incorrect answer submission with rose/amber theme
+- [x] Task: Write integration tests for answer submission triggers (Red Phase) b9ebaa1
+  - [x] Test particle emission on correct answer submission with emerald/cyan theme
+  - [x] Test particle emission on incorrect answer submission with rose/amber theme
 - [ ] Task: Wire particle emission to sprint view (Green & Refactor Phase)
   - [ ] Integrate `FuzzyParticles` into `Flashcard.tsx` or `App.tsx` relative to card center
   - [ ] Ensure `pointer-events-none` and zero layout shifting
