@@ -8,18 +8,24 @@ import {
 interface FuzzyParticlesProps {
   type: ParticleType;
   count?: number;
+  streak?: number;
   onComplete?: () => void;
 }
 
+interface AmbientSmokeProps {
+  streak?: number;
+}
+
 /**
- * High-energy fuzzy smoke burst triggered on answer submission.
+ * High-energy fuzzy smoke burst emanating outward from the edges of the box on answer submission.
  */
 export const FuzzyParticles: React.FC<FuzzyParticlesProps> = ({
   type,
   count,
+  streak = 0,
   onComplete,
 }) => {
-  const [particles] = useState(() => createFuzzyParticles(type, count));
+  const [particles] = useState(() => createFuzzyParticles(type, count, streak));
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -55,8 +61,11 @@ export const FuzzyParticles: React.FC<FuzzyParticlesProps> = ({
           filter: `blur(${p.blur}px)`,
           boxShadow: `0 0 ${p.size * 0.9}px ${p.color}`,
           opacity: p.opacity,
-          '--tx': `${p.x}px`,
-          '--ty': `${p.y}px`,
+          left: '50%',
+          top: '50%',
+          transform: `translate3d(calc(-50% + ${p.startX}px), calc(-50% + ${p.startY}px), 0)`,
+          '--tx': `${p.dirX}px`,
+          '--ty': `${p.dirY}px`,
           animation: `fuzzyBurst ${p.durationMs}ms cubic-bezier(0.12, 0.8, 0.25, 1) ${p.delayMs}ms forwards`,
         };
 
@@ -74,26 +83,32 @@ export const FuzzyParticles: React.FC<FuzzyParticlesProps> = ({
 };
 
 /**
- * Continuous ambient drifting smoke aura around the flashcard.
+ * Continuous ambient drifting smoke clouds along and outside the card edges, scaling with streak.
  */
-export const AmbientSmoke: React.FC = () => {
-  const [orbs] = useState(() => createAmbientSmoke(8));
+export const AmbientSmoke: React.FC<AmbientSmokeProps> = ({ streak = 0 }) => {
+  const [orbs, setOrbs] = useState(() => createAmbientSmoke(undefined, streak));
+
+  useEffect(() => {
+    setOrbs(createAmbientSmoke(undefined, streak));
+  }, [streak]);
 
   return (
     <div
       data-testid="ambient-smoke-container"
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-visible flex items-center justify-center z-0 select-none"
+      className="pointer-events-none absolute inset-0 overflow-visible flex items-center justify-center z-20 select-none"
     >
       {orbs.map((orb) => {
-        const style: React.CSSProperties = {
+        const style: React.CSSProperties & { [key: string]: string | number } = {
           width: `${orb.size}px`,
           height: `${orb.size}px`,
           backgroundColor: orb.color,
           filter: `blur(${orb.blur}px)`,
           boxShadow: `0 0 ${orb.size}px ${orb.color}`,
           opacity: orb.opacity,
-          transform: `translate3d(${orb.x}px, ${orb.y}px, 0)`,
+          left: '50%',
+          top: '50%',
+          transform: `translate3d(calc(-50% + ${orb.startX}px), calc(-50% + ${orb.startY}px), 0)`,
           animation: `ambientDrift ${orb.durationSeconds}s ease-in-out ${orb.delaySeconds}s infinite alternate`,
         };
 

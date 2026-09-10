@@ -28,8 +28,8 @@ export const Flashcard: React.FC<FlashcardProps> = ({
 
   return (
     <div className="relative w-full max-w-sm sm:max-w-md mx-auto my-3 overflow-visible">
-      {/* Continuous ambient smoke floating around the card */}
-      <AmbientSmoke />
+      {/* Continuous ambient smoke floating around the card edges, scaling with streak */}
+      <AmbientSmoke streak={streak} />
 
       <div
         role="region"
@@ -37,11 +37,12 @@ export const Flashcard: React.FC<FlashcardProps> = ({
         aria-live="polite"
         className={`relative w-full p-8 rounded-3xl border-2 backdrop-blur transition-all duration-200 overflow-visible z-10 ${getFeedbackClass()}`}
       >
-        {/* Dense fuzzy smoke pulse/burst on answer submission */}
+        {/* Dense fuzzy smoke pulse/burst from the box edges on answer submission */}
         {lastAnswerCorrect !== null && (
           <FuzzyParticles
             key={`burst-${submissionCount}-${lastAnswerCorrect}`}
             type={lastAnswerCorrect ? 'correct' : 'incorrect'}
+            streak={streak}
           />
         )}
 

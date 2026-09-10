@@ -2,20 +2,24 @@ export type ParticleType = 'correct' | 'incorrect';
 
 export interface FuzzyParticle {
   id: string;
-  x: number; // delta X in px
-  y: number; // delta Y in px
-  size: number; // diameter in px (large smoke puff: 40 to 110px)
-  blur: number; // heavy blur for fuzzy smoke look (12 to 26px)
+  startX: number; // Starting X coordinate along the card edge
+  startY: number; // Starting Y coordinate along the card edge
+  dirX: number;   // Outward drift distance X (billowing outside the box)
+  dirY: number;   // Outward drift distance Y (billowing outside the box)
+  size: number;   // Diameter (45 to 115px)
+  blur: number;   // Blur filter (12 to 28px)
   color: string;
-  durationMs: number; // animation length (700 to 1100ms)
+  durationMs: number; // Animation length (700 to 1100ms)
   delayMs: number;
   opacity: number;
 }
 
 export interface AmbientSmokeOrb {
   id: string;
-  x: number;
-  y: number;
+  startX: number;
+  startY: number;
+  dirX: number;
+  dirY: number;
   size: number;
   blur: number;
   color: string;
@@ -47,39 +51,97 @@ export const AMBIENT_PALETTE = [
   '#818cf8', // indigo-400
   '#a855f7', // purple-500
   '#38bdf8', // sky-400
-  '#4f46e5', // indigo-600
+  '#10b981', // emerald-500
 ];
 
 /**
- * Generates large, dense, volumetric fuzzy smoke particles billowing far outside the card.
+ * Calculates number of burst particles based on streak.
+ * Incorrect answers reset to baseline puff; correct answers scale with streak.
+ */
+export function calculateParticleCount(type: ParticleType, streak = 0): number {
+  if (type === 'incorrect') {
+    return 14; // Reset / error puff
+  }
+  // Scales with streak: streak 0 = 16, streak 5 = 36, streak 8+ = up to 48
+  return Math.min(16 + streak * 4, 48);
+}
+
+/**
+ * Calculates number of continuous ambient smoke clouds based on current streak.
+ */
+export function calculateAmbientCount(streak = 0): number {
+  if (streak === 0) return 6;
+  // Ambient smoke thickens as streak builds up
+  return Math.min(6 + streak * 2, 18);
+}
+
+/**
+ * Returns a point along the rectangular boundary of the card and an outward direction vector.
+ */
+function getEdgeSpawn(halfW = 185, halfH = 115, pushDistance = 75) {
+  const edge = Math.floor(Math.random() * 4);
+  let startX = 0;
+  let startY = 0;
+  let dirX = 0;
+  let dirY = 0;
+
+  if (edge === 0) {
+    // Top edge: spawns along top border, billows UPWARDS outside
+    startX = (Math.random() - 0.5) * (halfW * 2);
+    startY = -halfH;
+    dirX = (Math.random() - 0.5) * 80;
+    dirY = -(pushDistance + Math.random() * 90);
+  } else if (edge === 1) {
+    // Right edge: spawns along right border, billows RIGHTWARDS outside
+    startX = halfW;
+    startY = (Math.random() - 0.5) * (halfH * 2);
+    dirX = pushDistance + Math.random() * 90;
+    dirY = (Math.random() - 0.5) * 80;
+  } else if (edge === 2) {
+    // Bottom edge: spawns along bottom border, billows DOWNWARDS outside
+    startX = (Math.random() - 0.5) * (halfW * 2);
+    startY = halfH;
+    dirX = (Math.random() - 0.5) * 80;
+    dirY = pushDistance + Math.random() * 90;
+  } else {
+    // Left edge: spawns along left border, billows LEFTWARDS outside
+    startX = -halfW;
+    startY = (Math.random() - 0.5) * (halfH * 2);
+    dirX = -(pushDistance + Math.random() * 90);
+    dirY = (Math.random() - 0.5) * 80;
+  }
+
+  return { startX, startY, dirX, dirY };
+}
+
+/**
+ * Generates large, dense, volumetric fuzzy smoke particles billowing outward from the 4 box edges.
  */
 export function createFuzzyParticles(
   type: ParticleType,
-  count = 24
+  count?: number,
+  streak = 0
 ): FuzzyParticle[] {
+  const actualCount = count !== undefined ? count : calculateParticleCount(type, streak);
   const palette = type === 'correct' ? CORRECT_PALETTE : INCORRECT_PALETTE;
   const particles: FuzzyParticle[] = [];
+  const pushDist = type === 'correct' ? 85 : 50;
 
-  for (let i = 0; i < count; i++) {
-    const angle = Math.random() * 2 * Math.PI;
-    // Disperse far outside the card (120px to 290px for correct, 80px to 200px for incorrect)
-    const minDistance = type === 'correct' ? 120 : 80;
-    const maxDistance = type === 'correct' ? 290 : 200;
-    const distance = minDistance + Math.random() * (maxDistance - minDistance);
-
-    const x = Math.round(Math.cos(angle) * distance);
-    const y = Math.round(Math.sin(angle) * distance);
-    const size = Math.round(40 + Math.random() * 70); // 40px to 110px large puffs
-    const blur = Math.round(12 + Math.random() * 14); // 12px to 26px fuzzy blur
+  for (let i = 0; i < actualCount; i++) {
+    const { startX, startY, dirX, dirY } = getEdgeSpawn(185, 115, pushDist);
+    const size = Math.round(45 + Math.random() * 70); // 45px to 115px large puffs
+    const blur = Math.round(14 + Math.random() * 14); // 14px to 28px fuzzy blur
     const color = palette[Math.floor(Math.random() * palette.length)];
-    const durationMs = Math.round(700 + Math.random() * 400); // 700 to 1100ms
+    const durationMs = Math.round(750 + Math.random() * 350); // 750 to 1100ms
     const delayMs = Math.round(Math.random() * 80);
     const opacity = 0.5 + Math.random() * 0.35; // 0.5 to 0.85 soft smoke opacity
 
     particles.push({
       id: `smoke-${i}-${Math.random().toString(36).substring(2, 6)}`,
-      x,
-      y,
+      startX,
+      startY,
+      dirX,
+      dirY,
       size,
       blur,
       color,
@@ -93,27 +155,27 @@ export function createFuzzyParticles(
 }
 
 /**
- * Generates a ring of continuous ambient fuzzy smoke clouds hovering around the card perimeter.
+ * Generates continuous ambient fuzzy smoke clouds hovering along and outside the card edges.
  */
-export function createAmbientSmoke(count = 8): AmbientSmokeOrb[] {
+export function createAmbientSmoke(count?: number, streak = 0): AmbientSmokeOrb[] {
+  const actualCount = count !== undefined ? count : calculateAmbientCount(streak);
   const orbs: AmbientSmokeOrb[] = [];
 
-  for (let i = 0; i < count; i++) {
-    const angle = (i / count) * 2 * Math.PI + (Math.random() * 0.4 - 0.2);
-    const distance = 140 + Math.random() * 70; // 140px to 210px from center
-    const x = Math.round(Math.cos(angle) * distance);
-    const y = Math.round(Math.sin(angle) * distance * 0.85);
-    const size = Math.round(80 + Math.random() * 60); // 80 to 140px
-    const blur = Math.round(20 + Math.random() * 12); // 20 to 32px
+  for (let i = 0; i < actualCount; i++) {
+    const { startX, startY, dirX, dirY } = getEdgeSpawn(195, 125, 30);
+    const size = Math.round(75 + Math.random() * 65); // 75 to 140px
+    const blur = Math.round(20 + Math.random() * 14); // 20 to 34px
     const color = AMBIENT_PALETTE[i % AMBIENT_PALETTE.length];
-    const durationSeconds = 5 + Math.random() * 4; // 5 to 9s gentle cycle
-    const delaySeconds = -(Math.random() * 5); // randomized phase offset
-    const opacity = 0.18 + Math.random() * 0.15; // 0.18 to 0.33 subtle ambient glow
+    const durationSeconds = 4.5 + Math.random() * 3.5; // 4.5 to 8s gentle cycle
+    const delaySeconds = -(Math.random() * 4); // randomized phase offset
+    const opacity = 0.2 + Math.min(streak * 0.02, 0.15) + Math.random() * 0.1; // scales with streak
 
     orbs.push({
-      id: `ambient-${i}`,
-      x,
-      y,
+      id: `ambient-${i}-${streak}`,
+      startX,
+      startY,
+      dirX: Math.round(dirX * 0.5),
+      dirY: Math.round(dirY * 0.5),
       size,
       blur,
       color,
