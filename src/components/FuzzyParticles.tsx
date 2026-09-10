@@ -51,7 +51,7 @@ export const FuzzyParticles: React.FC<FuzzyParticlesProps> = ({
     <div
       data-testid="fuzzy-particles-container"
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-visible flex items-center justify-center z-30 select-none"
+      className="pointer-events-none absolute inset-0 overflow-visible flex items-center justify-center z-10 select-none"
     >
       {particles.map((p) => {
         const style: React.CSSProperties & { [key: string]: string | number } = {
@@ -96,7 +96,7 @@ export const AmbientSmoke: React.FC<AmbientSmokeProps> = ({ streak = 0 }) => {
     <div
       data-testid="ambient-smoke-container"
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-visible flex items-center justify-center z-20 select-none"
+      className="pointer-events-none absolute inset-0 overflow-visible flex items-center justify-center z-0 select-none"
     >
       {orbs.map((orb) => {
         const style: React.CSSProperties & { [key: string]: string | number } = {

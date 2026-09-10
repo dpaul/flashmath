@@ -18,34 +18,34 @@ export const Flashcard: React.FC<FlashcardProps> = ({
 }) => {
   const getFeedbackClass = () => {
     if (lastAnswerCorrect === true) {
-      return 'border-emerald-500 shadow-[0_0_40px_rgba(16,185,129,0.35)] bg-slate-900/90';
+      return 'border-emerald-500 shadow-[0_0_35px_rgba(16,185,129,0.3)] bg-slate-900';
     }
     if (lastAnswerCorrect === false) {
-      return 'border-rose-500 shadow-[0_0_40px_rgba(244,63,94,0.35)] bg-slate-900/90 animate-shake';
+      return 'border-rose-500 shadow-[0_0_35px_rgba(244,63,94,0.3)] bg-slate-900 animate-shake';
     }
-    return 'border-slate-800 bg-slate-900/70 shadow-xl';
+    return 'border-slate-800 bg-slate-900 shadow-xl';
   };
 
   return (
     <div className="relative w-full max-w-sm sm:max-w-md mx-auto my-3 overflow-visible">
-      {/* Continuous ambient smoke floating around the card edges, scaling with streak */}
+      {/* Continuous ambient smoke floating behind the card edges, scaling with streak */}
       <AmbientSmoke streak={streak} />
+
+      {/* Dense fuzzy smoke pulse/burst billowing outward from behind the edges on answer submission */}
+      {lastAnswerCorrect !== null && (
+        <FuzzyParticles
+          key={`burst-${submissionCount}-${lastAnswerCorrect}`}
+          type={lastAnswerCorrect ? 'correct' : 'incorrect'}
+          streak={streak}
+        />
+      )}
 
       <div
         role="region"
         aria-label={`Problem: ${problem.factorA} times ${problem.factorB}`}
         aria-live="polite"
-        className={`relative w-full p-8 rounded-3xl border-2 backdrop-blur transition-all duration-200 overflow-visible z-10 ${getFeedbackClass()}`}
+        className={`relative z-20 w-full p-8 rounded-3xl border-2 transition-all duration-200 overflow-visible ${getFeedbackClass()}`}
       >
-        {/* Dense fuzzy smoke pulse/burst from the box edges on answer submission */}
-        {lastAnswerCorrect !== null && (
-          <FuzzyParticles
-            key={`burst-${submissionCount}-${lastAnswerCorrect}`}
-            type={lastAnswerCorrect ? 'correct' : 'incorrect'}
-            streak={streak}
-          />
-        )}
-
         {/* Top Bar: Streak Indicator */}
         <div className="relative z-20 flex justify-between items-center mb-6">
           <span className="text-xs font-semibold tracking-wider text-slate-400 uppercase">

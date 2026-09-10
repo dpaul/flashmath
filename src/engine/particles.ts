@@ -86,29 +86,29 @@ function getEdgeSpawn(halfW = 185, halfH = 115, pushDistance = 75) {
   let dirY = 0;
 
   if (edge === 0) {
-    // Top edge: spawns along top border, billows UPWARDS outside
+    // Top edge: spawns slightly above top border, billows UPWARDS outside
     startX = (Math.random() - 0.5) * (halfW * 2);
-    startY = -halfH;
-    dirX = (Math.random() - 0.5) * 80;
-    dirY = -(pushDistance + Math.random() * 90);
+    startY = -halfH - 12;
+    dirX = (Math.random() - 0.5) * 60;
+    dirY = -(pushDistance + Math.random() * 80);
   } else if (edge === 1) {
-    // Right edge: spawns along right border, billows RIGHTWARDS outside
-    startX = halfW;
+    // Right edge: spawns slightly right of border, billows RIGHTWARDS outside
+    startX = halfW + 12;
     startY = (Math.random() - 0.5) * (halfH * 2);
-    dirX = pushDistance + Math.random() * 90;
-    dirY = (Math.random() - 0.5) * 80;
+    dirX = pushDistance + Math.random() * 80;
+    dirY = (Math.random() - 0.5) * 60;
   } else if (edge === 2) {
-    // Bottom edge: spawns along bottom border, billows DOWNWARDS outside
+    // Bottom edge: spawns slightly below bottom border, billows DOWNWARDS outside
     startX = (Math.random() - 0.5) * (halfW * 2);
-    startY = halfH;
-    dirX = (Math.random() - 0.5) * 80;
-    dirY = pushDistance + Math.random() * 90;
+    startY = halfH + 12;
+    dirX = (Math.random() - 0.5) * 60;
+    dirY = pushDistance + Math.random() * 80;
   } else {
-    // Left edge: spawns along left border, billows LEFTWARDS outside
-    startX = -halfW;
+    // Left edge: spawns slightly left of border, billows LEFTWARDS outside
+    startX = -halfW - 12;
     startY = (Math.random() - 0.5) * (halfH * 2);
-    dirX = -(pushDistance + Math.random() * 90);
-    dirY = (Math.random() - 0.5) * 80;
+    dirX = -(pushDistance + Math.random() * 80);
+    dirY = (Math.random() - 0.5) * 60;
   }
 
   return { startX, startY, dirX, dirY };
