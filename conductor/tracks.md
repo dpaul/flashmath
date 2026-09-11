@@ -9,5 +9,5 @@
   *Link: [./tracks/history_page_20260908/index.md](./tracks/history_page_20260908/index.md)*
 
 ---
-- [ ] **Track: Fuzzy Particle Effects on Answer Submission**
+- [x] **Track: Fuzzy Particle Effects on Answer Submission**
   *Link: [./tracks/fuzzy_particles_20260910/index.md](./tracks/fuzzy_particles_20260910/index.md)*
