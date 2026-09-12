@@ -1,6 +1,6 @@
 # Implementation Plan: Spelling Practice Mode
 
-## Phase 1: Spelling Data Architecture, Speech Engine & Storage
+## Phase 1: Spelling Data Architecture, Speech Engine & Storage [checkpoint: 7f330ee]
 - [x] Task: Level Configuration & Spelling Engine Models (TDD) [1a080dd]
   - [x] Write unit tests for spelling level configs, word picker, normalization, and validation
   - [x] Implement `src/data/spellingLevels.ts` with extensible schema and 4th grade default word list (~10 words)
@@ -11,7 +11,7 @@
 - [x] Task: Level-Specific History Storage (TDD) [7f330ee]
   - [x] Write unit tests for level history storage schema and persistence logic
   - [x] Implement typed `localStorage` helper in `src/engine/spellingStorage.ts` to track attempts, accuracy, streaks, and missed words per level
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [7f330ee]
 
 ## Phase 2: Spelling Practice Components & User Interaction
 - [ ] Task: Spelling Card & Audio Controls Component (TDD)
