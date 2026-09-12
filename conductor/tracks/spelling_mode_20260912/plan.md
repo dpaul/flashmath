@@ -29,9 +29,9 @@
 - [x] Task: Landing Screen Mode Selector (TDD) [56af5ca]
   - [x] Write component tests for selecting between Math Sprint and Spelling Practice on the landing view
   - [x] Update `StartScreen.tsx` or create `ModeSelector.tsx` to clearly separate Math and Spelling modes
-- [ ] Task: Level Selection Screen (TDD)
-  - [ ] Write component tests for rendering configured levels and their stats (accuracy, best streak)
-  - [ ] Implement `SpellingLevelSelect.tsx` showing level cards and summary stats from `localStorage`
+- [x] Task: Level Selection Screen (TDD) [577e617]
+  - [x] Write component tests for rendering configured levels and their stats (accuracy, best streak)
+  - [x] Implement `SpellingLevelSelect.tsx` showing level cards and summary stats from `localStorage`
 - [ ] Task: Main App Integration & Route/Mode Orchestration (TDD)
   - [ ] Update `App.test.tsx` to verify seamless navigation between Mode Selection, Math Sprint, Spelling Level Select, and Spelling Practice
   - [ ] Integrate Spelling modes and history into `App.tsx`
