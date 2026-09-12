@@ -10,12 +10,23 @@ import { Keypad } from './components/Keypad';
 import { TimerBar } from './components/TimerBar';
 import { HistoryPage } from './components/HistoryPage';
 import { RecentProblemStream, SolvedProblemRecord } from './components/RecentProblemStream';
-import { X, Sparkles, TrendingUp, Flame } from 'lucide-react';
+import { ModeSelector } from './components/ModeSelector';
+import { SpellingLevelSelect } from './components/SpellingLevelSelect';
+import { SpellingPracticeView } from './components/SpellingPracticeView';
+import { X, TrendingUp, Flame, LayoutGrid } from 'lucide-react';
+
+export type ActiveAppView =
+  | 'mode-select'
+  | 'math'
+  | 'history'
+  | 'spelling-levels'
+  | 'spelling-practice';
 
 export const App: React.FC = () => {
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
   const [inputValue, setInputValue] = useState('');
-  const [activeView, setActiveView] = useState<'game' | 'history'>('game');
+  const [activeView, setActiveView] = useState<ActiveAppView>('mode-select');
+  const [selectedSpellingLevelId, setSelectedSpellingLevelId] = useState<string>('grade-4');
   const [recentProblems, setRecentProblems] = useState<SolvedProblemRecord[]>([]);
 
   // Stable tick callback
@@ -32,7 +43,7 @@ export const App: React.FC = () => {
   const handleStart = () => {
     setInputValue('');
     setRecentProblems([]);
-    setActiveView('game');
+    setActiveView('math');
     dispatch({ type: 'START_GAME' });
   };
 
@@ -61,7 +72,7 @@ export const App: React.FC = () => {
   const handleRestart = () => {
     setInputValue('');
     setRecentProblems([]);
-    setActiveView('game');
+    setActiveView('math');
     dispatch({ type: 'RESET_GAME' });
   };
 
@@ -88,7 +99,7 @@ export const App: React.FC = () => {
 
   // Global Space (skip) and Escape (finish) shortcut listeners while sprinting
   useEffect(() => {
-    if (state.phase !== 'running') return;
+    if (state.phase !== 'running' || activeView !== 'math') return;
 
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
       if (e.key === ' ' || e.code === 'Space') {
@@ -102,7 +113,7 @@ export const App: React.FC = () => {
 
     window.addEventListener('keydown', handleGlobalKeyDown);
     return () => window.removeEventListener('keydown', handleGlobalKeyDown);
-  }, [state.phase, handleSkip, handleAbort]);
+  }, [state.phase, activeView, handleSkip, handleAbort]);
 
   // Keypad actions
   const handleKeypadDigit = (digit: string) => {
@@ -135,22 +146,29 @@ export const App: React.FC = () => {
       {/* Top Zen Header */}
       <header className="w-full relative z-30 bg-[#fcf9f2]/80 backdrop-blur-sm border-b border-[#e4d9c7]/70 py-3.5 px-6">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => setActiveView('mode-select')}
+            aria-label="FlashMath Home"
+            className="flex items-center gap-2.5 cursor-pointer bg-transparent border-none text-left p-0"
+          >
             <span className="w-8 h-8 rounded-xl bg-[#fbf3db] border border-[#f0dfb3] flex items-center justify-center text-[#cb4b16] shadow-sm font-black text-base">
               ⚡
             </span>
             <span className="font-extrabold text-xl tracking-tight text-[#073642]">
               Flash<span className="text-[#cb4b16]">Math</span>
             </span>
-          </div>
+          </button>
 
-          {/* Minimal Sprint Stage Pill */}
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#f4ece1] border border-[#e4d9c7] text-[#073642] font-mono text-xs font-semibold shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-[#cb4b16] animate-ping" />
-            <span>×1–12 Sprint</span>
-          </div>
+          {/* Minimal Sprint Stage Pill or Mode Indicator */}
+          {activeView === 'math' && state.phase === 'running' && (
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#f4ece1] border border-[#e4d9c7] text-[#073642] font-mono text-xs font-semibold shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-[#cb4b16] animate-ping" />
+              <span>×1–12 Sprint</span>
+            </div>
+          )}
 
-          {state.phase === 'running' ? (
+          {activeView === 'math' && state.phase === 'running' ? (
             <button
               type="button"
               onClick={handleAbort}
@@ -162,27 +180,34 @@ export const App: React.FC = () => {
             </button>
           ) : (
             <div className="flex items-center gap-3">
-              {state.personalBests.highScore > 0 && (
+              {activeView !== 'mode-select' && (
+                <button
+                  type="button"
+                  onClick={() => setActiveView('mode-select')}
+                  aria-label="Switch Modes"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#eee8d5] hover:bg-[#e4d9c7] text-[#073642] text-xs font-semibold transition border border-[#e4d9c7] cursor-pointer shadow-sm"
+                >
+                  <LayoutGrid className="w-3.5 h-3.5 text-[#586e75]" />
+                  <span>Modes</span>
+                </button>
+              )}
+
+              {state.personalBests.highScore > 0 && activeView === 'math' && (
                 <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fdf2eb] text-[#cb4b16] text-xs font-semibold border border-[#fbdcd0]">
                   <span>🏆 Best: {state.personalBests.highScore}</span>
                 </div>
               )}
 
-              <div className="hidden sm:inline-flex items-center gap-1 text-xs text-[#586e75] font-medium">
-                <Sparkles className="w-3.5 h-3.5 text-[#cb4b16]" />
-                <span>Tables 2–12</span>
-              </div>
-
               {activeView === 'history' ? (
                 <button
                   type="button"
-                  onClick={() => setActiveView('game')}
+                  onClick={() => setActiveView('math')}
                   aria-label="Back to Sprint"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#eee8d5] hover:bg-[#e4d9c7] text-[#073642] text-xs font-semibold transition border border-[#e4d9c7] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#cb4b16]/30"
                 >
                   <span>Back to Sprint</span>
                 </button>
-              ) : (
+              ) : activeView === 'math' ? (
                 <button
                   type="button"
                   onClick={() => setActiveView('history')}
@@ -192,7 +217,7 @@ export const App: React.FC = () => {
                   <TrendingUp className="w-3.5 h-3.5 text-[#cb4b16]" />
                   <span>History</span>
                 </button>
-              )}
+              ) : null}
             </div>
           )}
         </div>
@@ -200,9 +225,43 @@ export const App: React.FC = () => {
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 w-full max-w-3xl mx-auto relative z-10">
-        {activeView === 'history' ? (
-          <HistoryPage onBack={() => setActiveView('game')} />
-        ) : (
+        {activeView === 'mode-select' && (
+          <ModeSelector
+            onSelectMode={(mode) => {
+              if (mode === 'math') {
+                setActiveView('math');
+              } else {
+                setActiveView('spelling-levels');
+              }
+            }}
+            mathHighScore={state.personalBests.highScore}
+            mathBestStreak={state.personalBests.bestStreak}
+          />
+        )}
+
+        {activeView === 'spelling-levels' && (
+          <SpellingLevelSelect
+            onSelectLevel={(levelId) => {
+              setSelectedSpellingLevelId(levelId);
+              setActiveView('spelling-practice');
+            }}
+            onBackToHome={() => setActiveView('mode-select')}
+          />
+        )}
+
+        {activeView === 'spelling-practice' && (
+          <SpellingPracticeView
+            levelId={selectedSpellingLevelId}
+            onBackToLevels={() => setActiveView('spelling-levels')}
+            onBackToHome={() => setActiveView('mode-select')}
+          />
+        )}
+
+        {activeView === 'history' && (
+          <HistoryPage onBack={() => setActiveView('math')} />
+        )}
+
+        {activeView === 'math' && (
           <>
             {state.phase === 'idle' && (
               <StartScreen personalBests={state.personalBests} onStart={handleStart} />
@@ -317,7 +376,7 @@ export const App: React.FC = () => {
 
       {/* Global Bottom Footer */}
       <footer className="w-full py-3 text-center text-xs text-[#93a1a1] border-t border-[#e4d9c7]/60 select-none relative z-20">
-        FlashMath &bull; 3-Minute Multiplication Challenge
+        FlashMath &bull; Mental Math Sprint & Spelling Practice
       </footer>
     </div>
   );

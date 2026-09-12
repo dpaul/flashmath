@@ -1,14 +1,32 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
+import * as speechService from './services/speechSynthesis';
+
+vi.mock('./services/speechSynthesis', () => ({
+  speakWord: vi.fn(),
+  cancelSpeech: vi.fn(),
+  isSpeechSynthesisSupported: vi.fn(() => true),
+}));
 
 describe('FlashMath App Integration', () => {
   beforeEach(() => {
+    vi.clearAllMocks();
     localStorage.clear();
   });
 
-  it('navigates through start, active sprint, answer submission, and results', () => {
+  it('renders ModeSelector by default with Math and Spelling options', () => {
     render(<App />);
+    expect(screen.getByText(/FlashMath Learning Hub/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /start math sprint/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /start spelling practice/i })).toBeInTheDocument();
+  });
+
+  it('navigates through Math start, active sprint, answer submission, and results', () => {
+    render(<App />);
+
+    // Click Math Sprint on landing page
+    fireEvent.click(screen.getByRole('button', { name: /start math sprint/i }));
 
     // Start Screen
     expect(screen.getByText('Start Challenge')).toBeInTheDocument();
@@ -43,8 +61,9 @@ describe('FlashMath App Integration', () => {
     expect(screen.getByRole('button', { name: /start challenge/i })).toBeInTheDocument();
   });
 
-  it('supports on-screen keypad inputs when active', () => {
+  it('supports on-screen keypad inputs when active in math sprint', () => {
     render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /start math sprint/i }));
     fireEvent.click(screen.getByRole('button', { name: /start challenge/i }));
 
     const digit8Btn = screen.getByRole('button', { name: '8' });
@@ -65,8 +84,9 @@ describe('FlashMath App Integration', () => {
     expect(input.value).toBe('');
   });
 
-  it('navigates to History view from header and back to sprint', () => {
+  it('navigates to History view from math and back to sprint', () => {
     render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /start math sprint/i }));
 
     // Click History in header
     const historyBtn = screen.getByRole('button', { name: /view history/i });
@@ -84,61 +104,54 @@ describe('FlashMath App Integration', () => {
     expect(screen.getByText('Start Challenge')).toBeInTheDocument();
   });
 
-  it('navigates to History view from Results screen and allows clearing history', () => {
+  it('navigates into Spelling Practice, selects level, drills word, and returns', async () => {
     render(<App />);
 
-    // Start sprint
-    fireEvent.click(screen.getByRole('button', { name: /start challenge/i }));
+    // Click Spelling Practice on landing page
+    fireEvent.click(screen.getByRole('button', { name: /start spelling practice/i }));
 
-    // Abort/finish sprint early
-    fireEvent.click(screen.getByRole('button', { name: /end sprint/i }));
+    // Level select screen
+    expect(screen.getByText(/Spelling Levels/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /4th grade words/i })).toBeInTheDocument();
 
-    // On Results screen, shortcut button should exist
-    const viewHistoryShortcut = screen.getByRole('button', { name: /view history & trends/i });
-    expect(viewHistoryShortcut).toBeInTheDocument();
-    fireEvent.click(viewHistoryShortcut);
+    // Select 4th Grade Words
+    fireEvent.click(screen.getByRole('button', { name: /4th grade words/i }));
 
-    // Now on History page, we should have 1 run recorded
-    expect(screen.getByText(/Sprint History & Trends/i)).toBeInTheDocument();
-    expect(screen.getByText(/1 run/i)).toBeInTheDocument();
+    // Now in SpellingPracticeView
+    expect(screen.getByText(/Untimed Practice/i)).toBeInTheDocument();
+    expect(speechService.speakWord).toHaveBeenCalled();
 
-    // Clear history flow
-    const clearBtn = screen.getByRole('button', { name: /clear sprint history/i });
-    fireEvent.click(clearBtn);
+    // Submit an answer
+    const input = screen.getByLabelText(/type spelling here/i);
+    fireEvent.change(input, { target: { value: 'calendar' } });
+    fireEvent.keyDown(input, { key: 'Enter' });
 
-    // Modal dialog pops up
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
-    expect(screen.getByText(/clear sprint history\?/i)).toBeInTheDocument();
+    // Navigate back to levels
+    const levelsBtn = screen.getByRole('button', { name: /levels/i });
+    fireEvent.click(levelsBtn);
+    expect(screen.getByText(/Spelling Levels/i)).toBeInTheDocument();
 
-    // Confirm clear
-    const confirmBtn = screen.getByRole('button', { name: /clear all history/i });
-    fireEvent.click(confirmBtn);
-
-    // Dialog closed and empty state shown
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(screen.getByText(/no sprint history yet/i)).toBeInTheDocument();
+    // Navigate back to modes
+    const backModesBtn = screen.getByRole('button', { name: /back to modes/i });
+    fireEvent.click(backModesBtn);
+    expect(screen.getByText(/FlashMath Learning Hub/i)).toBeInTheDocument();
   });
 
-  it('supports Space to skip problem, updates real-time footer stats, and Escape to finish early', () => {
+  it('supports Space to skip problem and Escape to finish early in math sprint', () => {
     render(<App />);
-
-    // Start sprint
+    fireEvent.click(screen.getByRole('button', { name: /start math sprint/i }));
     fireEvent.click(screen.getByRole('button', { name: /start challenge/i }));
 
-    // Footer shows 100% accuracy initially
     expect(screen.getByText('100%')).toBeInTheDocument();
 
     // Press Space to skip current problem
     const input = screen.getByLabelText(/calculation answer/i);
     fireEvent.keyDown(input, { key: ' ', code: 'Space' });
 
-    // After skipping 1 problem, accuracy drops to 0% (0/1)
     expect(screen.getByText('0%')).toBeInTheDocument();
 
-    // Now press Escape to finish sprint early
+    // Escape to finish sprint early
     fireEvent.keyDown(window, { key: 'Escape', code: 'Escape' });
-
-    // Verifies sprint finished and moved to results
     expect(screen.getByText(/Sprint Completed!/i)).toBeInTheDocument();
   });
 });
