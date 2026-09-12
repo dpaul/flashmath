@@ -3,6 +3,7 @@ import {
   isSpeechSynthesisSupported,
   speakWord,
   cancelSpeech,
+  speakSentence,
 } from './speechSynthesis';
 
 describe('Speech Synthesis Service', () => {
@@ -79,4 +80,12 @@ describe('Speech Synthesis Service', () => {
     cancelSpeech();
     expect(mockCancel).toHaveBeenCalled();
   });
+
+  it('cancels ongoing speech and triggers utterance with full sentence', () => {
+    speakSentence('I want to thank you for helping me.');
+    expect(mockCancel).toHaveBeenCalled();
+    expect(mockUtteranceConstructor).toHaveBeenCalledWith('I want to thank you for helping me.');
+    expect(mockSpeak).toHaveBeenCalled();
+  });
 });
+

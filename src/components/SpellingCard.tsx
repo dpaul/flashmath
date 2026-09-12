@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { Flame, Volume2 } from 'lucide-react';
+import { Flame, Volume2, MessageSquareQuote } from 'lucide-react';
 import { FuzzyParticles, AmbientSmoke } from './FuzzyParticles';
+import { maskWordInSentence } from '../engine/spellingEngine';
 
 export interface SpellingCardProps {
   word: string;
@@ -10,16 +11,25 @@ export interface SpellingCardProps {
   cardNumber?: number;
   levelName: string;
   onSpeak: () => void;
+  sentence?: string;
+  onSpeakSentence?: () => void;
+  showSentence?: boolean;
+  isRevealingWord?: boolean;
   children?: React.ReactNode;
 }
 
 export const SpellingCard: React.FC<SpellingCardProps> = ({
+  word,
   streak,
   lastAttemptCorrect,
   submissionCount = 0,
   cardNumber = 1,
   levelName,
   onSpeak,
+  sentence,
+  onSpeakSentence,
+  showSentence = false,
+  isRevealingWord = false,
   children,
 }) => {
   useEffect(() => {
@@ -91,16 +101,40 @@ export const SpellingCard: React.FC<SpellingCardProps> = ({
 
         {/* Central Audio Prompter Area */}
         <div className="relative z-20 flex flex-col items-center justify-center py-4">
-          <button
-            type="button"
-            onClick={onSpeak}
-            aria-label="Repeat word pronunciation"
-            className="group relative flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-[#eee8d5]/70 hover:bg-[#eee8d5] text-[#073642] font-semibold text-lg border border-[#e4d9c7] shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
-          >
-            <Volume2 className="w-6 h-6 text-[#2aa198] group-hover:scale-110 transition-transform" />
-            <span>Listen to Word</span>
-          </button>
-          <span className="mt-2 text-xs text-[#93a1a1]">Click or press replay anytime</span>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={onSpeak}
+              aria-label="Repeat word pronunciation"
+              className="group relative flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-2xl bg-[#eee8d5]/70 hover:bg-[#eee8d5] text-[#073642] font-semibold text-base border border-[#e4d9c7] shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
+            >
+              <Volume2 className="w-5 h-5 text-[#2aa198] group-hover:scale-110 transition-transform" />
+              <span>Listen to Word</span>
+            </button>
+
+            {sentence && onSpeakSentence && (
+              <button
+                type="button"
+                onClick={onSpeakSentence}
+                aria-label="Use it in a sentence"
+                className="group relative flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-2xl bg-[#eee8d5]/70 hover:bg-[#eee8d5] text-[#073642] font-semibold text-base border border-[#e4d9c7] shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
+              >
+                <MessageSquareQuote className="w-5 h-5 text-[#268bd2] group-hover:scale-110 transition-transform" />
+                <span>Use it in a sentence</span>
+              </button>
+            )}
+          </div>
+
+          {showSentence && sentence && (
+            <div
+              data-testid="sentence-preview"
+              className="mt-4 px-4 py-2.5 rounded-xl bg-[#eee8d5]/60 border border-[#e4d9c7] text-[#586e75] text-sm text-center italic animate-fadeIn max-w-md shadow-xs"
+            >
+              &ldquo;{isRevealingWord ? sentence : maskWordInSentence(sentence, word)}&rdquo;
+            </div>
+          )}
+
+          <span className="mt-2 text-xs text-[#93a1a1]">Click buttons or press spacebar anytime</span>
         </div>
 
         {/* Input well area */}

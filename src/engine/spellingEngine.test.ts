@@ -7,6 +7,8 @@ import {
   createSpellingSession,
   submitSpellingAttempt,
   advanceToNextWord,
+  getExampleSentence,
+  maskWordInSentence,
 } from './spellingEngine';
 
 describe('Spelling Engine & Level Configuration', () => {
@@ -96,4 +98,28 @@ describe('Spelling Engine & Level Configuration', () => {
     expect(session.totalAttempts).toBe(totalWords);
     expect(session.elapsedSeconds).toBeGreaterThanOrEqual(0);
   });
+
+  it('provides an example sentence for every word in level 1', () => {
+    const level1 = getSpellingLevelById('level-1')!;
+    expect(level1).toBeDefined();
+    level1.words.forEach((word) => {
+      const sentence = getExampleSentence(word, 'level-1');
+      expect(sentence).toBeDefined();
+      expect(typeof sentence).toBe('string');
+      expect(sentence!.toLowerCase()).toContain(word.toLowerCase());
+    });
+  });
+
+  it('masks the target word correctly in an example sentence', () => {
+    const sentence = 'I want to thank you for helping me.';
+    const masked = maskWordInSentence(sentence, 'thank');
+    expect(masked).toBe('I want to _____ you for helping me.');
+    expect(masked.toLowerCase()).not.toContain('thank');
+
+    // Case insensitive test
+    const sentence2 = 'Sharp scissors can be dangerous.';
+    const masked2 = maskWordInSentence(sentence2, 'sharp');
+    expect(masked2).toBe('_____ scissors can be dangerous.');
+  });
 });
+

@@ -9,19 +9,21 @@ import {
   Zap,
   BookOpen,
   Play,
+  MessageSquareQuote,
 } from 'lucide-react';
 import {
   getSpellingLevelById,
   createSpellingSession,
   submitSpellingAttempt,
   advanceToNextWord,
+  getExampleSentence,
   SpellingSession,
 } from '../engine/spellingEngine';
 import {
   updateLevelStatsFromSession,
   recordCompletedSpellingRun,
 } from '../engine/spellingStorage';
-import { speakWord } from '../services/speechSynthesis';
+import { speakWord, speakSentence } from '../services/speechSynthesis';
 import { SpellingCard } from './SpellingCard';
 import { SpellingInput } from './SpellingInput';
 
@@ -48,11 +50,14 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
   const level = getSpellingLevelById(levelId);
   const [session, setSession] = useState<SpellingSession>(() => createSpellingSession(levelId));
   const [isRevealingWord, setIsRevealingWord] = useState(false);
+  const [showSentence, setShowSentence] = useState(false);
   const [lastAttemptCorrect, setLastAttemptCorrect] = useState<boolean | null>(null);
   const [submissionCount, setSubmissionCount] = useState(0);
   const [liveElapsedSeconds, setLiveElapsedSeconds] = useState(0);
   const startTimeRef = useRef<number>(Date.now());
   const hasRecordedCompletionRef = useRef(false);
+
+  const currentSentence = getExampleSentence(session.currentWord, session.levelId);
 
   // Timer effect while session is active
   useEffect(() => {
@@ -72,6 +77,13 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
       speakWord(session.currentWord);
     }
   }, [session.isComplete, session.currentWord]);
+
+  const speakCurrentSentence = useCallback(() => {
+    if (!session.isComplete && currentSentence) {
+      speakSentence(currentSentence);
+      setShowSentence(true);
+    }
+  }, [session.isComplete, currentSentence]);
 
   // Pronounce word on initial load or whenever current word changes (if not complete and not revealing)
   useEffect(() => {
@@ -121,6 +133,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
     });
 
     if (isCorrect) {
+      setShowSentence(false);
       if (isLastWord) {
         const finalSession = advanceToNextWord(updated);
         setSession(finalSession);
@@ -139,6 +152,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
   const handleNextWord = () => {
     const isLastWord = session.currentIndex + 1 >= session.words.length;
     setIsRevealingWord(false);
+    setShowSentence(false);
     setLastAttemptCorrect(null);
 
     const next = advanceToNextWord(session);
@@ -154,6 +168,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
     const newSession = createSpellingSession(levelId);
     setSession(newSession);
     setIsRevealingWord(false);
+    setShowSentence(false);
     setLastAttemptCorrect(null);
     setSubmissionCount(0);
     setLiveElapsedSeconds(0);
@@ -335,6 +350,10 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
           cardNumber={currentDisplayNumber}
           levelName={level?.name || 'Spelling Level'}
           onSpeak={speakCurrent}
+          sentence={currentSentence}
+          onSpeakSentence={speakCurrentSentence}
+          showSentence={showSentence}
+          isRevealingWord={isRevealingWord}
         >
           <SpellingInput
             targetWord={session.currentWord}
@@ -347,7 +366,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
       </div>
 
       {/* Untimed Mode Footer Hint */}
-      <footer className="w-full text-center py-3 text-xs text-[#93a1a1] flex items-center justify-center gap-4">
+      <footer className="w-full text-center py-3 text-xs text-[#93a1a1] flex items-center justify-center gap-3">
         <span>Word {currentDisplayNumber} of {totalWords}</span>
         <span>•</span>
         <button
@@ -358,6 +377,19 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
           <RotateCcw className="w-3 h-3" />
           Replay word
         </button>
+        {currentSentence && (
+          <>
+            <span>•</span>
+            <button
+              type="button"
+              onClick={speakCurrentSentence}
+              className="hover:text-[#073642] underline flex items-center gap-1 cursor-pointer"
+            >
+              <MessageSquareQuote className="w-3 h-3" />
+              Use in sentence
+            </button>
+          </>
+        )}
       </footer>
     </main>
   );

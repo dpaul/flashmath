@@ -6,6 +6,7 @@ import * as spellingStorage from '../engine/spellingStorage';
 
 vi.mock('../services/speechSynthesis', () => ({
   speakWord: vi.fn(),
+  speakSentence: vi.fn(),
   cancelSpeech: vi.fn(),
   isSpeechSynthesisSupported: vi.fn(() => true),
 }));
@@ -122,4 +123,28 @@ describe('SpellingPracticeView Component', () => {
       })
     );
   });
+
+  it('speaks example sentence and displays masked sentence preview when "Use it in a sentence" button is clicked', async () => {
+    render(
+      <SpellingPracticeView
+        levelId="level-1"
+        onBackToLevels={vi.fn()}
+        onBackToHome={vi.fn()}
+      />
+    );
+
+    const sentenceBtn = screen.getByRole('button', { name: /use it in a sentence/i });
+    expect(sentenceBtn).toBeInTheDocument();
+
+    fireEvent.click(sentenceBtn);
+
+    expect(speechService.speakSentence).toHaveBeenCalledTimes(1);
+    const spokenSentence = vi.mocked(speechService.speakSentence).mock.calls[0][0];
+    expect(spokenSentence.length).toBeGreaterThan(0);
+
+    const preview = screen.getByTestId('sentence-preview');
+    expect(preview).toBeInTheDocument();
+    expect(preview).toHaveTextContent('_____');
+  });
 });
+

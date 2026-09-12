@@ -1,6 +1,6 @@
-import { SPELLING_LEVELS, SpellingLevel } from '../data/spellingLevels';
+import { SPELLING_LEVELS, SpellingLevel, getExampleSentence } from '../data/spellingLevels';
 
-export { SPELLING_LEVELS };
+export { SPELLING_LEVELS, getExampleSentence };
 export type { SpellingLevel };
 
 export interface SpellingSession {
@@ -26,6 +26,14 @@ export function getSpellingLevelById(levelId: string): SpellingLevel | undefined
 export function evaluateSpellingAnswer(userInput: string, targetWord: string): boolean {
   return userInput.trim().toLowerCase() === targetWord.trim().toLowerCase();
 }
+
+export function maskWordInSentence(sentence: string, word: string): string {
+  if (!sentence || !word) return sentence;
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`\\b${escaped}\\b`, 'gi');
+  return sentence.replace(regex, '_____');
+}
+
 
 export function shuffleArray<T>(array: readonly T[]): T[] {
   const result = [...array];

@@ -45,4 +45,63 @@ describe('SpellingCard Component', () => {
     fireEvent.keyDown(window, { key: ' ' });
     expect(handleSpeak).toHaveBeenCalled();
   });
+
+  it('renders "Use it in a sentence" button and invokes onSpeakSentence when clicked', () => {
+    const handleSpeakSentence = vi.fn();
+    render(
+      <SpellingCard
+        word="thank"
+        streak={0}
+        lastAttemptCorrect={null}
+        levelName="Level 1 Words"
+        cardNumber={1}
+        onSpeak={vi.fn()}
+        sentence="I want to thank you for helping me."
+        onSpeakSentence={handleSpeakSentence}
+      />
+    );
+
+    const sentenceBtn = screen.getByRole('button', { name: /use it in a sentence/i });
+    expect(sentenceBtn).toBeInTheDocument();
+
+    fireEvent.click(sentenceBtn);
+    expect(handleSpeakSentence).toHaveBeenCalledTimes(1);
+  });
+
+  it('displays masked sentence when showSentence is true, and unmasked when isRevealingWord is true', () => {
+    const { rerender } = render(
+      <SpellingCard
+        word="thank"
+        streak={0}
+        lastAttemptCorrect={null}
+        levelName="Level 1 Words"
+        cardNumber={1}
+        onSpeak={vi.fn()}
+        sentence="I want to thank you for helping me."
+        onSpeakSentence={vi.fn()}
+        showSentence={true}
+        isRevealingWord={false}
+      />
+    );
+
+    expect(screen.getByTestId('sentence-preview')).toHaveTextContent('I want to _____ you for helping me.');
+
+    rerender(
+      <SpellingCard
+        word="thank"
+        streak={0}
+        lastAttemptCorrect={false}
+        levelName="Level 1 Words"
+        cardNumber={1}
+        onSpeak={vi.fn()}
+        sentence="I want to thank you for helping me."
+        onSpeakSentence={vi.fn()}
+        showSentence={true}
+        isRevealingWord={true}
+      />
+    );
+
+    expect(screen.getByTestId('sentence-preview')).toHaveTextContent('I want to thank you for helping me.');
+  });
 });
+

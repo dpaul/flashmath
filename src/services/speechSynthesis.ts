@@ -44,3 +44,26 @@ export function speakWord(word: string, options: SpeechOptions = {}): void {
     console.warn('Speech synthesis failed to speak word:', error);
   }
 }
+
+export function speakSentence(sentence: string, options: SpeechOptions = {}): void {
+  if (!isSpeechSynthesisSupported() || !sentence) {
+    return;
+  }
+
+  try {
+    cancelSpeech();
+
+    const utterance = new window.SpeechSynthesisUtterance(sentence);
+    utterance.rate = options.rate ?? 0.88; // Comfortable natural pace for complete sentences
+    utterance.pitch = options.pitch ?? 1.0;
+    utterance.lang = options.lang ?? 'en-US';
+    if (typeof options.volume === 'number') {
+      utterance.volume = options.volume;
+    }
+
+    window.speechSynthesis.speak(utterance);
+  } catch (error) {
+    console.warn('Speech synthesis failed to speak sentence:', error);
+  }
+}
+
