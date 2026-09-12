@@ -22,12 +22,12 @@ export const Flashcard: React.FC<FlashcardProps> = ({
 }) => {
   const getFeedbackBorder = () => {
     if (lastAnswerCorrect === true) {
-      return 'border-[#2aa198]/70 ring-4 ring-[#2aa198]/15';
+      return 'border-[#2aa198]/40 ring-2 ring-[#2aa198]/10';
     }
     if (lastAnswerCorrect === false) {
-      return 'border-[#ba1a1a]/70 ring-4 ring-[#ba1a1a]/15 animate-shake';
+      return 'border-[#cb4b16]/40 ring-2 ring-[#cb4b16]/10 animate-shake';
     }
-    return 'border-[rgba(7,54,66,0.08)]';
+    return 'border-[rgba(7,54,66,0.06)]';
   };
 
   const cardNumDisplay = cardNumber !== undefined ? cardNumber : submissionCount + 1;
