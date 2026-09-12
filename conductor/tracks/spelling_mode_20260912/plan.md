@@ -1,10 +1,10 @@
 # Implementation Plan: Spelling Practice Mode
 
 ## Phase 1: Spelling Data Architecture, Speech Engine & Storage
-- [ ] Task: Level Configuration & Spelling Engine Models (TDD)
-  - [ ] Write unit tests for spelling level configs, word picker, normalization, and validation
-  - [ ] Implement `src/data/spellingLevels.ts` with extensible schema and 4th grade default word list (~10 words)
-  - [ ] Implement `src/engine/spellingEngine.ts` to manage word randomization, case-insensitive comparison, and session progress
+- [x] Task: Level Configuration & Spelling Engine Models (TDD) [1a080dd]
+  - [x] Write unit tests for spelling level configs, word picker, normalization, and validation
+  - [x] Implement `src/data/spellingLevels.ts` with extensible schema and 4th grade default word list (~10 words)
+  - [x] Implement `src/engine/spellingEngine.ts` to manage word randomization, case-insensitive comparison, and session progress
 - [ ] Task: Speech Synthesis Wrapper Service (TDD)
   - [ ] Write unit tests mocking Web Speech API (`SpeechSynthesisUtterance`, `window.speechSynthesis`)
   - [ ] Implement `src/services/speechSynthesis.ts` with safe browser checking, cancellation, rate control, and speech triggers
