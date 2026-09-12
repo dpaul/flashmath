@@ -14,9 +14,9 @@
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [7f330ee]
 
 ## Phase 2: Spelling Practice Components & User Interaction
-- [ ] Task: Spelling Card & Audio Controls Component (TDD)
-  - [ ] Write component tests for word pronunciation trigger, "Repeat Word" button, and audio replay keyboard shortcut
-  - [ ] Implement `SpellingCard.tsx` with clean audio trigger, status indicator, and Zen aesthetic
+- [x] Task: Spelling Card & Audio Controls Component (TDD) [3c410cb]
+  - [x] Write component tests for word pronunciation trigger, "Repeat Word" button, and audio replay keyboard shortcut
+  - [x] Implement `SpellingCard.tsx` with clean audio trigger, status indicator, and Zen aesthetic
 - [ ] Task: Spelling Answer Input & Feedback Component (TDD)
   - [ ] Write component tests for input auto-focus, submission on Enter, correct feedback, and incorrect reveal state
   - [ ] Implement `SpellingInput.tsx` supporting case-insensitive checking, trim, visual feedback, and reveal view on incorrect attempt
