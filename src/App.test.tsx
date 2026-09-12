@@ -19,10 +19,10 @@ describe('FlashMath App Integration', () => {
 
     // Now in running phase
     expect(screen.getByText(/Time Remaining/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/Answer.../i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/calculation answer/i)).toBeInTheDocument();
 
     // Type an answer
-    const input = screen.getByPlaceholderText(/Answer.../i) as HTMLInputElement;
+    const input = screen.getByLabelText(/calculation answer/i) as HTMLInputElement;
     fireEvent.change(input, { target: { value: '42' } });
     expect(input.value).toBe('42');
 
@@ -49,7 +49,7 @@ describe('FlashMath App Integration', () => {
 
     const digit8Btn = screen.getByRole('button', { name: '8' });
     const digit4Btn = screen.getByRole('button', { name: '4' });
-    const input = screen.getByPlaceholderText(/Answer.../i) as HTMLInputElement;
+    const input = screen.getByLabelText(/calculation answer/i) as HTMLInputElement;
 
     fireEvent.click(digit8Btn);
     fireEvent.click(digit4Btn);
@@ -129,7 +129,7 @@ describe('FlashMath App Integration', () => {
     expect(screen.getByText('100%')).toBeInTheDocument();
 
     // Press Space to skip current problem
-    const input = screen.getByPlaceholderText(/Answer.../i);
+    const input = screen.getByLabelText(/calculation answer/i);
     fireEvent.keyDown(input, { key: ' ', code: 'Space' });
 
     // After skipping 1 problem, accuracy drops to 0% (0/1)

@@ -80,11 +80,10 @@ export const AnswerInput: React.FC<AnswerInputProps> = ({
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           disabled={disabled}
-          placeholder="Answer..."
           autoComplete="off"
           autoCorrect="off"
           spellCheck={false}
-          className="w-full h-full text-3xl sm:text-5xl font-mono font-semibold text-center text-[#073642] bg-transparent focus:outline-none placeholder:text-[#93a1a1]/30 selection:bg-amber-200/60 caret-[#cb4b16]"
+          className="w-full h-full text-3xl sm:text-5xl font-mono font-semibold text-center text-[#073642] bg-transparent focus:outline-none selection:bg-amber-200/60 caret-[#cb4b16]"
         />
       </div>
 
