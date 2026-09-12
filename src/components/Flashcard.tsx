@@ -22,10 +22,10 @@ export const Flashcard: React.FC<FlashcardProps> = ({
 }) => {
   const getFeedbackBorder = () => {
     if (lastAnswerCorrect === true) {
-      return 'border-[#2aa198]/40 ring-2 ring-[#2aa198]/10';
+      return 'border-[#2aa198]/25 ring-1 ring-[#2aa198]/10';
     }
     if (lastAnswerCorrect === false) {
-      return 'border-[#cb4b16]/40 ring-2 ring-[#cb4b16]/10 animate-shake';
+      return 'border-[#cb4b16]/25 ring-1 ring-[#cb4b16]/10 animate-shake';
     }
     return 'border-[rgba(7,54,66,0.06)]';
   };

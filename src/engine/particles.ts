@@ -131,7 +131,7 @@ export function createFuzzyParticles(
     const color = palette[Math.floor(Math.random() * palette.length)];
     const durationMs = Math.round(800 + Math.random() * 350); // 800 to 1150ms
     const delayMs = Math.round(Math.random() * 60);
-    const opacity = 0.18 + Math.random() * 0.16; // 0.18 to 0.34 soft luminous watercolor wash
+    const opacity = 0.08 + Math.random() * 0.08; // 0.08 to 0.16 whisper-soft watercolor wash
 
     particles.push({
       id: `smoke-${i}-${Math.random().toString(36).substring(2, 6)}`,
@@ -171,7 +171,7 @@ export function createAmbientSmoke(
     const color = palette[i % palette.length];
     const durationSeconds = 3.2 + Math.random() * 2.5; // 3.2 to 5.7s gentle breathing cycle
     const delaySeconds = -(Math.random() * 3); // randomized phase offset
-    const opacity = 0.08 + Math.min(streak * 0.01, 0.08) + Math.random() * 0.06; // 0.08 to 0.22 delicate ambient aura
+    const opacity = 0.04 + Math.min(streak * 0.005, 0.04) + Math.random() * 0.03; // 0.04 to 0.11 delicate ambient aura
 
     orbs.push({
       id: `ambient-${i}-${streak}-${status}`,

@@ -51,19 +51,19 @@
 @keyframes fuzzyBurst {
   0% {
     opacity: 0;
-    transform: translate3d(0, 0, 0) scale(0.65);
+    transform: translate3d(0, 0, 0) scale(0.7);
   }
   25% {
-    opacity: 0.32;
-    transform: translate3d(calc(var(--tx) * 0.4), calc(var(--ty) * 0.4), 0) scale(1.15);
+    opacity: 0.14;
+    transform: translate3d(calc(var(--tx) * 0.35), calc(var(--ty) * 0.35), 0) scale(1.1);
   }
   65% {
-    opacity: 0.20;
-    transform: translate3d(calc(var(--tx) * 0.75), calc(var(--ty) * 0.75), 0) scale(1.35);
+    opacity: 0.08;
+    transform: translate3d(calc(var(--tx) * 0.7), calc(var(--ty) * 0.7), 0) scale(1.25);
   }
   100% {
     opacity: 0;
-    transform: translate3d(var(--tx), var(--ty), 0) scale(1.5);
+    transform: translate3d(var(--tx), var(--ty), 0) scale(1.4);
   }
 }
 
