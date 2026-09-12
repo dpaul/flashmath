@@ -57,8 +57,8 @@ export const AnswerInput: React.FC<AnswerInputProps> = ({
   };
 
   return (
-    <div className="w-full max-w-sm sm:max-w-md mx-auto mt-4 flex items-center gap-3">
-      <div className="relative flex-1">
+    <div className="inline-flex items-center gap-2 select-none">
+      <div className="relative min-w-[100px] sm:min-w-[135px] h-14 sm:h-20 px-2 sm:px-4 rounded-2xl bg-[#f7f0e0] border-2 border-[#cb4b16]/70 flex items-center justify-center shadow-inner transition-transform duration-100 focus-within:ring-4 focus-within:ring-[#cb4b16]/20 focus-within:border-[#cb4b16]">
         <input
           ref={inputRef}
           id="math-answer-input"
@@ -74,8 +74,14 @@ export const AnswerInput: React.FC<AnswerInputProps> = ({
           autoComplete="off"
           autoCorrect="off"
           spellCheck={false}
-          className="w-full h-16 px-6 text-3xl font-mono font-bold text-center text-white bg-slate-900/80 border-2 border-slate-700 rounded-2xl focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 placeholder:text-slate-600 transition-all shadow-inner"
+          className="w-full h-full text-3xl sm:text-5xl font-mono font-semibold text-center text-[#073642] bg-transparent focus:outline-none placeholder:text-transparent selection:bg-amber-200/60"
         />
+
+        {value === '' && (
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <span className="w-[3px] sm:w-[4px] h-7 sm:h-10 bg-[#cb4b16] blinking-cursor rounded-full" />
+          </div>
+        )}
       </div>
 
       <button
@@ -83,10 +89,10 @@ export const AnswerInput: React.FC<AnswerInputProps> = ({
         onClick={submit}
         disabled={disabled || value.trim() === ''}
         aria-label="Submit Answer"
-        className="h-16 px-6 inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 disabled:text-slate-600 text-white font-bold rounded-2xl transition-all shadow-lg active:scale-95 disabled:scale-100 disabled:shadow-none cursor-pointer disabled:cursor-not-allowed"
+        className="h-14 sm:h-20 px-3 sm:px-4 rounded-2xl bg-[#cb4b16] hover:bg-[#b83f0f] active:bg-[#99370e] disabled:bg-[#eee8d5] disabled:text-[#93a1a1] text-white font-bold transition-all shadow-md active:scale-95 disabled:scale-100 disabled:shadow-none cursor-pointer disabled:cursor-not-allowed inline-flex items-center justify-center"
       >
-        <CornerDownLeft className="w-6 h-6" />
-        <span className="hidden sm:inline">Enter</span>
+        <CornerDownLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+        <span className="hidden sm:inline ml-1 text-xs font-sans uppercase font-bold">Submit</span>
       </button>
     </div>
   );

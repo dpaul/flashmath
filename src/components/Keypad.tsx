@@ -12,14 +12,14 @@ export const Keypad: React.FC<KeypadProps> = ({ onDigit, onBackspace, onSubmit, 
   const digits = ['7', '8', '9', '4', '5', '6', '1', '2', '3'];
 
   return (
-    <div className="w-full max-w-sm mx-auto grid grid-cols-3 gap-2 sm:gap-3 p-3 bg-slate-900/40 rounded-3xl border border-slate-800/80 backdrop-blur select-none">
+    <div className="w-full max-w-xs sm:max-w-sm mx-auto grid grid-cols-3 gap-2 sm:gap-2.5 p-3 bg-[#fdfbf7] rounded-3xl border border-[#e4d9c7] shadow-sm select-none">
       {digits.map((digit) => (
         <button
           key={digit}
           type="button"
           disabled={disabled}
           onClick={() => onDigit(digit)}
-          className="h-14 sm:h-16 text-2xl font-mono font-bold text-slate-100 bg-slate-800/70 hover:bg-slate-700/80 active:bg-slate-600 rounded-2xl transition border border-slate-700/50 shadow-sm active:scale-95 disabled:opacity-50"
+          className="h-12 sm:h-14 text-xl sm:text-2xl font-mono font-bold text-[#073642] bg-white hover:bg-[#fcf9f2] active:bg-[#f4ece1] rounded-2xl transition-all border border-[#e4d9c7] shadow-[0_3px_0_#dcd3b6] active:shadow-none active:translate-y-0.5 disabled:opacity-40 cursor-pointer"
         >
           {digit}
         </button>
@@ -31,9 +31,9 @@ export const Keypad: React.FC<KeypadProps> = ({ onDigit, onBackspace, onSubmit, 
         disabled={disabled}
         onClick={onBackspace}
         aria-label="Backspace"
-        className="h-14 sm:h-16 inline-flex items-center justify-center text-slate-300 bg-slate-800/70 hover:bg-slate-700/80 active:bg-slate-600 rounded-2xl transition border border-slate-700/50 shadow-sm active:scale-95 disabled:opacity-50"
+        className="h-12 sm:h-14 inline-flex items-center justify-center text-[#586e75] bg-[#f4ece1] hover:bg-[#ebdccb] active:bg-[#dfcebc] rounded-2xl transition-all border border-[#e4d9c7] shadow-[0_3px_0_#dcd3b6] active:shadow-none active:translate-y-0.5 disabled:opacity-40 cursor-pointer"
       >
-        <Delete className="w-6 h-6" />
+        <Delete className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
 
       {/* 0 */}
@@ -41,7 +41,7 @@ export const Keypad: React.FC<KeypadProps> = ({ onDigit, onBackspace, onSubmit, 
         type="button"
         disabled={disabled}
         onClick={() => onDigit('0')}
-        className="h-14 sm:h-16 text-2xl font-mono font-bold text-slate-100 bg-slate-800/70 hover:bg-slate-700/80 active:bg-slate-600 rounded-2xl transition border border-slate-700/50 shadow-sm active:scale-95 disabled:opacity-50"
+        className="h-12 sm:h-14 text-xl sm:text-2xl font-mono font-bold text-[#073642] bg-white hover:bg-[#fcf9f2] active:bg-[#f4ece1] rounded-2xl transition-all border border-[#e4d9c7] shadow-[0_3px_0_#dcd3b6] active:shadow-none active:translate-y-0.5 disabled:opacity-40 cursor-pointer"
       >
         0
       </button>
@@ -52,9 +52,9 @@ export const Keypad: React.FC<KeypadProps> = ({ onDigit, onBackspace, onSubmit, 
         disabled={disabled}
         onClick={onSubmit}
         aria-label="Enter"
-        className="h-14 sm:h-16 inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white rounded-2xl transition border border-indigo-500/50 shadow-md active:scale-95 disabled:opacity-50 font-bold"
+        className="h-12 sm:h-14 inline-flex items-center justify-center bg-[#cb4b16] hover:bg-[#b83f0f] active:bg-[#99370e] text-white rounded-2xl transition-all border border-[#99370e] shadow-[0_3px_0_#99370e] active:shadow-none active:translate-y-0.5 disabled:opacity-40 font-bold cursor-pointer"
       >
-        <CornerDownLeft className="w-6 h-6" />
+        <CornerDownLeft className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
     </div>
   );

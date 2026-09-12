@@ -20,31 +20,30 @@ export const TimerBar: React.FC<TimerBarProps> = ({ timeRemaining }) => {
     <div
       role="timer"
       aria-label={`Time remaining: ${formatted}`}
-      className="w-full max-w-sm sm:max-w-md mx-auto mb-6"
+      className="flex items-center gap-3 select-none"
     >
-      <div className="flex justify-between items-center mb-2">
-        <div className="inline-flex items-center gap-2 text-slate-300 font-medium text-sm">
-          <Timer className={`w-4 h-4 ${isWarning ? 'text-amber-400 animate-spin' : 'text-slate-400'}`} />
-          <span>Time Remaining</span>
-        </div>
-
+      <span className="sr-only">Time Remaining</span>
+      <Timer
+        className={`w-6 h-6 transition-colors ${
+          isUrgent ? 'text-[#ba1a1a] animate-spin' : isWarning ? 'text-[#b58900]' : 'text-[#cb4b16]'
+        }`}
+      />
+      <div>
         <div
-          className={`font-mono text-2xl font-black tabular-nums transition-colors ${
-            isUrgent ? 'text-rose-400 animate-pulse scale-110' : isWarning ? 'text-amber-400' : 'text-slate-100'
+          className={`font-mono text-xl sm:text-2xl font-bold text-[#073642] leading-none tabular-nums ${
+            isUrgent ? 'text-[#ba1a1a] animate-pulse' : isWarning ? 'text-[#b58900]' : ''
           }`}
         >
           {formatted}
         </div>
-      </div>
-
-      {/* Progress Track */}
-      <div className="w-full h-2.5 bg-slate-800/80 rounded-full overflow-hidden border border-slate-700/50">
-        <div
-          className={`h-full transition-all duration-300 rounded-full ${
-            isUrgent ? 'bg-rose-500' : isWarning ? 'bg-amber-500' : 'bg-indigo-500'
-          }`}
-          style={{ width: `${progressPercent}%` }}
-        />
+        <div className="w-28 sm:w-36 h-1.5 bg-[#ebdccb] rounded-full overflow-hidden mt-1.5">
+          <div
+            className={`h-full rounded-full transition-all duration-300 ${
+              isUrgent ? 'bg-[#ba1a1a]' : isWarning ? 'bg-[#b58900]' : 'bg-[#cb4b16]'
+            }`}
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
       </div>
     </div>
   );
