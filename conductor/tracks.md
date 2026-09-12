@@ -13,5 +13,5 @@
   *Link: [./tracks/fuzzy_particles_20260910/index.md](./tracks/fuzzy_particles_20260910/index.md)*
 
 ---
-- [ ] **Track: Redesign FlashMath to match Stitch "Zen Focus Flow"**
+- [x] **Track: Redesign FlashMath to match Stitch "Zen Focus Flow"**
   *Link: [./tracks/zen_redesign_20260912/index.md](./tracks/zen_redesign_20260912/index.md)*
