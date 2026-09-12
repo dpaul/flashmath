@@ -20,9 +20,9 @@
 - [x] Task: Spelling Answer Input & Feedback Component (TDD) [c81ffcb]
   - [x] Write component tests for input auto-focus, submission on Enter, correct feedback, and incorrect reveal state
   - [x] Implement `SpellingInput.tsx` supporting case-insensitive checking, trim, visual feedback, and reveal view on incorrect attempt
-- [ ] Task: Spelling Practice Container & Session Loop (TDD)
-  - [ ] Write component tests for complete drill loop (fetch random word, submit answer, update level stats, next word)
-  - [ ] Implement `SpellingPracticeView.tsx` orchestrating card, input, audio replay, streak counter, and exit button
+- [x] Task: Spelling Practice Container & Session Loop (TDD) [027c7b3]
+  - [x] Write component tests for complete drill loop (fetch random word, submit answer, update level stats, next word)
+  - [x] Implement `SpellingPracticeView.tsx` orchestrating card, input, audio replay, streak counter, and exit button
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: Mode Selection, Navigation, Level Selector & Integration
