@@ -1,0 +1,1 @@
+Phase 1: Added Google Fonts (Plus Jakarta Sans & JetBrains Mono), defined Solarized Light theme tokens in tailwind.config.js, added stationery tactile-card and ambient glow utilities in index.css, and updated particle blend modes for warm paper background.
