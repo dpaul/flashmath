@@ -5,9 +5,9 @@
   - [x] Write unit tests for spelling level configs, word picker, normalization, and validation
   - [x] Implement `src/data/spellingLevels.ts` with extensible schema and 4th grade default word list (~10 words)
   - [x] Implement `src/engine/spellingEngine.ts` to manage word randomization, case-insensitive comparison, and session progress
-- [ ] Task: Speech Synthesis Wrapper Service (TDD)
-  - [ ] Write unit tests mocking Web Speech API (`SpeechSynthesisUtterance`, `window.speechSynthesis`)
-  - [ ] Implement `src/services/speechSynthesis.ts` with safe browser checking, cancellation, rate control, and speech triggers
+- [x] Task: Speech Synthesis Wrapper Service (TDD) [8790fcc]
+  - [x] Write unit tests mocking Web Speech API (`SpeechSynthesisUtterance`, `window.speechSynthesis`)
+  - [x] Implement `src/services/speechSynthesis.ts` with safe browser checking, cancellation, rate control, and speech triggers
 - [ ] Task: Level-Specific History Storage (TDD)
   - [ ] Write unit tests for level history storage schema and persistence logic
   - [ ] Implement typed `localStorage` helper in `src/engine/spellingStorage.ts` to track attempts, accuracy, streaks, and missed words per level
