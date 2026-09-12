@@ -3,6 +3,8 @@ import { CornerDownLeft } from 'lucide-react';
 
 interface AnswerInputProps {
   onSubmit: (answer: string) => void;
+  onSkip?: () => void;
+  onEscape?: () => void;
   autoFocus?: boolean;
   disabled?: boolean;
   externalValue?: string;
@@ -11,6 +13,8 @@ interface AnswerInputProps {
 
 export const AnswerInput: React.FC<AnswerInputProps> = ({
   onSubmit,
+  onSkip,
+  onEscape,
   autoFocus = true,
   disabled = false,
   externalValue,
@@ -53,6 +57,12 @@ export const AnswerInput: React.FC<AnswerInputProps> = ({
     if (e.key === 'Enter') {
       e.preventDefault();
       submit();
+    } else if (e.key === ' ' || e.code === 'Space') {
+      e.preventDefault();
+      onSkip?.();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      onEscape?.();
     }
   };
 
@@ -74,14 +84,8 @@ export const AnswerInput: React.FC<AnswerInputProps> = ({
           autoComplete="off"
           autoCorrect="off"
           spellCheck={false}
-          className="w-full h-full text-3xl sm:text-5xl font-mono font-semibold text-center text-[#073642] bg-transparent focus:outline-none placeholder:text-transparent selection:bg-amber-200/60"
+          className="w-full h-full text-3xl sm:text-5xl font-mono font-semibold text-center text-[#073642] bg-transparent focus:outline-none placeholder:text-[#93a1a1]/30 selection:bg-amber-200/60 caret-[#cb4b16]"
         />
-
-        {value === '' && (
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <span className="w-[3px] sm:w-[4px] h-7 sm:h-10 bg-[#cb4b16] blinking-cursor rounded-full" />
-          </div>
-        )}
       </div>
 
       <button

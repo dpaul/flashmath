@@ -42,6 +42,19 @@ describe('AnswerInput Component', () => {
 
     expect(onSubmit).toHaveBeenCalledWith('56');
   });
+
+  it('calls onSkip on Space key press and onEscape on Escape key press', () => {
+    const onSkip = vi.fn();
+    const onEscape = vi.fn();
+    render(<AnswerInput onSubmit={vi.fn()} onSkip={onSkip} onEscape={onEscape} autoFocus={true} />);
+
+    const input = screen.getByRole('textbox');
+    fireEvent.keyDown(input, { key: ' ', code: 'Space' });
+    expect(onSkip).toHaveBeenCalledTimes(1);
+
+    fireEvent.keyDown(input, { key: 'Escape', code: 'Escape' });
+    expect(onEscape).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe('Keypad Component', () => {

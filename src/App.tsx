@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useCallback } from 'react';
+import React, { useReducer, useState, useCallback, useEffect } from 'react';
 import { initialGameState, gameReducer } from './engine/gameReducer';
 import { useSprintTimer } from './engine/useSprintTimer';
 import { evaluateAnswer } from './engine/math';
@@ -65,9 +65,44 @@ export const App: React.FC = () => {
     dispatch({ type: 'RESET_GAME' });
   };
 
-  const handleAbort = () => {
+  const handleAbort = useCallback(() => {
     dispatch({ type: 'END_GAME' });
-  };
+  }, []);
+
+  const handleSkip = useCallback(() => {
+    if (state.phase !== 'running' || !state.currentProblem) return;
+
+    setRecentProblems((prev) => [
+      ...prev,
+      {
+        id: `rec-${Date.now()}-${prev.length}`,
+        problemText: `${state.currentProblem!.factorA} × ${state.currentProblem!.factorB}`,
+        answer: state.currentProblem!.product,
+        isCorrect: false,
+      },
+    ]);
+
+    dispatch({ type: 'SUBMIT_ANSWER', payload: { answer: '' } });
+    setInputValue('');
+  }, [state.phase, state.currentProblem]);
+
+  // Global Space (skip) and Escape (finish) shortcut listeners while sprinting
+  useEffect(() => {
+    if (state.phase !== 'running') return;
+
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.key === ' ' || e.code === 'Space') {
+        e.preventDefault();
+        handleSkip();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        handleAbort();
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [state.phase, handleSkip, handleAbort]);
 
   // Keypad actions
   const handleKeypadDigit = (digit: string) => {
@@ -82,9 +117,10 @@ export const App: React.FC = () => {
     handleSubmit(inputValue);
   };
 
-  const paceDisplay =
-    state.stats.problemsPerMinute > 0
-      ? (60 / state.stats.problemsPerMinute).toFixed(1)
+  const elapsedSeconds = 180 - state.timeRemaining;
+  const paceSeconds =
+    state.stats.totalAttempted > 0 && elapsedSeconds > 0
+      ? (elapsedSeconds / state.stats.totalAttempted).toFixed(1)
       : '—';
 
   return (
@@ -212,6 +248,8 @@ export const App: React.FC = () => {
                 >
                   <AnswerInput
                     onSubmit={handleSubmit}
+                    onSkip={handleSkip}
+                    onEscape={handleAbort}
                     externalValue={inputValue}
                     onValueChange={setInputValue}
                     autoFocus={true}
@@ -233,19 +271,19 @@ export const App: React.FC = () => {
                     <div className="flex items-center gap-1.5">
                       <span className="text-[#93a1a1]">Accuracy</span>
                       <span className="font-mono font-bold text-[#073642]">
-                        {state.stats.accuracyPercentage}%
+                        {state.stats.totalAttempted > 0 ? `${state.stats.accuracyPercentage}%` : '100%'}
                       </span>
                     </div>
                     <span className="text-[#e4d9c7]">•</span>
                     <div className="flex items-center gap-1.5">
                       <span className="text-[#93a1a1]">Pace</span>
                       <span className="font-mono font-bold text-[#2aa198]">
-                        {paceDisplay}s
+                        {paceSeconds !== '—' ? `${paceSeconds}s` : '—'}
                       </span>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3">
                     <span className="text-[11px] text-[#93a1a1]">
                       <kbd className="px-1.5 py-0.5 rounded bg-[#eee8d5] font-mono font-semibold text-[10px] text-[#073642] border border-[#e4d9c7]">
                         Space
@@ -256,7 +294,7 @@ export const App: React.FC = () => {
                       <kbd className="px-1.5 py-0.5 rounded bg-[#eee8d5] font-mono font-semibold text-[10px] text-[#073642] border border-[#e4d9c7]">
                         Esc
                       </kbd>{' '}
-                      Pause
+                      Finish
                     </span>
                   </div>
                 </footer>

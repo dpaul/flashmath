@@ -108,21 +108,35 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         };
       }
 
+      const nextTimeRemaining = state.timeRemaining - 1;
+      const elapsed = SPRINT_DURATION_SECONDS - nextTimeRemaining;
+      const accuracy = calculateAccuracy(state.stats.correctCount, state.stats.totalAttempted);
+      const ppm = calculatePPM(state.stats.correctCount, elapsed > 0 ? elapsed : 1);
+
       return {
         ...state,
-        timeRemaining: state.timeRemaining - 1,
+        timeRemaining: nextTimeRemaining,
+        stats: {
+          ...state.stats,
+          accuracyPercentage: accuracy,
+          problemsPerMinute: ppm,
+        },
       };
     }
 
     case 'SUBMIT_ANSWER': {
       if (state.phase !== 'running' || !state.currentProblem) return state;
 
-      const isCorrect = evaluateAnswer(state.currentProblem, action.payload.answer);
+      const answer = action.payload.answer;
+      const isCorrect = answer !== '' && evaluateAnswer(state.currentProblem, answer);
       const totalAttempted = state.stats.totalAttempted + 1;
       const correctCount = isCorrect ? state.stats.correctCount + 1 : state.stats.correctCount;
       const incorrectCount = isCorrect ? state.stats.incorrectCount : state.stats.incorrectCount + 1;
       const streak = isCorrect ? state.stats.streak + 1 : 0;
       const bestStreak = Math.max(state.stats.bestStreak, streak);
+      const elapsed = SPRINT_DURATION_SECONDS - state.timeRemaining;
+      const accuracyPercentage = calculateAccuracy(correctCount, totalAttempted);
+      const problemsPerMinute = calculatePPM(correctCount, elapsed > 0 ? elapsed : 1);
 
       const missedProblems = isCorrect
         ? state.stats.missedProblems
@@ -130,7 +144,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
             ...state.stats.missedProblems,
             {
               problem: state.currentProblem,
-              submittedAnswer: action.payload.answer,
+              submittedAnswer: answer || 'Skipped',
               correctAnswer: state.currentProblem.product,
             },
           ];
@@ -148,6 +162,8 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
           totalAttempted,
           streak,
           bestStreak,
+          accuracyPercentage,
+          problemsPerMinute,
           missedProblems,
         },
       };

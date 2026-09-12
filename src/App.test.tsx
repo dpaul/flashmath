@@ -118,4 +118,27 @@ describe('FlashMath App Integration', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(screen.getByText(/no sprint history yet/i)).toBeInTheDocument();
   });
+
+  it('supports Space to skip problem, updates real-time footer stats, and Escape to finish early', () => {
+    render(<App />);
+
+    // Start sprint
+    fireEvent.click(screen.getByRole('button', { name: /start challenge/i }));
+
+    // Footer shows 100% accuracy initially
+    expect(screen.getByText('100%')).toBeInTheDocument();
+
+    // Press Space to skip current problem
+    const input = screen.getByPlaceholderText(/Answer.../i);
+    fireEvent.keyDown(input, { key: ' ', code: 'Space' });
+
+    // After skipping 1 problem, accuracy drops to 0% (0/1)
+    expect(screen.getByText('0%')).toBeInTheDocument();
+
+    // Now press Escape to finish sprint early
+    fireEvent.keyDown(window, { key: 'Escape', code: 'Escape' });
+
+    // Verifies sprint finished and moved to results
+    expect(screen.getByText(/Sprint Completed!/i)).toBeInTheDocument();
+  });
 });
