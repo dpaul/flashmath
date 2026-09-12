@@ -1,0 +1,1 @@
+Replaced custom blinking cursor with native terracotta caret (blinks only on focus, single cursor), wired real-time Accuracy and Pace metrics in footer, implemented Space key to skip and Escape key to finish early (removed pause shortcut)
