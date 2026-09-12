@@ -26,6 +26,10 @@ FlashMath is a fast-paced, interactive mental math trainer designed to help lear
 4. **Local Performance Summary & History:**
    - Round recap showing total problems attempted, accuracy percentage, problems per minute, and any missed problems for review.
    - Personal best scores and streaks stored locally in browser storage.
+5. **Spelling Practice Mode:**
+   - Dedicated untimed spelling drills across configurable grade/difficulty levels (starting with Grade 4 words).
+   - Automated word pronunciation via browser Web Speech API with repeat audio controls.
+   - Instant feedback, error word reveal, and independent per-level accuracy and streak history in `localStorage`.
 
 ## Platform & Delivery Target
 - **Platform:** Modern responsive web application (desktop, tablet, and mobile friendly).

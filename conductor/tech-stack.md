@@ -8,6 +8,7 @@
 ## Languages & Runtime
 - **Primary Language:** TypeScript (strict mode enabled for type safety)
 - **Runtime Environment:** Modern evergreen browsers (ES2022+)
+- **Audio & Speech Engine:** Browser Web Speech API (`SpeechSynthesis`, `SpeechSynthesisUtterance`)
 
 ## Frontend Framework & UI
 - **UI Framework:** React 18+
