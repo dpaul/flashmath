@@ -66,7 +66,7 @@ export const FuzzyParticles: React.FC<FuzzyParticlesProps> = ({
           }}
         >
           <span
-            className="fuzzy-particle-item block rounded-full pointer-events-none will-change-transform mix-blend-screen"
+            className="fuzzy-particle-item block rounded-full pointer-events-none will-change-transform mix-blend-multiply"
             style={
               {
                 width: `${p.size}px`,
@@ -118,7 +118,7 @@ export const AmbientSmoke: React.FC<AmbientSmokeProps> = ({
           }}
         >
           <span
-            className="ambient-smoke-orb block rounded-full pointer-events-none will-change-transform mix-blend-screen"
+            className="ambient-smoke-orb block rounded-full pointer-events-none will-change-transform mix-blend-multiply"
             style={
               {
                 width: `${orb.size}px`,

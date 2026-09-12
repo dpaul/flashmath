@@ -4,8 +4,38 @@
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-50 min-h-screen selection:bg-indigo-500 selection:text-white;
+    @apply bg-[#fcf9f2] text-[#073642] min-h-screen selection:bg-amber-100 selection:text-[#cb4b16];
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   }
+}
+
+.tactile-card {
+  background-color: #ffffff;
+  box-shadow: 0 20px 48px -12px rgba(7, 54, 66, 0.07), 0 4px 16px rgba(181, 137, 0, 0.04);
+  border: 1px solid rgba(7, 54, 66, 0.06);
+}
+
+@keyframes pulse-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.blinking-cursor {
+  animation: pulse-cursor 0.9s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.stream-mask {
+  mask-image: linear-gradient(to bottom, transparent 0%, black 50%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%);
+}
+
+@keyframes float-up {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.stream-item {
+  animation: float-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes shake {
