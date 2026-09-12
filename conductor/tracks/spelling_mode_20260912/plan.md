@@ -25,7 +25,7 @@
   - [x] Implement `SpellingPracticeView.tsx` orchestrating card, input, audio replay, streak counter, and exit button
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [027c7b3]
 
-## Phase 3: Mode Selection, Navigation, Level Selector & Integration
+## Phase 3: Mode Selection, Navigation, Level Selector & Integration [checkpoint: 5f5c69f]
 - [x] Task: Landing Screen Mode Selector (TDD) [56af5ca]
   - [x] Write component tests for selecting between Math Sprint and Spelling Practice on the landing view
   - [x] Update `StartScreen.tsx` or create `ModeSelector.tsx` to clearly separate Math and Spelling modes
@@ -35,4 +35,4 @@
 - [x] Task: Main App Integration & Route/Mode Orchestration (TDD) [5f5c69f]
   - [x] Update `App.test.tsx` to verify seamless navigation between Mode Selection, Math Sprint, Spelling Level Select, and Spelling Practice
   - [x] Integrate Spelling modes and history into `App.tsx`
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [5f5c69f]
