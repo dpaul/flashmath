@@ -8,9 +8,9 @@
 - [x] Task: Speech Synthesis Wrapper Service (TDD) [8790fcc]
   - [x] Write unit tests mocking Web Speech API (`SpeechSynthesisUtterance`, `window.speechSynthesis`)
   - [x] Implement `src/services/speechSynthesis.ts` with safe browser checking, cancellation, rate control, and speech triggers
-- [ ] Task: Level-Specific History Storage (TDD)
-  - [ ] Write unit tests for level history storage schema and persistence logic
-  - [ ] Implement typed `localStorage` helper in `src/engine/spellingStorage.ts` to track attempts, accuracy, streaks, and missed words per level
+- [x] Task: Level-Specific History Storage (TDD) [7f330ee]
+  - [x] Write unit tests for level history storage schema and persistence logic
+  - [x] Implement typed `localStorage` helper in `src/engine/spellingStorage.ts` to track attempts, accuracy, streaks, and missed words per level
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2: Spelling Practice Components & User Interaction
