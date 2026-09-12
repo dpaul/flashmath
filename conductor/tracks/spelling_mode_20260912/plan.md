@@ -32,7 +32,7 @@
 - [x] Task: Level Selection Screen (TDD) [577e617]
   - [x] Write component tests for rendering configured levels and their stats (accuracy, best streak)
   - [x] Implement `SpellingLevelSelect.tsx` showing level cards and summary stats from `localStorage`
-- [ ] Task: Main App Integration & Route/Mode Orchestration (TDD)
-  - [ ] Update `App.test.tsx` to verify seamless navigation between Mode Selection, Math Sprint, Spelling Level Select, and Spelling Practice
-  - [ ] Integrate Spelling modes and history into `App.tsx`
+- [x] Task: Main App Integration & Route/Mode Orchestration (TDD) [5f5c69f]
+  - [x] Update `App.test.tsx` to verify seamless navigation between Mode Selection, Math Sprint, Spelling Level Select, and Spelling Practice
+  - [x] Integrate Spelling modes and history into `App.tsx`
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
