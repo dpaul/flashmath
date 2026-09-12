@@ -5,6 +5,8 @@ export type { SpellingLevel };
 
 export interface SpellingSession {
   levelId: string;
+  words: string[];
+  currentIndex: number;
   currentWord: string;
   totalAttempts: number;
   correctCount: number;
@@ -13,6 +15,8 @@ export interface SpellingSession {
   missedWords: string[];
   lastAttemptWasCorrect?: boolean;
   isComplete: boolean;
+  startTime: number;
+  elapsedSeconds: number;
 }
 
 export function getSpellingLevelById(levelId: string): SpellingLevel | undefined {
@@ -23,32 +27,36 @@ export function evaluateSpellingAnswer(userInput: string, targetWord: string): b
   return userInput.trim().toLowerCase() === targetWord.trim().toLowerCase();
 }
 
-export function getRandomWordForLevel(levelId: string, excludeWord?: string): string {
+export function shuffleArray<T>(array: readonly T[]): T[] {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+export function createSpellingSession(levelId: string): SpellingSession {
   const level = getSpellingLevelById(levelId);
   if (!level || level.words.length === 0) {
     throw new Error(`Spelling level '${levelId}' not found or has no words.`);
   }
 
-  const eligibleWords =
-    level.words.length > 1 && excludeWord
-      ? level.words.filter((w) => w.toLowerCase() !== excludeWord.toLowerCase())
-      : level.words;
+  const shuffledWords = shuffleArray(level.words);
 
-  const randomIndex = Math.floor(Math.random() * eligibleWords.length);
-  return eligibleWords[randomIndex];
-}
-
-export function createSpellingSession(levelId: string): SpellingSession {
-  const initialWord = getRandomWordForLevel(levelId);
   return {
     levelId,
-    currentWord: initialWord,
+    words: shuffledWords,
+    currentIndex: 0,
+    currentWord: shuffledWords[0],
     totalAttempts: 0,
     correctCount: 0,
     currentStreak: 0,
     bestStreak: 0,
     missedWords: [],
     isComplete: false,
+    startTime: Date.now(),
+    elapsedSeconds: 0,
   };
 }
 
@@ -56,6 +64,10 @@ export function submitSpellingAttempt(
   session: SpellingSession,
   userInput: string
 ): SpellingSession {
+  if (session.isComplete) {
+    return session;
+  }
+
   const isCorrect = evaluateSpellingAnswer(userInput, session.currentWord);
   const totalAttempts = session.totalAttempts + 1;
   const correctCount = session.correctCount + (isCorrect ? 1 : 0);
@@ -80,10 +92,24 @@ export function submitSpellingAttempt(
 }
 
 export function advanceToNextWord(session: SpellingSession): SpellingSession {
-  const nextWord = getRandomWordForLevel(session.levelId, session.currentWord);
+  const nextIndex = session.currentIndex + 1;
+
+  if (nextIndex >= session.words.length) {
+    const now = Date.now();
+    const elapsedSeconds = Math.max(1, Math.round((now - session.startTime) / 1000));
+    return {
+      ...session,
+      currentIndex: nextIndex,
+      isComplete: true,
+      lastAttemptWasCorrect: undefined,
+      elapsedSeconds,
+    };
+  }
+
   return {
     ...session,
-    currentWord: nextWord,
+    currentIndex: nextIndex,
+    currentWord: session.words[nextIndex],
     lastAttemptWasCorrect: undefined,
   };
 }

@@ -3,6 +3,7 @@ import {
   loadLevelStats,
   saveLevelStats,
   updateLevelStatsFromSession,
+  recordCompletedSpellingRun,
   clearLevelStats,
   clearAllSpellingStats,
   getAllSpellingStats,
@@ -60,6 +61,31 @@ describe('Spelling History Storage', () => {
     expect(updated.correctCount).toBe(7);
     expect(updated.bestStreak).toBe(4); // preserves highest streak
     expect(updated.missedWords).toEqual(['mystery', 'island']);
+  });
+
+  it('records completed runs tracking time elapsed, correct count, and runs list', () => {
+    const updated = recordCompletedSpellingRun('grade-4', {
+      durationSeconds: 45,
+      correctCount: 10,
+      totalWords: 12,
+      bestStreak: 8,
+    });
+
+    expect(updated.lastDurationSeconds).toBe(45);
+    expect(updated.bestTimeSeconds).toBe(45);
+    expect(updated.lastScore).toEqual({ correct: 10, total: 12 });
+    expect(updated.runs).toHaveLength(1);
+    expect(updated.runs?.[0].durationSeconds).toBe(45);
+
+    // Faster subsequent run
+    const updated2 = recordCompletedSpellingRun('grade-4', {
+      durationSeconds: 38,
+      correctCount: 12,
+      totalWords: 12,
+      bestStreak: 12,
+    });
+    expect(updated2.bestTimeSeconds).toBe(38);
+    expect(updated2.runs).toHaveLength(2);
   });
 
   it('clears stats for a specific level without clearing other levels', () => {

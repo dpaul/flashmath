@@ -88,4 +88,38 @@ describe('SpellingPracticeView Component', () => {
       expect(speechService.speakWord).toHaveBeenCalledTimes(2);
     });
   });
+
+  it('completes the session when all words in the list are completed and displays completion recap with time and score', async () => {
+    const recordRunSpy = vi.spyOn(spellingStorage, 'recordCompletedSpellingRun');
+
+    render(
+      <SpellingPracticeView
+        levelId="grade-4"
+        onBackToLevels={vi.fn()}
+        onBackToHome={vi.fn()}
+      />
+    );
+
+    // Practice all 12 words in Grade 4
+    for (let i = 0; i < 12; i++) {
+      const input = screen.getByLabelText(/type spelling/i);
+      const spokenWord = vi.mocked(speechService.speakWord).mock.calls[i][0];
+      fireEvent.change(input, { target: { value: spokenWord } });
+      fireEvent.keyDown(input, { key: 'Enter' });
+    }
+
+    // Expect completion screen to be visible
+    expect(await screen.findByText(/Level Complete!/i)).toBeInTheDocument();
+    expect(screen.getByText(/12 \/ 12/i)).toBeInTheDocument();
+    expect(screen.getByText(/Time:/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /practice again/i })).toBeInTheDocument();
+
+    expect(recordRunSpy).toHaveBeenCalledWith(
+      'grade-4',
+      expect.objectContaining({
+        correctCount: 12,
+        totalWords: 12,
+      })
+    );
+  });
 });

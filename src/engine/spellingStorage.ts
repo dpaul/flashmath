@@ -1,10 +1,22 @@
+export interface SpellingRunRecord {
+  timestamp: string;
+  durationSeconds: number;
+  correctCount: number;
+  totalWords: number;
+  bestStreak: number;
+}
+
 export interface SpellingLevelStats {
   levelId: string;
   totalAttempts: number;
   correctCount: number;
   bestStreak: number;
+  bestTimeSeconds?: number;
+  lastDurationSeconds?: number;
+  lastScore?: { correct: number; total: number };
   missedWords: string[];
   lastPracticedAt: string; // ISO 8601
+  runs?: SpellingRunRecord[];
 }
 
 export const SPELLING_STORAGE_PREFIX = 'flashmath_spelling_stats_';
@@ -32,8 +44,12 @@ export function loadLevelStats(levelId: string): SpellingLevelStats {
       totalAttempts: parsed.totalAttempts ?? 0,
       correctCount: parsed.correctCount ?? 0,
       bestStreak: parsed.bestStreak ?? 0,
+      bestTimeSeconds: parsed.bestTimeSeconds,
+      lastDurationSeconds: parsed.lastDurationSeconds,
+      lastScore: parsed.lastScore,
       missedWords: Array.isArray(parsed.missedWords) ? parsed.missedWords : [],
       lastPracticedAt: parsed.lastPracticedAt ?? '',
+      runs: Array.isArray(parsed.runs) ? parsed.runs : [],
     };
   } catch {
     return {
@@ -70,12 +86,51 @@ export function updateLevelStatsFromSession(
   const missedSet = new Set([...current.missedWords, ...sessionResult.missed]);
 
   const updated: SpellingLevelStats = {
+    ...current,
     levelId,
     totalAttempts: current.totalAttempts + sessionResult.attempts,
     correctCount: current.correctCount + sessionResult.correct,
     bestStreak: Math.max(current.bestStreak, sessionResult.streak),
     missedWords: Array.from(missedSet),
     lastPracticedAt: new Date().toISOString(),
+  };
+
+  saveLevelStats(updated);
+  return updated;
+}
+
+export function recordCompletedSpellingRun(
+  levelId: string,
+  run: {
+    durationSeconds: number;
+    correctCount: number;
+    totalWords: number;
+    bestStreak: number;
+  }
+): SpellingLevelStats {
+  const current = loadLevelStats(levelId);
+  const runs = current.runs ? [...current.runs] : [];
+  const newRunRecord: SpellingRunRecord = {
+    timestamp: new Date().toISOString(),
+    ...run,
+  };
+  runs.push(newRunRecord);
+  if (runs.length > 50) {
+    runs.splice(0, runs.length - 50);
+  }
+
+  const bestTimeSeconds =
+    current.bestTimeSeconds && current.bestTimeSeconds > 0
+      ? Math.min(current.bestTimeSeconds, run.durationSeconds)
+      : run.durationSeconds;
+
+  const updated: SpellingLevelStats = {
+    ...current,
+    lastDurationSeconds: run.durationSeconds,
+    bestTimeSeconds,
+    lastScore: { correct: run.correctCount, total: run.totalWords },
+    lastPracticedAt: new Date().toISOString(),
+    runs,
   };
 
   saveLevelStats(updated);

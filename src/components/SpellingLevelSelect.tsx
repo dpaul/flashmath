@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, BookOpen, Flame, CheckCircle2, ChevronRight } from 'lucide-react';
+import { ArrowLeft, BookOpen, Flame, CheckCircle2, ChevronRight, Clock } from 'lucide-react';
 import { SPELLING_LEVELS, SpellingLevel } from '../data/spellingLevels';
 import { loadLevelStats } from '../engine/spellingStorage';
 
@@ -85,6 +85,17 @@ export const SpellingLevelSelect: React.FC<SpellingLevelSelectProps> = ({
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>{accuracyPct}%</span>
                     </div>
+                    {stats.lastScore && (
+                      <div className="hidden sm:flex items-center gap-1 text-[#586e75]">
+                        <span>Last: {stats.lastScore.correct}/{stats.lastScore.total}</span>
+                      </div>
+                    )}
+                    {stats.bestTimeSeconds && (
+                      <div className="hidden sm:flex items-center gap-1 text-[#cb4b16]">
+                        <Clock className="w-3.5 h-3.5" />
+                        <span>{stats.bestTimeSeconds}s</span>
+                      </div>
+                    )}
                     {stats.bestStreak > 0 && (
                       <div className="flex items-center gap-1 text-[#b58900]">
                         <Flame className="w-3.5 h-3.5 fill-[#b58900]" />

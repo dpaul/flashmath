@@ -3,9 +3,10 @@ import {
   SPELLING_LEVELS,
   getSpellingLevelById,
   evaluateSpellingAnswer,
-  getRandomWordForLevel,
+  shuffleArray,
   createSpellingSession,
   submitSpellingAttempt,
+  advanceToNextWord,
 } from './spellingEngine';
 
 describe('Spelling Engine & Level Configuration', () => {
@@ -14,7 +15,6 @@ describe('Spelling Engine & Level Configuration', () => {
     const grade4 = getSpellingLevelById('grade-4');
     expect(grade4).toBeDefined();
     expect(grade4?.words.length).toBeGreaterThanOrEqual(10);
-    // ensure words are lowercase or cleanly formatted strings
     grade4?.words.forEach((word) => {
       expect(typeof word).toBe('string');
       expect(word.trim().length).toBeGreaterThan(0);
@@ -29,28 +29,28 @@ describe('Spelling Engine & Level Configuration', () => {
     expect(evaluateSpellingAnswer('', 'calendar')).toBe(false);
   });
 
-  it('selects random words from a given level', () => {
-    const level = getSpellingLevelById('grade-4')!;
-    const word = getRandomWordForLevel(level.id);
-    expect(level.words).toContain(word);
-
-    // If excluding last word, it avoids repeating unless word list is 1
-    const nextWord = getRandomWordForLevel(level.id, word);
-    if (level.words.length > 1) {
-      expect(nextWord).not.toBe(word);
-    }
+  it('shuffles arrays without mutating original array', () => {
+    const original = ['apple', 'banana', 'cherry', 'date', 'elderberry'];
+    const shuffled = shuffleArray(original);
+    expect(shuffled).toHaveLength(original.length);
+    expect(shuffled.slice().sort()).toEqual(original.slice().sort());
   });
 
-  it('initializes a clean spelling session', () => {
+  it('initializes a clean spelling session with shuffled level words', () => {
     const session = createSpellingSession('grade-4');
+    const level = getSpellingLevelById('grade-4')!;
+
     expect(session.levelId).toBe('grade-4');
-    expect(session.currentWord).toBeDefined();
+    expect(session.words).toHaveLength(level.words.length);
+    expect(session.currentIndex).toBe(0);
+    expect(session.currentWord).toBe(session.words[0]);
     expect(session.totalAttempts).toBe(0);
     expect(session.correctCount).toBe(0);
     expect(session.currentStreak).toBe(0);
     expect(session.bestStreak).toBe(0);
     expect(session.missedWords).toEqual([]);
     expect(session.isComplete).toBe(false);
+    expect(session.startTime).toBeGreaterThan(0);
   });
 
   it('updates session accurately on correct answer submission', () => {
@@ -76,5 +76,24 @@ describe('Spelling Engine & Level Configuration', () => {
     expect(updated.bestStreak).toBe(0);
     expect(updated.lastAttemptWasCorrect).toBe(false);
     expect(updated.missedWords).toContain(session.currentWord);
+  });
+
+  it('progresses sequentially through shuffled words and marks complete when list is exhausted', () => {
+    let session = createSpellingSession('grade-4');
+    const totalWords = session.words.length;
+
+    for (let i = 0; i < totalWords; i++) {
+      expect(session.currentIndex).toBe(i);
+      expect(session.currentWord).toBe(session.words[i]);
+      expect(session.isComplete).toBe(false);
+
+      session = submitSpellingAttempt(session, session.currentWord);
+      session = advanceToNextWord(session);
+    }
+
+    expect(session.isComplete).toBe(true);
+    expect(session.correctCount).toBe(totalWords);
+    expect(session.totalAttempts).toBe(totalWords);
+    expect(session.elapsedSeconds).toBeGreaterThanOrEqual(0);
   });
 });

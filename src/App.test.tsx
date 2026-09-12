@@ -118,7 +118,7 @@ describe('FlashMath App Integration', () => {
     fireEvent.click(screen.getByRole('button', { name: /4th grade words/i }));
 
     // Now in SpellingPracticeView
-    expect(screen.getByText(/Untimed Practice/i)).toBeInTheDocument();
+    expect(screen.getByText(/Word 1 of/i)).toBeInTheDocument();
     expect(speechService.speakWord).toHaveBeenCalled();
 
     // Submit an answer
