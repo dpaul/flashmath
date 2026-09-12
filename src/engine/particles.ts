@@ -29,22 +29,22 @@ export interface AmbientSmokeOrb {
 }
 
 export const CORRECT_PALETTE = [
-  '#10b981', // emerald-500
-  '#06b6d4', // cyan-500
-  '#00f2fe', // vibrant cyan
-  '#34d399', // emerald-400
-  '#14b8a6', // teal-500
-  '#38bdf8', // sky-400
-  '#4ade80', // green-400
-  '#22c55e', // green-500
+  '#859900', // solarized green
+  '#2aa198', // solarized cyan
+  '#268bd2', // solarized blue
+  '#35b5a8', // soft solarized teal
+  '#788a00', // olive green
+  '#97aa1e', // light olive
+  '#b58900', // solarized amber / gold
+  '#20948b', // deep solarized cyan
 ];
 
 export const INCORRECT_PALETTE = [
-  '#f43f5e', // rose-500
-  '#ef4444', // red-500
-  '#f59e0b', // amber-500
-  '#fb923c', // orange-400
-  '#ff0055', // neon red
+  '#dc322f', // solarized red
+  '#cb4b16', // solarized terracotta
+  '#d33682', // solarized magenta
+  '#e04638', // warm coral red
+  '#b83418', // deep terracotta
 ];
 
 export const AMBIENT_PALETTE = CORRECT_PALETTE;
@@ -130,7 +130,7 @@ export function createFuzzyParticles(
     const color = palette[Math.floor(Math.random() * palette.length)];
     const durationMs = Math.round(750 + Math.random() * 350); // 750 to 1100ms
     const delayMs = Math.round(Math.random() * 70);
-    const opacity = 0.55 + Math.random() * 0.35; // 0.55 to 0.90 vivid smoke opacity
+    const opacity = 0.28 + Math.random() * 0.22; // 0.28 to 0.50 soft watercolor wash
 
     particles.push({
       id: `smoke-${i}-${Math.random().toString(36).substring(2, 6)}`,
@@ -170,7 +170,7 @@ export function createAmbientSmoke(
     const color = palette[i % palette.length];
     const durationSeconds = 2.8 + Math.random() * 2.2; // 2.8 to 5.0s dynamic breathing cycle
     const delaySeconds = -(Math.random() * 3); // randomized phase offset
-    const opacity = 0.35 + Math.min(streak * 0.02, 0.2) + Math.random() * 0.15; // 0.35 to 0.70 vivid glow
+    const opacity = 0.12 + Math.min(streak * 0.015, 0.12) + Math.random() * 0.08; // 0.12 to 0.32 gentle ambient aura
 
     orbs.push({
       id: `ambient-${i}-${streak}-${status}`,
