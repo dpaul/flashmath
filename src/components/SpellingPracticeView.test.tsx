@@ -19,13 +19,13 @@ describe('SpellingPracticeView Component', () => {
   it('renders level info, automatically speaks word on mount, and allows manual replay', () => {
     render(
       <SpellingPracticeView
-        levelId="grade-4"
+        levelId="level-1"
         onBackToLevels={vi.fn()}
         onBackToHome={vi.fn()}
       />
     );
 
-    expect(screen.getByText(/4th Grade Words/i)).toBeInTheDocument();
+    expect(screen.getByText(/Level 1 Words/i)).toBeInTheDocument();
     expect(speechService.speakWord).toHaveBeenCalled();
 
     const replayBtn = screen.getByRole('button', { name: /repeat word|listen to word/i });
@@ -38,7 +38,7 @@ describe('SpellingPracticeView Component', () => {
 
     render(
       <SpellingPracticeView
-        levelId="grade-4"
+        levelId="level-1"
         onBackToLevels={vi.fn()}
         onBackToHome={vi.fn()}
       />
@@ -54,7 +54,7 @@ describe('SpellingPracticeView Component', () => {
 
     await waitFor(() => {
       expect(updateStatsSpy).toHaveBeenCalledWith(
-        'grade-4',
+        'level-1',
         expect.objectContaining({
           attempts: 1,
           correct: 1,
@@ -67,7 +67,7 @@ describe('SpellingPracticeView Component', () => {
   it('handles incorrect answer by revealing the word and allowing advancement', async () => {
     render(
       <SpellingPracticeView
-        levelId="grade-4"
+        levelId="level-1"
         onBackToLevels={vi.fn()}
         onBackToHome={vi.fn()}
       />
@@ -94,14 +94,14 @@ describe('SpellingPracticeView Component', () => {
 
     render(
       <SpellingPracticeView
-        levelId="grade-4"
+        levelId="level-1"
         onBackToLevels={vi.fn()}
         onBackToHome={vi.fn()}
       />
     );
 
-    // Practice all 12 words in Grade 4
-    for (let i = 0; i < 12; i++) {
+    // Practice all 24 words in Level 1
+    for (let i = 0; i < 24; i++) {
       const input = screen.getByLabelText(/type spelling/i);
       const spokenWord = vi.mocked(speechService.speakWord).mock.calls[i][0];
       fireEvent.change(input, { target: { value: spokenWord } });
@@ -110,15 +110,15 @@ describe('SpellingPracticeView Component', () => {
 
     // Expect completion screen to be visible
     expect(await screen.findByText(/Level Complete!/i)).toBeInTheDocument();
-    expect(screen.getByText(/12 \/ 12/i)).toBeInTheDocument();
+    expect(screen.getByText(/24 \/ 24/i)).toBeInTheDocument();
     expect(screen.getByText(/Time:/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /practice again/i })).toBeInTheDocument();
 
     expect(recordRunSpy).toHaveBeenCalledWith(
-      'grade-4',
+      'level-1',
       expect.objectContaining({
-        correctCount: 12,
-        totalWords: 12,
+        correctCount: 24,
+        totalWords: 24,
       })
     );
   });

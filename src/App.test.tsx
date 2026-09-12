@@ -112,10 +112,10 @@ describe('FlashMath App Integration', () => {
 
     // Level select screen
     expect(screen.getByText(/Spelling Levels/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /4th grade words/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /level 1 words/i })).toBeInTheDocument();
 
-    // Select 4th Grade Words
-    fireEvent.click(screen.getByRole('button', { name: /4th grade words/i }));
+    // Select Level 1 Words
+    fireEvent.click(screen.getByRole('button', { name: /level 1 words/i }));
 
     // Now in SpellingPracticeView
     expect(screen.getByText(/Word 1 of/i)).toBeInTheDocument();
@@ -123,7 +123,7 @@ describe('FlashMath App Integration', () => {
 
     // Submit an answer
     const input = screen.getByLabelText(/type spelling here/i);
-    fireEvent.change(input, { target: { value: 'calendar' } });
+    fireEvent.change(input, { target: { value: 'thank' } });
     fireEvent.keyDown(input, { key: 'Enter' });
 
     // Navigate back to levels

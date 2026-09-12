@@ -20,7 +20,7 @@ export interface SpellingSession {
 }
 
 export function getSpellingLevelById(levelId: string): SpellingLevel | undefined {
-  return SPELLING_LEVELS.find((lvl) => lvl.id === levelId);
+  return SPELLING_LEVELS.find((lvl) => lvl.id === levelId) || SPELLING_LEVELS[0];
 }
 
 export function evaluateSpellingAnswer(userInput: string, targetWord: string): boolean {

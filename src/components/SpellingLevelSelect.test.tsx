@@ -19,13 +19,13 @@ describe('SpellingLevelSelect Component', () => {
       />
     );
 
-    expect(screen.getByText(/4th Grade Words/i)).toBeInTheDocument();
-    expect(screen.getByText(/\d+ words/i)).toBeInTheDocument();
+    expect(screen.getByText(/Level 1 Words/i)).toBeInTheDocument();
+    expect(screen.getByText(/24 words/i)).toBeInTheDocument();
   });
 
   it('displays persistent level stats when available', () => {
     spellingStorage.saveLevelStats({
-      levelId: 'grade-4',
+      levelId: 'level-1',
       totalAttempts: 20,
       correctCount: 18,
       bestStreak: 12,
@@ -53,10 +53,10 @@ describe('SpellingLevelSelect Component', () => {
       />
     );
 
-    const levelBtn = screen.getByRole('button', { name: /4th grade words/i });
+    const levelBtn = screen.getByRole('button', { name: /level 1 words/i });
     fireEvent.click(levelBtn);
 
-    expect(handleSelect).toHaveBeenCalledWith('grade-4');
+    expect(handleSelect).toHaveBeenCalledWith('level-1');
   });
 
   it('calls onBackToHome when clicking the back button', () => {
