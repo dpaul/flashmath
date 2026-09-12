@@ -11,12 +11,12 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
 
   if (runs.length < 2) {
     return (
-      <div className="w-full p-8 rounded-3xl bg-slate-900/60 border border-slate-800 flex flex-col items-center justify-center text-center">
-        <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-3 border border-indigo-500/20">
+      <div className="w-full p-8 rounded-3xl bg-white tactile-card border border-[#ede5d0] flex flex-col items-center justify-center text-center">
+        <div className="w-12 h-12 rounded-2xl bg-zen-amber/15 text-zen-amber flex items-center justify-center mb-3 border border-zen-amber/30">
           <LineChart className="w-6 h-6" />
         </div>
-        <h3 className="text-base font-bold text-slate-200">Score Trend Graph</h3>
-        <p className="text-sm text-slate-400 mt-1 max-w-sm">
+        <h3 className="text-base font-bold text-zen-base03">Score Trend Graph</h3>
+        <p className="text-sm text-zen-base00 mt-1 max-w-sm">
           Complete at least 2 challenges to visualize your arithmetic speed and score progression over time!
         </p>
       </div>
@@ -59,20 +59,20 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
   const activeCoord = activeRunIndex !== null ? coords[activeRunIndex] : null;
 
   return (
-    <div className="w-full p-6 rounded-3xl bg-slate-900/80 border border-slate-800 flex flex-col relative select-none">
+    <div className="w-full p-6 rounded-3xl bg-white tactile-card border border-[#ede5d0] flex flex-col relative select-none">
       {/* Chart Header */}
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2 text-indigo-400 font-bold text-sm">
+        <div className="flex items-center gap-2 text-zen-terracotta font-bold text-sm">
           <TrendingUp className="w-4 h-4" />
           <span>Score Progression</span>
         </div>
 
         <div className="flex items-center gap-4 text-xs font-mono">
-          <span className="text-slate-400">
-            Avg: <strong className="text-indigo-300 font-bold">{avgScore}</strong>
+          <span className="text-zen-base00">
+            Avg: <strong className="text-zen-base03 font-bold">{avgScore}</strong>
           </span>
-          <span className="text-slate-400">
-            Peak: <strong className="text-emerald-300 font-bold">{Math.max(...scores)}</strong>
+          <span className="text-zen-base00">
+            Peak: <strong className="text-zen-green font-bold">{Math.max(...scores)}</strong>
           </span>
         </div>
       </div>
@@ -87,8 +87,8 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
         >
           <defs>
             <linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.35" />
-              <stop offset="100%" stopColor="#6366f1" stopOpacity="0.0" />
+              <stop offset="0%" stopColor="#cb4b16" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#cb4b16" stopOpacity="0.0" />
             </linearGradient>
           </defs>
 
@@ -103,7 +103,7 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
                   y1={y}
                   x2={svgWidth - padRight}
                   y2={y}
-                  stroke="#334155"
+                  stroke="#e6dec7"
                   strokeDasharray="4 4"
                   strokeWidth="1"
                 />
@@ -111,7 +111,7 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
                   x={padLeft - 8}
                   y={y + 4}
                   textAnchor="end"
-                  fill="#64748b"
+                  fill="#93a1a1"
                   className="text-[10px] font-mono"
                 >
                   {val}
@@ -126,10 +126,10 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
             y1={avgY}
             x2={svgWidth - padRight}
             y2={avgY}
-            stroke="#818cf8"
+            stroke="#b58900"
             strokeDasharray="2 2"
             strokeWidth="1.5"
-            opacity="0.6"
+            opacity="0.75"
           />
 
           {/* Area Fill */}
@@ -138,7 +138,7 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
           {/* Score Line */}
           <polyline
             fill="none"
-            stroke="#6366f1"
+            stroke="#cb4b16"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -172,8 +172,8 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
                   r={isSelected ? 6 : 4}
                   className={`transition-all duration-150 ${
                     isSelected
-                      ? 'fill-indigo-400 stroke-white stroke-2'
-                      : 'fill-indigo-600 stroke-slate-900 stroke-2'
+                      ? 'fill-zen-terracotta stroke-white stroke-2'
+                      : 'fill-zen-terracotta stroke-[#fcf9f2] stroke-2'
                   }`}
                   pointerEvents="none"
                 />
@@ -185,20 +185,20 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
         {/* Hover Floating Tooltip */}
         {activeCoord && (
           <div
-            className="absolute z-20 pointer-events-none transform -translate-x-1/2 -translate-y-full px-3 py-2 rounded-xl bg-slate-950 border border-indigo-500/50 shadow-2xl text-xs font-mono text-white transition-all duration-100"
+            className="absolute z-20 pointer-events-none transform -translate-x-1/2 -translate-y-full px-3 py-2 rounded-xl bg-zen-base03 border border-zen-base02 shadow-2xl text-xs font-mono text-white transition-all duration-100"
             style={{
               left: `${(activeCoord.x / svgWidth) * 100}%`,
               top: `${(activeCoord.y / svgHeight) * 100}%`,
               marginTop: '-10px',
             }}
           >
-            <div className="font-bold text-indigo-300">
+            <div className="font-bold text-zen-amber">
               {activeCoord.run.score} solved
             </div>
-            <div className="text-[11px] text-slate-300">
+            <div className="text-[11px] text-zen-base2">
               {activeCoord.run.accuracyPercentage}% accuracy &bull; {activeCoord.run.problemsPerMinute} PPM
             </div>
-            <div className="text-[10px] text-slate-500 mt-0.5">
+            <div className="text-[10px] text-zen-base1 mt-0.5">
               {new Date(activeCoord.run.timestamp).toLocaleDateString(undefined, {
                 month: 'short',
                 day: 'numeric',
@@ -210,7 +210,7 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
         )}
       </div>
 
-      <div className="mt-2 text-center text-[11px] text-slate-500">
+      <div className="mt-2 text-center text-[11px] text-zen-base01">
         Hover or tap points to inspect individual sprint details
       </div>
     </div>

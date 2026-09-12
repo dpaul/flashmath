@@ -9,8 +9,8 @@ interface RunHistoryListProps {
 export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearRequest }) => {
   if (runs.length === 0) {
     return (
-      <div className="bg-slate-800/80 border border-slate-700/60 rounded-2xl p-8 text-center shadow-lg">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-700/50 flex items-center justify-center text-slate-400">
+      <div className="bg-white tactile-card border border-[#ede5d0] rounded-2xl p-8 text-center">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-zen-base2 flex items-center justify-center text-zen-base01">
           <svg
             className="w-8 h-8"
             fill="none"
@@ -26,8 +26,8 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearReq
             />
           </svg>
         </div>
-        <h3 className="text-xl font-bold text-white mb-2">No sprint history yet</h3>
-        <p className="text-slate-400 max-w-sm mx-auto text-sm leading-relaxed">
+        <h3 className="text-xl font-bold text-zen-base03 mb-2">No sprint history yet</h3>
+        <p className="text-zen-base00 max-w-sm mx-auto text-sm leading-relaxed">
           Complete a 3-minute sprint to start tracking your progress, accuracy, and score trends!
         </p>
       </div>
@@ -60,9 +60,9 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearReq
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between px-1">
-        <h3 className="text-lg font-bold text-white flex items-center gap-2">
+        <h3 className="text-lg font-bold text-zen-base03 flex items-center gap-2">
           <span>Sprint History</span>
-          <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-700/80 text-slate-300 font-medium">
+          <span className="text-xs px-2.5 py-0.5 rounded-full bg-zen-base2 text-zen-base02 font-medium">
             {runs.length} {runs.length === 1 ? 'run' : 'runs'}
           </span>
         </h3>
@@ -70,7 +70,7 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearReq
           <button
             type="button"
             onClick={onClearRequest}
-            className="text-xs font-semibold text-rose-400 hover:text-rose-300 transition-colors px-3 py-1.5 rounded-lg hover:bg-rose-500/10 border border-transparent hover:border-rose-500/30 flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-rose-400"
+            className="text-xs font-semibold text-zen-red hover:text-zen-red/80 transition-colors px-3 py-1.5 rounded-lg hover:bg-zen-red/10 border border-transparent hover:border-zen-red/30 flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-zen-red cursor-pointer"
             aria-label="Clear sprint history"
           >
             <svg
@@ -106,31 +106,31 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearReq
               key={run.id}
               data-testid="history-run-card"
               role="listitem"
-              className={`relative bg-slate-800/90 border rounded-xl p-4 transition-all duration-200 hover:bg-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md ${
+              className={`relative bg-white tactile-card border rounded-xl p-4 transition-all duration-200 hover:bg-[#faf6ed] flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                 isPersonalBest
-                  ? 'border-amber-500/50 shadow-amber-500/5 bg-gradient-to-r from-amber-500/5 via-slate-800/90 to-slate-800/90'
-                  : 'border-slate-700/60'
+                  ? 'border-zen-amber/50 bg-gradient-to-r from-zen-amber/10 via-white to-white'
+                  : 'border-[#ede5d0]'
               }`}
             >
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-xl bg-slate-900/80 border border-slate-700/60 flex flex-col items-center justify-center shrink-0">
-                  <span className="text-xl font-black text-emerald-400 leading-none">
+                <div className="w-14 h-14 rounded-xl bg-[#f7f0e0] border border-[#eee4ce] flex flex-col items-center justify-center shrink-0">
+                  <span className="text-xl font-black text-zen-terracotta leading-none">
                     {run.score}
                   </span>{' '}
-                  <span className="text-[10px] uppercase font-bold text-slate-400 mt-1">
+                  <span className="text-[10px] uppercase font-bold text-zen-base01 mt-1">
                     pts
                   </span>
                 </div>
 
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-semibold text-white">
+                    <span className="text-sm font-semibold text-zen-base03">
                       {formatRunDate(run.timestamp)}
                     </span>
                     {isPersonalBest && (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-zen-amber/15 text-zen-amber border border-zen-amber/30">
                         <svg
-                          className="w-3 h-3 text-amber-400"
+                          className="w-3 h-3 text-zen-amber"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                           aria-hidden="true"
@@ -141,20 +141,20 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearReq
                       </span>
                     )}
                   </div>
-                  <div className="text-xs text-slate-400 mt-1 flex items-center gap-3">
+                  <div className="text-xs text-zen-base01 mt-1 flex items-center gap-3">
                     <span>Duration: 3m 00s</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between sm:justify-end gap-6 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-700/50">
+              <div className="flex items-center justify-between sm:justify-end gap-6 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#eee4ce]">
                 <div className="text-left sm:text-right">
-                  <div className="text-xs text-slate-400 uppercase font-semibold">Accuracy</div>
-                  <div className="text-sm font-bold text-white">{formattedAccuracy}</div>
+                  <div className="text-xs text-zen-base01 uppercase font-semibold">Accuracy</div>
+                  <div className="text-sm font-bold text-zen-base03">{formattedAccuracy}</div>
                 </div>
                 <div className="text-left sm:text-right">
-                  <div className="text-xs text-slate-400 uppercase font-semibold">Solved</div>
-                  <div className="text-sm font-bold text-cyan-400">
+                  <div className="text-xs text-zen-base01 uppercase font-semibold">Solved</div>
+                  <div className="text-sm font-bold text-zen-cyan">
                     {correct} / {total}
                   </div>
                 </div>
