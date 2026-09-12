@@ -26,9 +26,9 @@
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [027c7b3]
 
 ## Phase 3: Mode Selection, Navigation, Level Selector & Integration
-- [ ] Task: Landing Screen Mode Selector (TDD)
-  - [ ] Write component tests for selecting between Math Sprint and Spelling Practice on the landing view
-  - [ ] Update `StartScreen.tsx` or create `ModeSelector.tsx` to clearly separate Math and Spelling modes
+- [x] Task: Landing Screen Mode Selector (TDD) [56af5ca]
+  - [x] Write component tests for selecting between Math Sprint and Spelling Practice on the landing view
+  - [x] Update `StartScreen.tsx` or create `ModeSelector.tsx` to clearly separate Math and Spelling modes
 - [ ] Task: Level Selection Screen (TDD)
   - [ ] Write component tests for rendering configured levels and their stats (accuracy, best streak)
   - [ ] Implement `SpellingLevelSelect.tsx` showing level cards and summary stats from `localStorage`
