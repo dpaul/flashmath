@@ -17,9 +17,9 @@
 - [x] Task: Spelling Card & Audio Controls Component (TDD) [3c410cb]
   - [x] Write component tests for word pronunciation trigger, "Repeat Word" button, and audio replay keyboard shortcut
   - [x] Implement `SpellingCard.tsx` with clean audio trigger, status indicator, and Zen aesthetic
-- [ ] Task: Spelling Answer Input & Feedback Component (TDD)
-  - [ ] Write component tests for input auto-focus, submission on Enter, correct feedback, and incorrect reveal state
-  - [ ] Implement `SpellingInput.tsx` supporting case-insensitive checking, trim, visual feedback, and reveal view on incorrect attempt
+- [x] Task: Spelling Answer Input & Feedback Component (TDD) [c81ffcb]
+  - [x] Write component tests for input auto-focus, submission on Enter, correct feedback, and incorrect reveal state
+  - [x] Implement `SpellingInput.tsx` supporting case-insensitive checking, trim, visual feedback, and reveal view on incorrect attempt
 - [ ] Task: Spelling Practice Container & Session Loop (TDD)
   - [ ] Write component tests for complete drill loop (fetch random word, submit answer, update level stats, next word)
   - [ ] Implement `SpellingPracticeView.tsx` orchestrating card, input, audio replay, streak counter, and exit button
