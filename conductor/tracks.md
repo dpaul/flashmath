@@ -17,6 +17,6 @@
   *Link: [./tracks/zen_redesign_20260912/index.md](./tracks/zen_redesign_20260912/index.md)*
 
 ---
-- [~] **Track: Spelling Practice Mode with Speech Synthesis**
+- [x] **Track: Spelling Practice Mode with Speech Synthesis**
   *Link: [./tracks/spelling_mode_20260912/index.md](./tracks/spelling_mode_20260912/index.md)*
 
