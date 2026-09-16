@@ -27,7 +27,10 @@ export function getStorageKeyForLevel(levelId: string): string {
 
 export function loadLevelStats(levelId: string): SpellingLevelStats {
   try {
-    const raw = localStorage.getItem(getStorageKeyForLevel(levelId));
+    let raw = localStorage.getItem(getStorageKeyForLevel(levelId));
+    if (!raw && levelId === '2026-09-12') {
+      raw = localStorage.getItem(getStorageKeyForLevel('level-1'));
+    }
     if (!raw) {
       return {
         levelId,

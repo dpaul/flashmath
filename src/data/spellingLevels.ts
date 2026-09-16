@@ -4,15 +4,17 @@ export interface SpellingLevel {
   description: string;
   difficultyLabel: string;
   words: string[];
+  date?: string;
   sentences?: Record<string, string>;
 }
 
 export const SPELLING_LEVELS: SpellingLevel[] = [
   {
-    id: 'level-1',
-    name: 'Level 1 Words',
+    id: '2026-09-12',
+    name: 'September 12, 2026',
     description: 'Essential core spelling words and phonics patterns.',
-    difficultyLabel: 'Level 1',
+    difficultyLabel: 'Sep 12, 2026',
+    date: '2026-09-12',
     words: [
       'thank',
       'chief',
@@ -66,6 +68,65 @@ export const SPELLING_LEVELS: SpellingLevel[] = [
       stain: 'Wipe the spill quickly so it does not stain.',
     },
   },
+  {
+    id: '2026-09-15',
+    name: 'September 15, 2026',
+    description: 'Prefixes (post-, pre-, fore-, after-) and root word spelling.',
+    difficultyLabel: 'Sep 15, 2026',
+    date: '2026-09-15',
+    words: [
+      'postwar',
+      'afternoon',
+      'precede',
+      'postseason',
+      'foretell',
+      'afterword',
+      'foresight',
+      'foreman',
+      'preface',
+      'foreward',
+      'forefathers',
+      'postdate',
+      'aftertaste',
+      'prewar',
+      'afterthought',
+      'postpone',
+      'preseason',
+      'prepare',
+      'posttest',
+      'forethought',
+      'prefix',
+      'predict',
+      'preposition',
+      'prehistoric',
+    ],
+    sentences: {
+      postwar: 'The country rebuilt its economy during the postwar period.',
+      afternoon: 'We played soccer in the park on Saturday afternoon.',
+      precede: 'Dark clouds often precede a heavy rainstorm.',
+      postseason: 'Our baseball team played hard to make the postseason.',
+      foretell: 'Nobody can foretell the future with complete certainty.',
+      afterword: 'The author wrote an afterword to explain the book.',
+      foresight: 'She had the foresight to pack an umbrella before the storm.',
+      foreman: 'The construction foreman inspected the new building site.',
+      preface: 'The author included an introduction in the preface of the book.',
+      foreward: 'He read the foreward at the beginning of the book.',
+      forefathers: 'Our forefathers worked hard to build this nation.',
+      postdate: 'Please do not postdate the check for next month.',
+      aftertaste: 'The mint candy left a refreshing aftertaste.',
+      prewar: 'The museum displayed antique cars from the prewar era.',
+      afterthought: 'He added a postscript to the letter as an afterthought.',
+      postpone: 'We had to postpone the outdoor picnic due to rain.',
+      preseason: 'The team practiced conditioning during the preseason.',
+      prepare: 'Students must prepare thoroughly for the upcoming exam.',
+      posttest: 'We took a posttest to measure what we learned.',
+      forethought: 'With a little forethought, we avoided making mistakes.',
+      prefix: 'The letters un- form a common prefix meaning not.',
+      predict: 'Scientists can predict the weather by studying storm patterns.',
+      preposition: 'The word in is a common preposition of place.',
+      prehistoric: 'Dinosaurs roamed the earth in prehistoric times.',
+    },
+  },
 ];
 
 export function getExampleSentence(word: string, levelId?: string): string | undefined {
@@ -73,7 +134,10 @@ export function getExampleSentence(word: string, levelId?: string): string | und
   const normalized = word.trim().toLowerCase();
 
   if (levelId) {
-    const level = SPELLING_LEVELS.find((lvl) => lvl.id === levelId);
+    const level =
+      SPELLING_LEVELS.find((lvl) => lvl.id === levelId) ||
+      (levelId === 'level-1' ? SPELLING_LEVELS[0] : undefined) ||
+      (levelId === 'level-2' ? SPELLING_LEVELS[1] : undefined);
     if (level?.sentences?.[normalized]) {
       return level.sentences[normalized];
     }
@@ -87,4 +151,5 @@ export function getExampleSentence(word: string, levelId?: string): string | und
 
   return undefined;
 }
+
 

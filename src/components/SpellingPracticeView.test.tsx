@@ -20,13 +20,13 @@ describe('SpellingPracticeView Component', () => {
   it('renders level info, automatically speaks word on mount, and allows manual replay', () => {
     render(
       <SpellingPracticeView
-        levelId="level-1"
+        levelId="2026-09-12"
         onBackToLevels={vi.fn()}
         onBackToHome={vi.fn()}
       />
     );
 
-    expect(screen.getByText(/Level 1 Words/i)).toBeInTheDocument();
+    expect(screen.getByText(/September 12, 2026/i)).toBeInTheDocument();
     expect(speechService.speakWord).toHaveBeenCalled();
 
     const replayBtn = screen.getByRole('button', { name: /repeat word|listen to word/i });

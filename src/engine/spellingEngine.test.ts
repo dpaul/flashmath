@@ -99,15 +99,31 @@ describe('Spelling Engine & Level Configuration', () => {
     expect(session.elapsedSeconds).toBeGreaterThanOrEqual(0);
   });
 
-  it('provides an example sentence for every word in level 1', () => {
-    const level1 = getSpellingLevelById('level-1')!;
-    expect(level1).toBeDefined();
-    level1.words.forEach((word) => {
-      const sentence = getExampleSentence(word, 'level-1');
+  it('provides an example sentence for every word in September 12 and September 15 lists', () => {
+    const list1 = getSpellingLevelById('2026-09-12')!;
+    expect(list1).toBeDefined();
+    expect(list1.words).toHaveLength(24);
+    list1.words.forEach((word) => {
+      const sentence = getExampleSentence(word, '2026-09-12');
       expect(sentence).toBeDefined();
-      expect(typeof sentence).toBe('string');
       expect(sentence!.toLowerCase()).toContain(word.toLowerCase());
     });
+
+    const list2 = getSpellingLevelById('2026-09-15')!;
+    expect(list2).toBeDefined();
+    expect(list2.words).toHaveLength(24);
+    list2.words.forEach((word) => {
+      const sentence = getExampleSentence(word, '2026-09-15');
+      expect(sentence).toBeDefined();
+      expect(sentence!.toLowerCase()).toContain(word.toLowerCase());
+    });
+  });
+
+  it('supports retrieval by date-based IDs and legacy aliases', () => {
+    expect(getSpellingLevelById('2026-09-12')?.name).toBe('September 12, 2026');
+    expect(getSpellingLevelById('level-1')?.name).toBe('September 12, 2026');
+    expect(getSpellingLevelById('2026-09-15')?.name).toBe('September 15, 2026');
+    expect(getSpellingLevelById('level-2')?.name).toBe('September 15, 2026');
   });
 
   it('masks the target word correctly in an example sentence', () => {

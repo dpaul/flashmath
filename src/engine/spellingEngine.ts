@@ -20,6 +20,8 @@ export interface SpellingSession {
 }
 
 export function getSpellingLevelById(levelId: string): SpellingLevel | undefined {
+  if (levelId === 'level-1') return SPELLING_LEVELS[0];
+  if (levelId === 'level-2') return SPELLING_LEVELS[1];
   return SPELLING_LEVELS.find((lvl) => lvl.id === levelId) || SPELLING_LEVELS[0];
 }
 

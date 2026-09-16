@@ -19,13 +19,14 @@ describe('SpellingLevelSelect Component', () => {
       />
     );
 
-    expect(screen.getByText(/Level 1 Words/i)).toBeInTheDocument();
-    expect(screen.getByText(/24 words/i)).toBeInTheDocument();
+    expect(screen.getByText(/September 12, 2026/i)).toBeInTheDocument();
+    expect(screen.getByText(/September 15, 2026/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/24 words/i)).toHaveLength(2);
   });
 
   it('displays persistent level stats when available', () => {
     spellingStorage.saveLevelStats({
-      levelId: 'level-1',
+      levelId: '2026-09-12',
       totalAttempts: 20,
       correctCount: 18,
       bestStreak: 12,
@@ -53,10 +54,10 @@ describe('SpellingLevelSelect Component', () => {
       />
     );
 
-    const levelBtn = screen.getByRole('button', { name: /level 1 words/i });
+    const levelBtn = screen.getByRole('button', { name: /September 12, 2026/i });
     fireEvent.click(levelBtn);
 
-    expect(handleSelect).toHaveBeenCalledWith('level-1');
+    expect(handleSelect).toHaveBeenCalledWith('2026-09-12');
   });
 
   it('calls onBackToHome when clicking the back button', () => {

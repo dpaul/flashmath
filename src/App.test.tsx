@@ -112,10 +112,10 @@ describe('FlashMath App Integration', () => {
 
     // Level select screen
     expect(screen.getByText(/Spelling Levels/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /level 1 words/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /September 12, 2026/i })).toBeInTheDocument();
 
-    // Select Level 1 Words
-    fireEvent.click(screen.getByRole('button', { name: /level 1 words/i }));
+    // Select September 12, 2026 list
+    fireEvent.click(screen.getByRole('button', { name: /September 12, 2026/i }));
 
     // Now in SpellingPracticeView
     expect(screen.getByText(/Word 1 of/i)).toBeInTheDocument();

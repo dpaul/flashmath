@@ -26,7 +26,7 @@ export const App: React.FC = () => {
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
   const [inputValue, setInputValue] = useState('');
   const [activeView, setActiveView] = useState<ActiveAppView>('mode-select');
-  const [selectedSpellingLevelId, setSelectedSpellingLevelId] = useState<string>('level-1');
+  const [selectedSpellingLevelId, setSelectedSpellingLevelId] = useState<string>('2026-09-12');
   const [recentProblems, setRecentProblems] = useState<SolvedProblemRecord[]>([]);
 
   // Stable tick callback
