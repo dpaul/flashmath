@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import { Flame, Volume2, MessageSquareQuote } from 'lucide-react';
-import { FuzzyParticles, AmbientSmoke } from './FuzzyParticles';
 import { maskWordInSentence } from '../engine/spellingEngine';
 
 export interface SpellingCardProps {
@@ -18,11 +17,10 @@ export interface SpellingCardProps {
   children?: React.ReactNode;
 }
 
-export const SpellingCard: React.FC<SpellingCardProps> = ({
+export const SpellingCard: React.FC<SpellingCardProps> = memo(({
   word,
   streak,
   lastAttemptCorrect,
-  submissionCount = 0,
   cardNumber = 1,
   levelName,
   onSpeak,
@@ -59,26 +57,11 @@ export const SpellingCard: React.FC<SpellingCardProps> = ({
 
   return (
     <div className="relative w-full max-w-md sm:max-w-xl mx-auto my-2 overflow-visible">
-      {/* Ambient smoke */}
-      <AmbientSmoke
-        streak={streak}
-        status={lastAttemptCorrect === false ? 'incorrect' : 'correct'}
-      />
-
-      {/* Burst particles on feedback */}
-      {lastAttemptCorrect !== null && (
-        <FuzzyParticles
-          key={`burst-${submissionCount}-${lastAttemptCorrect}`}
-          type={lastAttemptCorrect ? 'correct' : 'incorrect'}
-          streak={streak}
-        />
-      )}
-
       {/* White tactile paper card */}
       <div
         role="region"
         aria-label={`Spelling card for level ${levelName}`}
-        className={`relative z-20 w-full tactile-card rounded-3xl p-6 sm:p-10 transition-all duration-200 overflow-visible ${getFeedbackBorder()}`}
+        className={`relative z-20 w-full tactile-card rounded-3xl p-6 sm:p-10 transition-colors duration-150 overflow-visible ${getFeedbackBorder()}`}
       >
         {/* Top Card Meta */}
         <div className="relative z-20 flex justify-between items-center mb-5">
@@ -144,4 +127,7 @@ export const SpellingCard: React.FC<SpellingCardProps> = ({
       </div>
     </div>
   );
-};
+});
+
+SpellingCard.displayName = 'SpellingCard';
+

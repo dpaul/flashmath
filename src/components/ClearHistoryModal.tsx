@@ -30,7 +30,7 @@ export const ClearHistoryModal: React.FC<ClearHistoryModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zen-base03/50 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zen-base03/60 animate-fadeIn"
       onClick={onCancel}
     >
       <div

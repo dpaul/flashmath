@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import {
   ArrowLeft,
   CheckCircle2,
@@ -57,7 +57,10 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
   const startTimeRef = useRef<number>(Date.now());
   const hasRecordedCompletionRef = useRef(false);
 
-  const currentSentence = getExampleSentence(session.currentWord, session.levelId);
+  const currentSentence = useMemo(
+    () => getExampleSentence(session.currentWord, session.levelId),
+    [session.currentWord, session.levelId]
+  );
 
   // Timer effect while session is active
   useEffect(() => {
@@ -306,7 +309,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
   return (
     <main className="w-full max-w-4xl mx-auto flex flex-col items-center justify-between min-h-[calc(100vh-6rem)] py-2 sm:py-6 select-none animate-fadeIn">
       {/* Top Status & Navigation Bar */}
-      <div className="w-full flex items-center justify-between px-4 sm:px-8 py-3 mb-2 rounded-2xl bg-white/60 border border-[rgba(7,54,66,0.06)] shadow-sm backdrop-blur-sm">
+      <div className="w-full flex items-center justify-between px-4 sm:px-8 py-3 mb-2 rounded-2xl bg-white/95 border border-[rgba(7,54,66,0.06)] shadow-sm">
         <button
           type="button"
           onClick={onBackToLevels}

@@ -136,15 +136,24 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#fcf9f2] text-[#073642] flex flex-col justify-between selection:bg-amber-100 selection:text-[#cb4b16] antialiased relative overflow-x-hidden font-sans">
-      {/* Subtle ambient stationery background tints */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-35 z-0">
-        <div className="absolute -top-24 -left-20 w-96 h-96 rounded-full bg-[#faecd0] filter blur-3xl" />
-        <div className="absolute top-1/3 -right-24 w-[32rem] h-[32rem] rounded-full bg-[#e3f4f1] filter blur-3xl" />
-        <div className="absolute -bottom-20 left-1/4 w-[28rem] h-[28rem] rounded-full bg-[#ffeedd] filter blur-3xl" />
+      {/* Subtle Background Glow Elements - Optimized with zero-cost radial gradients */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30 z-0">
+        <div
+          className="absolute -top-24 -left-20 w-96 h-96 rounded-full"
+          style={{ background: 'radial-gradient(circle, #faecd0 0%, transparent 70%)' }}
+        />
+        <div
+          className="absolute top-1/3 -right-24 w-[32rem] h-[32rem] rounded-full"
+          style={{ background: 'radial-gradient(circle, #e3f4f1 0%, transparent 70%)' }}
+        />
+        <div
+          className="absolute -bottom-20 left-1/4 w-[28rem] h-[28rem] rounded-full"
+          style={{ background: 'radial-gradient(circle, #ffeedd 0%, transparent 70%)' }}
+        />
       </div>
 
       {/* Top Zen Header */}
-      <header className="w-full relative z-30 bg-[#fcf9f2]/80 backdrop-blur-sm border-b border-[#e4d9c7]/70 py-3.5 px-6">
+      <header className="w-full relative z-30 bg-[#fcf9f2] border-b border-[#e4d9c7]/70 py-3.5 px-6">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <button
             type="button"

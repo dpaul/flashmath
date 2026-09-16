@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, memo } from 'react';
 import { CornerDownLeft, ArrowRight } from 'lucide-react';
 
 export interface SpellingInputProps {
@@ -10,7 +10,7 @@ export interface SpellingInputProps {
   disabled?: boolean;
 }
 
-export const SpellingInput: React.FC<SpellingInputProps> = ({
+export const SpellingInput: React.FC<SpellingInputProps> = memo(({
   targetWord,
   onSubmit,
   onNextWord,
@@ -76,7 +76,7 @@ export const SpellingInput: React.FC<SpellingInputProps> = ({
         </div>
       ) : (
         <div className="w-full flex items-center justify-center gap-2.5">
-          <div className="relative flex-1 max-w-sm h-14 sm:h-16 px-4 rounded-2xl bg-[#f7f0e0] border-2 border-[#2aa198]/60 flex items-center shadow-inner focus-within:ring-4 focus-within:ring-[#2aa198]/20 focus-within:border-[#2aa198] transition-all">
+          <div className="relative flex-1 max-w-sm h-14 sm:h-16 px-4 rounded-2xl bg-[#f7f0e0] border-2 border-[#2aa198]/60 flex items-center shadow-inner focus-within:ring-4 focus-within:ring-[#2aa198]/20 focus-within:border-[#2aa198] transition-colors duration-100">
             <input
               ref={inputRef}
               id="spelling-word-input"
@@ -100,7 +100,7 @@ export const SpellingInput: React.FC<SpellingInputProps> = ({
             onClick={handleSubmitClick}
             disabled={disabled || value.trim() === ''}
             aria-label="Check Spelling"
-            className="h-14 sm:h-16 px-4 rounded-2xl bg-[#2aa198] hover:bg-[#258b83] active:bg-[#1e726b] disabled:bg-[#eee8d5] disabled:text-[#93a1a1] text-white font-bold transition-all shadow-md active:scale-95 disabled:scale-100 disabled:shadow-none cursor-pointer disabled:cursor-not-allowed flex items-center justify-center"
+            className="h-14 sm:h-16 px-4 rounded-2xl bg-[#2aa198] hover:bg-[#258b83] active:bg-[#1e726b] disabled:bg-[#eee8d5] disabled:text-[#93a1a1] text-white font-bold transition-colors duration-100 shadow-md active:scale-95 disabled:scale-100 disabled:shadow-none cursor-pointer disabled:cursor-not-allowed flex items-center justify-center"
           >
             <CornerDownLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             <span className="hidden sm:inline ml-1.5 text-xs font-sans uppercase font-bold">
@@ -111,4 +111,7 @@ export const SpellingInput: React.FC<SpellingInputProps> = ({
       )}
     </div>
   );
-};
+});
+
+SpellingInput.displayName = 'SpellingInput';
+

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Flame } from 'lucide-react';
 import { MultiplicationProblem } from '../engine/math';
 import { FuzzyParticles, AmbientSmoke } from './FuzzyParticles';
@@ -12,7 +12,7 @@ interface FlashcardProps {
   children?: React.ReactNode;
 }
 
-export const Flashcard: React.FC<FlashcardProps> = ({
+export const Flashcard: React.FC<FlashcardProps> = memo(({
   problem,
   streak,
   lastAnswerCorrect,
@@ -54,7 +54,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({
         role="region"
         aria-label={`Problem: ${problem.factorA} times ${problem.factorB}`}
         aria-live="polite"
-        className={`relative z-20 w-full tactile-card rounded-3xl p-6 sm:p-10 transition-all duration-200 overflow-visible ${getFeedbackBorder()}`}
+        className={`relative z-20 w-full tactile-card rounded-3xl p-6 sm:p-10 transition-colors duration-150 overflow-visible ${getFeedbackBorder()}`}
       >
         {/* Top Card Meta: Card Counter & Streak Indicator */}
         <div className="relative z-20 flex justify-between items-center mb-3">
@@ -95,4 +95,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({
       </div>
     </div>
   );
-};
+});
+
+Flashcard.displayName = 'Flashcard';
+
