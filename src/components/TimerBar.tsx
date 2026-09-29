@@ -25,21 +25,33 @@ export const TimerBar: React.FC<TimerBarProps> = ({ timeRemaining }) => {
       <span className="sr-only">Time Remaining</span>
       <Timer
         className={`w-6 h-6 transition-colors ${
-          isUrgent ? 'text-[#ba1a1a] animate-spin' : isWarning ? 'text-[#b58900]' : 'text-[#cb4b16]'
+          isUrgent
+            ? 'text-[#ba1a1a] dark:text-[#ef837b] animate-spin'
+            : isWarning
+            ? 'text-[#b58900] dark:text-[#eed082]'
+            : 'text-[#cb4b16] dark:text-[#eb937d]'
         }`}
       />
       <div>
         <div
-          className={`font-mono text-xl sm:text-2xl font-bold text-[#073642] leading-none tabular-nums ${
-            isUrgent ? 'text-[#ba1a1a] animate-pulse' : isWarning ? 'text-[#b58900]' : ''
+          className={`font-mono text-xl sm:text-2xl font-bold text-[#073642] dark:text-[#eceff1] leading-none tabular-nums ${
+            isUrgent
+              ? 'text-[#ba1a1a] dark:text-[#ef837b] animate-pulse'
+              : isWarning
+              ? 'text-[#b58900] dark:text-[#eed082]'
+              : ''
           }`}
         >
           {formatted}
         </div>
-        <div className="w-28 sm:w-36 h-1.5 bg-[#ebdccb] rounded-full overflow-hidden mt-1.5">
+        <div className="w-28 sm:w-36 h-1.5 bg-[#ebdccb] dark:bg-[#181b1e] rounded-full overflow-hidden mt-1.5">
           <div
             className={`h-full rounded-full transition-all duration-300 ${
-              isUrgent ? 'bg-[#ba1a1a]' : isWarning ? 'bg-[#b58900]' : 'bg-[#cb4b16]'
+              isUrgent
+                ? 'bg-[#ba1a1a] dark:bg-[#ef837b]'
+                : isWarning
+                ? 'bg-[#b58900] dark:bg-[#eed082]'
+                : 'bg-[#cb4b16] dark:bg-[#eb937d]'
             }`}
             style={{ width: `${progressPercent}%` }}
           />

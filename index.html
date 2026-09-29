@@ -11,8 +11,21 @@
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <script>
+      (function() {
+        try {
+          var stored = localStorage.getItem('flashmath_theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (stored === 'dark' || (!stored && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body class="bg-[#fcf9f2] text-[#073642] antialiased min-h-screen selection:bg-amber-100 selection:text-[#cb4b16]">
+  <body class="bg-[#fcf9f2] text-[#073642] dark:bg-[#1a1d20] dark:text-[#eceff1] antialiased min-h-screen selection:bg-amber-100 selection:text-[#cb4b16] dark:selection:bg-[#eed082]/25 dark:selection:text-[#eed082]">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

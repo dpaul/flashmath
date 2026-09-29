@@ -47,36 +47,36 @@ export const SpellingCard: React.FC<SpellingCardProps> = memo(({
 
   const getFeedbackBorder = () => {
     if (lastAttemptCorrect === true) {
-      return 'border-[#2aa198]/25 ring-1 ring-[#2aa198]/10';
+      return 'border-[#2aa198]/25 dark:border-[#7ec7b8]/40 ring-1 ring-[#2aa198]/10 dark:ring-[#7ec7b8]/20';
     }
     if (lastAttemptCorrect === false) {
-      return 'border-[#cb4b16]/25 ring-1 ring-[#cb4b16]/10 animate-shake';
+      return 'border-[#cb4b16]/25 dark:border-[#eb937d]/40 ring-1 ring-[#cb4b16]/10 dark:ring-[#eb937d]/20 animate-shake';
     }
-    return 'border-[rgba(7,54,66,0.06)]';
+    return 'border-[rgba(7,54,66,0.06)] dark:border-[#353c43]';
   };
 
   return (
     <div className="relative w-full max-w-md sm:max-w-xl mx-auto my-2 overflow-visible">
-      {/* White tactile paper card */}
+      {/* Chalkboard Slate Tactile Card */}
       <div
         role="region"
         aria-label={`Spelling card for level ${levelName}`}
-        className={`relative z-20 w-full tactile-card rounded-3xl p-6 sm:p-10 transition-colors duration-150 overflow-visible ${getFeedbackBorder()}`}
+        className={`relative z-20 w-full tactile-card dark:bg-[#24292e] rounded-3xl p-6 sm:p-10 transition-colors duration-150 overflow-visible ${getFeedbackBorder()}`}
       >
         {/* Top Card Meta */}
         <div className="relative z-20 flex justify-between items-center mb-5">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-medium tracking-wide text-[#93a1a1]">
+            <span className="text-xs font-mono font-medium tracking-wide text-[#93a1a1] dark:text-[#94a3b8]">
               Word #{cardNumber}
             </span>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-[#eee8d5] text-[#586e75] font-semibold">
+            <span className="text-xs px-2 py-0.5 rounded-full bg-[#eee8d5] dark:bg-[#181b1e] text-[#586e75] dark:text-[#94a3b8] font-semibold border border-transparent dark:border-[#353c43]">
               {levelName}
             </span>
           </div>
 
           {streak > 0 && (
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#fdf5e2] text-[#b58900] text-xs font-bold border border-[#f0dfb3]">
-              <Flame className="w-3.5 h-3.5 text-[#b58900] fill-[#b58900]" />
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#fdf5e2] dark:bg-[#eed082]/15 text-[#b58900] dark:text-[#eed082] text-xs font-bold border border-[#f0dfb3] dark:border-[#eed082]/30">
+              <Flame className="w-3.5 h-3.5 text-[#b58900] dark:text-[#eed082] fill-[#b58900] dark:fill-[#eed082]" />
               <span>{streak} Streak</span>
             </div>
           )}
@@ -89,9 +89,9 @@ export const SpellingCard: React.FC<SpellingCardProps> = memo(({
               type="button"
               onClick={onSpeak}
               aria-label="Repeat word pronunciation"
-              className="group relative flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-2xl bg-[#eee8d5]/70 hover:bg-[#eee8d5] text-[#073642] font-semibold text-base border border-[#e4d9c7] shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
+              className="group relative flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-2xl bg-[#eee8d5]/70 dark:bg-[#181b1e] hover:bg-[#eee8d5] dark:hover:bg-[#282e34] text-[#073642] dark:text-[#eceff1] font-semibold text-base border border-[#e4d9c7] dark:border-[#353c43] shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
             >
-              <Volume2 className="w-5 h-5 text-[#2aa198] group-hover:scale-110 transition-transform" />
+              <Volume2 className="w-5 h-5 text-[#2aa198] dark:text-[#7ec7b8] group-hover:scale-110 transition-transform" />
               <span>Listen to Word</span>
             </button>
 
@@ -100,9 +100,9 @@ export const SpellingCard: React.FC<SpellingCardProps> = memo(({
                 type="button"
                 onClick={onSpeakSentence}
                 aria-label="Use it in a sentence"
-                className="group relative flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-2xl bg-[#eee8d5]/70 hover:bg-[#eee8d5] text-[#073642] font-semibold text-base border border-[#e4d9c7] shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
+                className="group relative flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-2xl bg-[#eee8d5]/70 dark:bg-[#181b1e] hover:bg-[#eee8d5] dark:hover:bg-[#282e34] text-[#073642] dark:text-[#eceff1] font-semibold text-base border border-[#e4d9c7] dark:border-[#353c43] shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
               >
-                <MessageSquareQuote className="w-5 h-5 text-[#268bd2] group-hover:scale-110 transition-transform" />
+                <MessageSquareQuote className="w-5 h-5 text-[#268bd2] dark:text-[#92b6d5] group-hover:scale-110 transition-transform" />
                 <span>Use it in a sentence</span>
               </button>
             )}
@@ -111,13 +111,13 @@ export const SpellingCard: React.FC<SpellingCardProps> = memo(({
           {showSentence && sentence && (
             <div
               data-testid="sentence-preview"
-              className="mt-4 px-4 py-2.5 rounded-xl bg-[#eee8d5]/60 border border-[#e4d9c7] text-[#586e75] text-sm text-center italic animate-fadeIn max-w-md shadow-xs"
+              className="mt-4 px-4 py-2.5 rounded-xl bg-[#eee8d5]/60 dark:bg-[#181b1e] border border-[#e4d9c7] dark:border-[#353c43] text-[#586e75] dark:text-[#94a3b8] text-sm text-center italic animate-fadeIn max-w-md shadow-xs"
             >
               &ldquo;{isRevealingWord ? sentence : maskWordInSentence(sentence, word)}&rdquo;
             </div>
           )}
 
-          <span className="mt-2 text-xs text-[#93a1a1]">Click buttons or press spacebar anytime</span>
+          <span className="mt-2 text-xs text-[#93a1a1] dark:text-[#718093]">Click buttons or press spacebar anytime</span>
         </div>
 
         {/* Input well area */}

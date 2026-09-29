@@ -9,8 +9,8 @@ interface RunHistoryListProps {
 export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearRequest }) => {
   if (runs.length === 0) {
     return (
-      <div className="bg-white tactile-card border border-[#ede5d0] rounded-2xl p-8 text-center">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-zen-base2 flex items-center justify-center text-zen-base01">
+      <div className="bg-white dark:bg-[#24292e] tactile-card border border-[#ede5d0] dark:border-[#353c43] rounded-2xl p-8 text-center">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-zen-base2 dark:bg-[#181b1e] flex items-center justify-center text-zen-base01 dark:text-[#94a3b8]">
           <svg
             className="w-8 h-8"
             fill="none"
@@ -26,8 +26,8 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearReq
             />
           </svg>
         </div>
-        <h3 className="text-xl font-bold text-zen-base03 mb-2">No sprint history yet</h3>
-        <p className="text-zen-base00 max-w-sm mx-auto text-sm leading-relaxed">
+        <h3 className="text-xl font-bold text-zen-base03 dark:text-[#eceff1] mb-2">No sprint history yet</h3>
+        <p className="text-zen-base00 dark:text-[#94a3b8] max-w-sm mx-auto text-sm leading-relaxed">
           Complete a 3-minute sprint to start tracking your progress, accuracy, and score trends!
         </p>
       </div>
@@ -60,9 +60,9 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearReq
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between px-1">
-        <h3 className="text-lg font-bold text-zen-base03 flex items-center gap-2">
+        <h3 className="text-lg font-bold text-zen-base03 dark:text-[#eceff1] flex items-center gap-2">
           <span>Sprint History</span>
-          <span className="text-xs px-2.5 py-0.5 rounded-full bg-zen-base2 text-zen-base02 font-medium">
+          <span className="text-xs px-2.5 py-0.5 rounded-full bg-zen-base2 dark:bg-[#181b1e] text-zen-base02 dark:text-[#94a3b8] font-medium">
             {runs.length} {runs.length === 1 ? 'run' : 'runs'}
           </span>
         </h3>
@@ -70,7 +70,7 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearReq
           <button
             type="button"
             onClick={onClearRequest}
-            className="text-xs font-semibold text-zen-red hover:text-zen-red/80 transition-colors px-3 py-1.5 rounded-lg hover:bg-zen-red/10 border border-transparent hover:border-zen-red/30 flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-zen-red cursor-pointer"
+            className="text-xs font-semibold text-zen-red dark:text-[#ef837b] hover:text-zen-red/80 dark:hover:text-[#ef837b]/80 transition-colors px-3 py-1.5 rounded-lg hover:bg-zen-red/10 dark:hover:bg-[#ef837b]/10 border border-transparent hover:border-zen-red/30 dark:hover:border-[#ef837b]/30 flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-zen-red cursor-pointer"
             aria-label="Clear sprint history"
           >
             <svg
@@ -106,31 +106,31 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearReq
               key={run.id}
               data-testid="history-run-card"
               role="listitem"
-              className={`relative bg-white tactile-card border rounded-xl p-4 transition-all duration-200 hover:bg-[#faf6ed] flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+              className={`relative bg-white dark:bg-[#24292e] tactile-card border rounded-xl p-4 transition-all duration-200 hover:bg-[#faf6ed] dark:hover:bg-[#2a3036] flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                 isPersonalBest
-                  ? 'border-zen-amber/50 bg-gradient-to-r from-zen-amber/10 via-white to-white'
-                  : 'border-[#ede5d0]'
+                  ? 'border-zen-amber/50 dark:border-[#eed082]/50 bg-gradient-to-r from-zen-amber/10 dark:from-[#eed082]/10 via-white dark:via-[#24292e] to-white dark:to-[#24292e]'
+                  : 'border-[#ede5d0] dark:border-[#353c43]'
               }`}
             >
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-xl bg-[#f7f0e0] border border-[#eee4ce] flex flex-col items-center justify-center shrink-0">
-                  <span className="text-xl font-black text-zen-terracotta leading-none">
+                <div className="w-14 h-14 rounded-xl bg-[#f7f0e0] dark:bg-[#181b1e] border border-[#eee4ce] dark:border-[#353c43] flex flex-col items-center justify-center shrink-0">
+                  <span className="text-xl font-black text-zen-terracotta dark:text-[#eb937d] leading-none">
                     {run.score}
                   </span>{' '}
-                  <span className="text-[10px] uppercase font-bold text-zen-base01 mt-1">
+                  <span className="text-[10px] uppercase font-bold text-zen-base01 dark:text-[#94a3b8] mt-1">
                     pts
                   </span>
                 </div>
 
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-semibold text-zen-base03">
+                    <span className="text-sm font-semibold text-zen-base03 dark:text-[#eceff1]">
                       {formatRunDate(run.timestamp)}
                     </span>
                     {isPersonalBest && (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-zen-amber/15 text-zen-amber border border-zen-amber/30">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-zen-amber/15 dark:bg-[#eed082]/15 text-zen-amber dark:text-[#eed082] border border-zen-amber/30 dark:border-[#eed082]/30">
                         <svg
-                          className="w-3 h-3 text-zen-amber"
+                          className="w-3 h-3 text-zen-amber dark:text-[#eed082]"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                           aria-hidden="true"
@@ -141,20 +141,20 @@ export const RunHistoryList: React.FC<RunHistoryListProps> = ({ runs, onClearReq
                       </span>
                     )}
                   </div>
-                  <div className="text-xs text-zen-base01 mt-1 flex items-center gap-3">
+                  <div className="text-xs text-zen-base01 dark:text-[#94a3b8] mt-1 flex items-center gap-3">
                     <span>Duration: 3m 00s</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between sm:justify-end gap-6 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#eee4ce]">
+              <div className="flex items-center justify-between sm:justify-end gap-6 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#eee4ce] dark:border-[#353c43]">
                 <div className="text-left sm:text-right">
-                  <div className="text-xs text-zen-base01 uppercase font-semibold">Accuracy</div>
-                  <div className="text-sm font-bold text-zen-base03">{formattedAccuracy}</div>
+                  <div className="text-xs text-zen-base01 dark:text-[#94a3b8] uppercase font-semibold">Accuracy</div>
+                  <div className="text-sm font-bold text-zen-base03 dark:text-[#eceff1]">{formattedAccuracy}</div>
                 </div>
                 <div className="text-left sm:text-right">
-                  <div className="text-xs text-zen-base01 uppercase font-semibold">Solved</div>
-                  <div className="text-sm font-bold text-zen-cyan">
+                  <div className="text-xs text-zen-base01 dark:text-[#94a3b8] uppercase font-semibold">Solved</div>
+                  <div className="text-sm font-bold text-zen-cyan dark:text-[#7ec7b8]">
                     {correct} / {total}
                   </div>
                 </div>

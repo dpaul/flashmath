@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-[#fcf9f2] text-[#073642] min-h-screen selection:bg-amber-100 selection:text-[#cb4b16];
+    @apply bg-[#fcf9f2] text-[#073642] dark:bg-[#1a1d20] dark:text-[#eceff1] min-h-screen selection:bg-amber-100 selection:text-[#cb4b16] dark:selection:bg-[#eed082]/25 dark:selection:text-[#eed082];
     font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   }
 }
@@ -13,6 +13,12 @@
   background-color: #ffffff;
   box-shadow: 0 4px 16px rgba(7, 54, 66, 0.06);
   border: 1px solid rgba(7, 54, 66, 0.06);
+}
+
+.dark .tactile-card {
+  background-color: #24292e;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  border-color: #353c43;
 }
 
 @keyframes pulse-cursor {

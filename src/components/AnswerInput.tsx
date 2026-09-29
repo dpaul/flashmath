@@ -68,7 +68,7 @@ export const AnswerInput: React.FC<AnswerInputProps> = ({
 
   return (
     <div className="inline-flex items-center gap-2 select-none">
-      <div className="relative min-w-[100px] sm:min-w-[135px] h-14 sm:h-20 px-2 sm:px-4 rounded-2xl bg-[#f7f0e0] border-2 border-[#cb4b16]/70 flex items-center justify-center shadow-inner transition-transform duration-100 focus-within:ring-4 focus-within:ring-[#cb4b16]/20 focus-within:border-[#cb4b16]">
+      <div className="relative min-w-[100px] sm:min-w-[135px] h-14 sm:h-20 px-2 sm:px-4 rounded-2xl bg-[#f7f0e0] dark:bg-[#181b1e] border-2 border-[#cb4b16]/70 dark:border-[#eb937d]/70 flex items-center justify-center shadow-inner transition-transform duration-100 focus-within:ring-4 focus-within:ring-[#cb4b16]/20 dark:focus-within:ring-[#eb937d]/20 focus-within:border-[#cb4b16] dark:focus-within:border-[#eb937d]">
         <input
           ref={inputRef}
           id="math-answer-input"
@@ -83,7 +83,7 @@ export const AnswerInput: React.FC<AnswerInputProps> = ({
           autoComplete="off"
           autoCorrect="off"
           spellCheck={false}
-          className="w-full h-full text-3xl sm:text-5xl font-mono font-semibold text-center text-[#073642] bg-transparent focus:outline-none selection:bg-amber-200/60 caret-[#cb4b16]"
+          className="w-full h-full text-3xl sm:text-5xl font-mono font-semibold text-center text-[#073642] dark:text-[#eceff1] bg-transparent focus:outline-none selection:bg-amber-200/60 dark:selection:bg-[#eed082]/30 caret-[#cb4b16] dark:caret-[#eb937d]"
         />
       </div>
 
@@ -92,7 +92,7 @@ export const AnswerInput: React.FC<AnswerInputProps> = ({
         onClick={submit}
         disabled={disabled || value.trim() === ''}
         aria-label="Submit Answer"
-        className="h-14 sm:h-20 px-3 sm:px-4 rounded-2xl bg-[#cb4b16] hover:bg-[#b83f0f] active:bg-[#99370e] disabled:bg-[#eee8d5] disabled:text-[#93a1a1] text-white font-bold transition-all shadow-md active:scale-95 disabled:scale-100 disabled:shadow-none cursor-pointer disabled:cursor-not-allowed inline-flex items-center justify-center"
+        className="h-14 sm:h-20 px-3 sm:px-4 rounded-2xl bg-[#cb4b16] dark:bg-[#eb937d] hover:bg-[#b83f0f] dark:hover:bg-[#df856e] active:bg-[#99370e] dark:active:bg-[#c9745f] disabled:bg-[#eee8d5] dark:disabled:bg-[#24292e] disabled:text-[#93a1a1] dark:disabled:text-[#64748b] text-white dark:text-[#1a1d20] font-bold transition-all shadow-md active:scale-95 disabled:scale-100 disabled:shadow-none cursor-pointer disabled:cursor-not-allowed inline-flex items-center justify-center"
       >
         <CornerDownLeft className="w-5 h-5 sm:w-6 sm:h-6" />
         <span className="hidden sm:inline ml-1 text-xs font-sans uppercase font-bold">Submit</span>

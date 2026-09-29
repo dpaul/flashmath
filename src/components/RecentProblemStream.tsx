@@ -40,24 +40,24 @@ export const RecentProblemStream: React.FC<RecentProblemStreamProps> = ({ recent
           <div
             key={item.id}
             className={`stream-item flex items-center gap-2.5 font-mono transition-all duration-300 ${
-              item.isCorrect ? 'text-[#073642]' : 'text-[#cb4b16]'
+              item.isCorrect ? 'text-[#073642] dark:text-[#eceff1]' : 'text-[#cb4b16] dark:text-[#eb937d]'
             } ${opacityClass}`}
           >
             {item.isCorrect ? (
-              <CheckCircle className="w-4 h-4 text-[#2aa198] shrink-0" />
+              <CheckCircle className="w-4 h-4 text-[#2aa198] dark:text-[#7ec7b8] shrink-0" />
             ) : (
-              <XCircle className="w-4 h-4 text-[#cb4b16] shrink-0" />
+              <XCircle className="w-4 h-4 text-[#cb4b16] dark:text-[#eb937d] shrink-0" />
             )}
             <span>
               {item.problemText} = {item.answer}
             </span>
             {item.pointsEarned !== undefined && (
-              <span className="text-xs font-sans font-medium text-[#2aa198]">
+              <span className="text-xs font-sans font-medium text-[#2aa198] dark:text-[#7ec7b8]">
                 +{item.pointsEarned}
               </span>
             )}
             {item.timeTakenSeconds !== undefined && (
-              <span className="text-xs text-[#93a1a1]">
+              <span className="text-xs text-[#93a1a1] dark:text-[#94a3b8]">
                 {item.timeTakenSeconds.toFixed(1)}s
               </span>
             )}

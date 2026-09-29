@@ -20,22 +20,22 @@ export const SpellingLevelSelect: React.FC<SpellingLevelSelectProps> = ({
           type="button"
           onClick={onBackToHome}
           aria-label="Back to modes"
-          className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#586e75] hover:text-[#073642] px-3.5 py-2 rounded-xl bg-white/70 border border-[#ede5d0] hover:bg-white transition-all cursor-pointer shadow-sm"
+          className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#586e75] dark:text-[#94a3b8] hover:text-[#073642] dark:hover:text-[#eceff1] px-3.5 py-2 rounded-xl bg-white/70 dark:bg-[#24292e]/80 border border-[#ede5d0] dark:border-[#353c43] hover:bg-white dark:hover:bg-[#24292e] transition-all cursor-pointer shadow-sm"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Modes</span>
         </button>
 
-        <span className="text-xs font-mono uppercase font-bold tracking-wider text-[#93a1a1]">
+        <span className="text-xs font-mono uppercase font-bold tracking-wider text-[#93a1a1] dark:text-[#94a3b8]">
           Select Level
         </span>
       </div>
 
       <div className="text-center mb-8">
-        <h2 className="text-3xl sm:text-4xl font-black text-zen-base03 mb-2">
+        <h2 className="text-3xl sm:text-4xl font-black text-zen-base03 dark:text-[#eceff1] mb-2">
           Spelling Levels
         </h2>
-        <p className="text-sm text-zen-base00 max-w-md">
+        <p className="text-sm text-zen-base00 dark:text-[#94a3b8] max-w-md">
           Choose a vocabulary collection to practice. All practice is untimed with speech synthesis.
         </p>
       </div>
@@ -55,23 +55,23 @@ export const SpellingLevelSelect: React.FC<SpellingLevelSelectProps> = ({
               type="button"
               onClick={() => onSelectLevel(level.id)}
               aria-label={level.name}
-              className="group relative flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 rounded-3xl bg-white tactile-card border border-[#ede5d0] hover:border-zen-cyan/50 transition-all cursor-pointer hover:shadow-md text-left"
+              className="group relative flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 rounded-3xl bg-white dark:bg-[#24292e] tactile-card border border-[#ede5d0] dark:border-[#353c43] hover:border-zen-cyan/50 dark:hover:border-[#7ec7b8]/50 transition-all cursor-pointer hover:shadow-md text-left"
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-[#2aa198]/10 text-zen-cyan flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-2xl bg-[#2aa198]/10 dark:bg-[#7ec7b8]/15 text-zen-cyan dark:text-[#7ec7b8] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                   <BookOpen className="w-6 h-6" />
                 </div>
 
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-xl font-bold text-zen-base03">
+                    <h3 className="text-xl font-bold text-zen-base03 dark:text-[#eceff1]">
                       {level.name}
                     </h3>
-                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#eee8d5] text-[#586e75] font-semibold">
+                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#eee8d5] dark:bg-[#181b1e] text-[#586e75] dark:text-[#94a3b8] font-semibold">
                       {level.words.length} words
                     </span>
                   </div>
-                  <p className="text-xs sm:text-sm text-zen-base00 max-w-sm">
+                  <p className="text-xs sm:text-sm text-zen-base00 dark:text-[#94a3b8] max-w-sm">
                     {level.description}
                   </p>
                 </div>
@@ -81,33 +81,33 @@ export const SpellingLevelSelect: React.FC<SpellingLevelSelectProps> = ({
               <div className="mt-4 sm:mt-0 flex items-center gap-4 self-end sm:self-center">
                 {hasPlayed ? (
                   <div className="flex items-center gap-3 text-xs font-mono">
-                    <div className="flex items-center gap-1 text-[#2aa198]">
+                    <div className="flex items-center gap-1 text-[#2aa198] dark:text-[#7ec7b8]">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>{accuracyPct}%</span>
                     </div>
                     {stats.lastScore && (
-                      <div className="hidden sm:flex items-center gap-1 text-[#586e75]">
+                      <div className="hidden sm:flex items-center gap-1 text-[#586e75] dark:text-[#94a3b8]">
                         <span>Last: {stats.lastScore.correct}/{stats.lastScore.total}</span>
                       </div>
                     )}
                     {stats.bestTimeSeconds && (
-                      <div className="hidden sm:flex items-center gap-1 text-[#cb4b16]">
+                      <div className="hidden sm:flex items-center gap-1 text-[#cb4b16] dark:text-[#eb937d]">
                         <Clock className="w-3.5 h-3.5" />
                         <span>{stats.bestTimeSeconds}s</span>
                       </div>
                     )}
                     {stats.bestStreak > 0 && (
-                      <div className="flex items-center gap-1 text-[#b58900]">
-                        <Flame className="w-3.5 h-3.5 fill-[#b58900]" />
+                      <div className="flex items-center gap-1 text-[#b58900] dark:text-[#eed082]">
+                        <Flame className="w-3.5 h-3.5 fill-[#b58900] dark:fill-[#eed082]" />
                         <span>{stats.bestStreak} Streak</span>
                       </div>
                     )}
                   </div>
                 ) : (
-                  <span className="text-xs text-[#93a1a1] italic">Not practiced yet</span>
+                  <span className="text-xs text-[#93a1a1] dark:text-[#718093] italic">Not practiced yet</span>
                 )}
 
-                <div className="w-8 h-8 rounded-full bg-[#eee8d5]/60 flex items-center justify-center text-[#586e75] group-hover:bg-[#2aa198] group-hover:text-white transition-colors">
+                <div className="w-8 h-8 rounded-full bg-[#eee8d5]/60 dark:bg-[#181b1e] flex items-center justify-center text-[#586e75] dark:text-[#94a3b8] group-hover:bg-[#2aa198] dark:group-hover:bg-[#7ec7b8] group-hover:text-white dark:group-hover:text-[#1a1d20] transition-colors">
                   <ChevronRight className="w-4 h-4" />
                 </div>
               </div>

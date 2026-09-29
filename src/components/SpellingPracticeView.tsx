@@ -187,79 +187,79 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
     return (
       <main className="w-full max-w-2xl mx-auto flex flex-col items-center justify-center p-6 sm:p-8 animate-fadeIn text-center">
         {/* Celebration header */}
-        <div className="w-16 h-16 rounded-3xl bg-[#2aa198]/10 text-[#2aa198] flex items-center justify-center mb-4 shadow-sm">
-          <Trophy className="w-8 h-8 text-[#2aa198]" />
+        <div className="w-16 h-16 rounded-3xl bg-[#2aa198]/10 dark:bg-[#7ec7b8]/15 text-[#2aa198] dark:text-[#7ec7b8] flex items-center justify-center mb-4 shadow-sm">
+          <Trophy className="w-8 h-8 text-[#2aa198] dark:text-[#7ec7b8]" />
         </div>
 
-        <span className="text-xs font-mono font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#eee8d5] text-[#586e75] mb-2">
+        <span className="text-xs font-mono font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#eee8d5] dark:bg-[#24292e] text-[#586e75] dark:text-[#94a3b8] mb-2 border border-transparent dark:border-[#353c43]">
           {level?.name || 'Spelling Level'}
         </span>
 
-        <h2 className="text-4xl sm:text-5xl font-black text-zen-base03 mb-2">
+        <h2 className="text-4xl sm:text-5xl font-black text-zen-base03 dark:text-[#eceff1] mb-2">
           Level Complete!
         </h2>
-        <p className="text-sm text-zen-base00 mb-8 max-w-sm">
+        <p className="text-sm text-zen-base00 dark:text-[#94a3b8] mb-8 max-w-sm">
           You have completed all {totalWords} words in this level.
         </p>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full mb-6">
-          <div className="flex flex-col items-center p-4 rounded-2xl bg-white tactile-card border border-[#ede5d0]">
-            <div className="flex items-center gap-1 text-[#2aa198] text-xs font-bold uppercase mb-1">
+          <div className="flex flex-col items-center p-4 rounded-2xl bg-white dark:bg-[#24292e] tactile-card border border-[#ede5d0] dark:border-[#353c43]">
+            <div className="flex items-center gap-1 text-[#2aa198] dark:text-[#7ec7b8] text-xs font-bold uppercase mb-1">
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>Score</span>
             </div>
-            <span className="text-2xl sm:text-3xl font-mono font-black text-[#073642]">
+            <span className="text-2xl sm:text-3xl font-mono font-black text-[#073642] dark:text-[#eceff1]">
               {session.correctCount} / {totalWords}
             </span>
-            <span className="text-[11px] text-[#93a1a1] mt-0.5">correct</span>
+            <span className="text-[11px] text-[#93a1a1] dark:text-[#94a3b8] mt-0.5">correct</span>
           </div>
 
-          <div className="flex flex-col items-center p-4 rounded-2xl bg-white tactile-card border border-[#ede5d0]">
-            <div className="flex items-center gap-1 text-[#cb4b16] text-xs font-bold uppercase mb-1">
+          <div className="flex flex-col items-center p-4 rounded-2xl bg-white dark:bg-[#24292e] tactile-card border border-[#ede5d0] dark:border-[#353c43]">
+            <div className="flex items-center gap-1 text-[#cb4b16] dark:text-[#eb937d] text-xs font-bold uppercase mb-1">
               <Clock className="w-3.5 h-3.5" />
               <span>Time:</span>
             </div>
-            <span className="text-2xl sm:text-3xl font-mono font-black text-[#073642]">
+            <span className="text-2xl sm:text-3xl font-mono font-black text-[#073642] dark:text-[#eceff1]">
               {formatDuration(finalDuration)}
             </span>
-            <span className="text-[11px] text-[#93a1a1] mt-0.5">duration</span>
+            <span className="text-[11px] text-[#93a1a1] dark:text-[#94a3b8] mt-0.5">duration</span>
           </div>
 
-          <div className="flex flex-col items-center p-4 rounded-2xl bg-white tactile-card border border-[#ede5d0]">
-            <div className="flex items-center gap-1 text-[#586e75] text-xs font-bold uppercase mb-1">
+          <div className="flex flex-col items-center p-4 rounded-2xl bg-white dark:bg-[#24292e] tactile-card border border-[#ede5d0] dark:border-[#353c43]">
+            <div className="flex items-center gap-1 text-[#586e75] dark:text-[#94a3b8] text-xs font-bold uppercase mb-1">
               <Zap className="w-3.5 h-3.5" />
               <span>Accuracy</span>
             </div>
-            <span className="text-2xl sm:text-3xl font-mono font-black text-[#073642]">
+            <span className="text-2xl sm:text-3xl font-mono font-black text-[#073642] dark:text-[#eceff1]">
               {accuracyPct}%
             </span>
-            <span className="text-[11px] text-[#93a1a1] mt-0.5">accuracy</span>
+            <span className="text-[11px] text-[#93a1a1] dark:text-[#94a3b8] mt-0.5">accuracy</span>
           </div>
 
-          <div className="flex flex-col items-center p-4 rounded-2xl bg-white tactile-card border border-[#ede5d0]">
-            <div className="flex items-center gap-1 text-[#b58900] text-xs font-bold uppercase mb-1">
-              <Flame className="w-3.5 h-3.5 text-[#b58900] fill-[#b58900]" />
+          <div className="flex flex-col items-center p-4 rounded-2xl bg-white dark:bg-[#24292e] tactile-card border border-[#ede5d0] dark:border-[#353c43]">
+            <div className="flex items-center gap-1 text-[#b58900] dark:text-[#eed082] text-xs font-bold uppercase mb-1">
+              <Flame className="w-3.5 h-3.5 text-[#b58900] dark:text-[#eed082] fill-[#b58900] dark:fill-[#eed082]" />
               <span>Streak</span>
             </div>
-            <span className="text-2xl sm:text-3xl font-mono font-black text-[#073642]">
+            <span className="text-2xl sm:text-3xl font-mono font-black text-[#073642] dark:text-[#eceff1]">
               {session.bestStreak}
             </span>
-            <span className="text-[11px] text-[#93a1a1] mt-0.5">best streak</span>
+            <span className="text-[11px] text-[#93a1a1] dark:text-[#94a3b8] mt-0.5">best streak</span>
           </div>
         </div>
 
         {/* Missed Words Section */}
         {session.missedWords.length > 0 && (
-          <div className="w-full p-4 mb-8 rounded-2xl bg-[#cb4b16]/5 border border-[#cb4b16]/20 text-left">
-            <span className="block text-xs uppercase font-bold text-[#cb4b16] tracking-wider mb-2">
+          <div className="w-full p-4 mb-8 rounded-2xl bg-[#cb4b16]/5 dark:bg-[#eb937d]/10 border border-[#cb4b16]/20 dark:border-[#eb937d]/30 text-left">
+            <span className="block text-xs uppercase font-bold text-[#cb4b16] dark:text-[#eb937d] tracking-wider mb-2">
               Words to Review ({session.missedWords.length}):
             </span>
             <div className="flex flex-wrap gap-2">
               {session.missedWords.map((word) => (
                 <span
                   key={word}
-                  className="px-3 py-1 rounded-xl bg-white text-[#073642] font-mono font-semibold text-xs border border-[#cb4b16]/30 shadow-xs"
+                  className="px-3 py-1 rounded-xl bg-white dark:bg-[#181b1e] text-[#073642] dark:text-[#eceff1] font-mono font-semibold text-xs border border-[#cb4b16]/30 dark:border-[#eb937d]/30 shadow-xs"
                 >
                   {word}
                 </span>
@@ -274,9 +274,9 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
             type="button"
             onClick={handleRestart}
             aria-label="Practice Again"
-            className="w-full sm:w-auto h-13 px-6 rounded-2xl bg-[#2aa198] hover:bg-[#258b83] active:translate-y-0.5 text-white font-bold text-base flex items-center justify-center gap-2 shadow-md cursor-pointer"
+            className="w-full sm:w-auto h-13 px-6 rounded-2xl bg-[#2aa198] dark:bg-[#7ec7b8] hover:bg-[#258b83] dark:hover:bg-[#6eb2a3] active:translate-y-0.5 text-white dark:text-[#1a1d20] font-bold text-base flex items-center justify-center gap-2 shadow-md cursor-pointer"
           >
-            <Play className="w-4 h-4 fill-white" />
+            <Play className="w-4 h-4 fill-white dark:fill-[#1a1d20]" />
             <span>Practice Again</span>
           </button>
 
@@ -284,7 +284,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
             type="button"
             onClick={onBackToLevels}
             aria-label="Choose Level"
-            className="w-full sm:w-auto h-13 px-6 rounded-2xl bg-[#eee8d5] hover:bg-[#e4d9c7] active:translate-y-0.5 text-[#073642] font-semibold text-base flex items-center justify-center gap-2 border border-[#e4d9c7] cursor-pointer"
+            className="w-full sm:w-auto h-13 px-6 rounded-2xl bg-[#eee8d5] dark:bg-[#24292e] hover:bg-[#e4d9c7] dark:hover:bg-[#2d353c] active:translate-y-0.5 text-[#073642] dark:text-[#eceff1] font-semibold text-base flex items-center justify-center gap-2 border border-[#e4d9c7] dark:border-[#353c43] cursor-pointer"
           >
             <BookOpen className="w-4 h-4" />
             <span>Choose Level</span>
@@ -294,7 +294,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
             type="button"
             onClick={onBackToHome}
             aria-label="Home"
-            className="w-full sm:w-auto h-13 px-5 rounded-2xl text-[#586e75] hover:text-[#073642] font-medium text-sm flex items-center justify-center cursor-pointer"
+            className="w-full sm:w-auto h-13 px-5 rounded-2xl text-[#586e75] dark:text-[#94a3b8] hover:text-[#073642] dark:hover:text-[#eceff1] font-medium text-sm flex items-center justify-center cursor-pointer"
           >
             <span>Home</span>
           </button>
@@ -309,11 +309,11 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
   return (
     <main className="w-full max-w-4xl mx-auto flex flex-col items-center justify-between min-h-[calc(100vh-6rem)] py-2 sm:py-6 select-none animate-fadeIn">
       {/* Top Status & Navigation Bar */}
-      <div className="w-full flex items-center justify-between px-4 sm:px-8 py-3 mb-2 rounded-2xl bg-white/95 border border-[rgba(7,54,66,0.06)] shadow-sm">
+      <div className="w-full flex items-center justify-between px-4 sm:px-8 py-3 mb-2 rounded-2xl bg-white/95 dark:bg-[#24292e]/95 border border-[rgba(7,54,66,0.06)] dark:border-[#353c43] shadow-sm">
         <button
           type="button"
           onClick={onBackToLevels}
-          className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#586e75] hover:text-[#073642] px-3 py-1.5 rounded-xl hover:bg-[#eee8d5]/50 transition-colors cursor-pointer"
+          className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#586e75] dark:text-[#94a3b8] hover:text-[#073642] dark:hover:text-[#eceff1] px-3 py-1.5 rounded-xl hover:bg-[#eee8d5]/50 dark:hover:bg-[#181b1e] transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Levels</span>
@@ -322,23 +322,23 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
         {/* Live Session Metrics */}
         <div className="flex items-center gap-4 sm:gap-6 font-mono text-xs sm:text-sm">
           {/* Timer Display */}
-          <div className="flex items-center gap-1.5 text-[#cb4b16] font-semibold">
+          <div className="flex items-center gap-1.5 text-[#cb4b16] dark:text-[#eb937d] font-semibold">
             <Clock className="w-4 h-4" />
             <span>{formatDuration(liveElapsedSeconds)}</span>
           </div>
 
           {/* Progress: e.g. Word 3 of 12 */}
-          <div className="hidden sm:flex items-center gap-1 text-[#586e75]">
-            <span className="text-[#93a1a1]">Word</span>
-            <span className="font-bold text-[#073642]">{currentDisplayNumber}</span>
-            <span className="text-[#93a1a1]">of {totalWords}</span>
+          <div className="hidden sm:flex items-center gap-1 text-[#586e75] dark:text-[#94a3b8]">
+            <span className="text-[#93a1a1] dark:text-[#718093]">Word</span>
+            <span className="font-bold text-[#073642] dark:text-[#eceff1]">{currentDisplayNumber}</span>
+            <span className="text-[#93a1a1] dark:text-[#718093]">of {totalWords}</span>
           </div>
 
           {/* Correct Count */}
-          <div className="flex items-center gap-1.5 text-[#2aa198]">
+          <div className="flex items-center gap-1.5 text-[#2aa198] dark:text-[#7ec7b8]">
             <CheckCircle2 className="w-4 h-4" />
             <span className="font-bold">{session.correctCount}</span>
-            <span className="text-[#93a1a1]">correct</span>
+            <span className="text-[#93a1a1] dark:text-[#718093]">correct</span>
           </div>
         </div>
       </div>
@@ -369,13 +369,13 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
       </div>
 
       {/* Untimed Mode Footer Hint */}
-      <footer className="w-full text-center py-3 text-xs text-[#93a1a1] flex items-center justify-center gap-3">
+      <footer className="w-full text-center py-3 text-xs text-[#93a1a1] dark:text-[#718093] flex items-center justify-center gap-3">
         <span>Word {currentDisplayNumber} of {totalWords}</span>
         <span>•</span>
         <button
           type="button"
           onClick={speakCurrent}
-          className="hover:text-[#073642] underline flex items-center gap-1 cursor-pointer"
+          className="hover:text-[#073642] dark:hover:text-[#eceff1] underline flex items-center gap-1 cursor-pointer"
         >
           <RotateCcw className="w-3 h-3" />
           Replay word
@@ -386,7 +386,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
             <button
               type="button"
               onClick={speakCurrentSentence}
-              className="hover:text-[#073642] underline flex items-center gap-1 cursor-pointer"
+              className="hover:text-[#073642] dark:hover:text-[#eceff1] underline flex items-center gap-1 cursor-pointer"
             >
               <MessageSquareQuote className="w-3 h-3" />
               Use in sentence

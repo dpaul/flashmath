@@ -13,6 +13,7 @@ describe('FlashMath App Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     localStorage.clear();
+    document.documentElement.classList.remove('dark');
   });
 
   it('renders ModeSelector by default with Math and Spelling options', () => {
@@ -154,4 +155,25 @@ describe('FlashMath App Integration', () => {
     fireEvent.keyDown(window, { key: 'Escape', code: 'Escape' });
     expect(screen.getByText(/Sprint Completed!/i)).toBeInTheDocument();
   });
+
+  it('toggles between light paper mode and chalkboard dark mode', () => {
+    render(<App />);
+
+    const themeToggleBtn = screen.getByRole('button', { name: /switch to chalkboard dark mode/i });
+    expect(themeToggleBtn).toBeInTheDocument();
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
+
+    // Toggle to dark mode
+    fireEvent.click(themeToggleBtn);
+    expect(document.documentElement.classList.contains('dark')).toBe(true);
+    expect(localStorage.getItem('flashmath_theme')).toBe('dark');
+    expect(screen.getByRole('button', { name: /switch to paper light mode/i })).toBeInTheDocument();
+
+    // Toggle back to light mode
+    fireEvent.click(screen.getByRole('button', { name: /switch to paper light mode/i }));
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
+    expect(localStorage.getItem('flashmath_theme')).toBe('light');
+    expect(screen.getByRole('button', { name: /switch to chalkboard dark mode/i })).toBeInTheDocument();
+  });
 });
+
