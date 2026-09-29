@@ -21,7 +21,9 @@ describe('SpellingLevelSelect Component', () => {
 
     expect(screen.getByText(/September 12, 2026/i)).toBeInTheDocument();
     expect(screen.getByText(/September 15, 2026/i)).toBeInTheDocument();
+    expect(screen.getByText(/September 28, 2026/i)).toBeInTheDocument();
     expect(screen.getAllByText(/24 words/i)).toHaveLength(2);
+    expect(screen.getByText(/22 words/i)).toBeInTheDocument();
   });
 
   it('displays persistent level stats when available', () => {

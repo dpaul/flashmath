@@ -127,6 +127,61 @@ export const SPELLING_LEVELS: SpellingLevel[] = [
       prehistoric: 'Dinosaurs roamed the earth in prehistoric times.',
     },
   },
+  {
+    id: '2026-09-28',
+    name: 'September 28, 2026',
+    description: 'Latin roots (dict, aud, vis) and root word spelling.',
+    difficultyLabel: 'Sep 28, 2026',
+    date: '2026-09-28',
+    words: [
+      'dictate',
+      'audible',
+      'vision',
+      'visible',
+      'contradict',
+      'audition',
+      'vista',
+      'auditorium',
+      'invisible',
+      'revisit',
+      'unpredictable',
+      'prediction',
+      'dictionary',
+      'supervisor',
+      'dictator',
+      'edict',
+      'audiovisual',
+      'auditory',
+      'laudable',
+      'audiotape',
+      'audience',
+      'visitor',
+    ],
+    sentences: {
+      dictate: 'The teacher will dictate the spelling sentences to the class.',
+      audible: 'Her quiet whisper was barely audible across the room.',
+      vision: 'Wearing glasses helped improve his blurry vision.',
+      visible: 'The bright stars were clearly visible in the night sky.',
+      contradict: 'The evidence did not contradict the witness statement.',
+      audition: 'She practiced singing every day before her audition.',
+      vista: 'From the mountaintop, we enjoyed a stunning vista of the valley.',
+      auditorium: 'The school gathered in the auditorium for the morning assembly.',
+      invisible: 'Air is all around us even though it is invisible.',
+      revisit: 'We plan to revisit the science museum during summer vacation.',
+      unpredictable: 'Mountain weather can be sudden and unpredictable.',
+      prediction: 'His weather prediction of afternoon rain proved accurate.',
+      dictionary: 'Look up the unknown word in the dictionary to find its meaning.',
+      supervisor: 'The supervisor guided the new workers on their first day.',
+      dictator: 'The cruel dictator ruled the country without fairness.',
+      edict: 'The king issued a royal edict across the kingdom.',
+      audiovisual: 'The classroom was equipped with modern audiovisual tools.',
+      auditory: 'Listening to audiobooks helps train auditory memory.',
+      laudable: 'Her continuous effort to help others was truly laudable.',
+      audiotape: 'The historian listened to an old audiotape of the interview.',
+      audience: 'The audience clapped enthusiastically after the performance.',
+      visitor: 'A friendly visitor knocked on the front door this morning.',
+    },
+  },
 ];
 
 export function getExampleSentence(word: string, levelId?: string): string | undefined {
@@ -137,7 +192,8 @@ export function getExampleSentence(word: string, levelId?: string): string | und
     const level =
       SPELLING_LEVELS.find((lvl) => lvl.id === levelId) ||
       (levelId === 'level-1' ? SPELLING_LEVELS[0] : undefined) ||
-      (levelId === 'level-2' ? SPELLING_LEVELS[1] : undefined);
+      (levelId === 'level-2' ? SPELLING_LEVELS[1] : undefined) ||
+      (levelId === 'level-3' || levelId === 'rptt' || levelId === 'roots' ? SPELLING_LEVELS[2] : undefined);
     if (level?.sentences?.[normalized]) {
       return level.sentences[normalized];
     }
