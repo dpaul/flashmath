@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, memo } from 'react';
 import { CornerDownLeft, ArrowRight } from 'lucide-react';
+import { SpellingDiffView } from './SpellingDiffView';
 
 export interface SpellingInputProps {
   targetWord: string;
@@ -7,6 +8,7 @@ export interface SpellingInputProps {
   onNextWord: () => void;
   lastAttemptCorrect: boolean | null;
   isRevealingWord: boolean;
+  lastSubmittedAnswer?: string;
   disabled?: boolean;
 }
 
@@ -15,6 +17,7 @@ export const SpellingInput: React.FC<SpellingInputProps> = memo(({
   onSubmit,
   onNextWord,
   isRevealingWord,
+  lastSubmittedAnswer,
   disabled = false,
 }) => {
   const [value, setValue] = useState('');
@@ -53,15 +56,11 @@ export const SpellingInput: React.FC<SpellingInputProps> = memo(({
   return (
     <div className="w-full flex flex-col items-center gap-3">
       {isRevealingWord ? (
-        <div className="w-full flex flex-col items-center gap-3 py-2 animate-fadeIn">
-          <div className="p-4 rounded-2xl bg-[#cb4b16]/10 dark:bg-[#eb937d]/15 border border-[#cb4b16]/30 dark:border-[#eb937d]/30 text-center">
-            <span className="block text-xs uppercase font-bold tracking-wider text-[#cb4b16] dark:text-[#eb937d] mb-1">
-              Correct Spelling:
-            </span>
-            <span className="text-2xl sm:text-3xl font-mono font-bold text-[#073642] dark:text-[#eceff1] tracking-wider">
-              {targetWord}
-            </span>
-          </div>
+        <div className="w-full flex flex-col items-center gap-4 py-1 animate-fadeIn">
+          <SpellingDiffView
+            userInput={lastSubmittedAnswer ?? value}
+            targetWord={targetWord}
+          />
 
           <button
             ref={nextButtonRef}

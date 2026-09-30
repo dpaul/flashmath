@@ -55,6 +55,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
   const [isRevealingWord, setIsRevealingWord] = useState(false);
   const [showSentence, setShowSentence] = useState(false);
   const [lastAttemptCorrect, setLastAttemptCorrect] = useState<boolean | null>(null);
+  const [lastSubmittedAnswer, setLastSubmittedAnswer] = useState<string>('');
   const [submissionCount, setSubmissionCount] = useState(0);
   const [liveElapsedSeconds, setLiveElapsedSeconds] = useState(0);
   const startTimeRef = useRef<number>(Date.now());
@@ -127,6 +128,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
     const isCorrect = updated.lastAttemptWasCorrect ?? false;
     const isLastWord = session.currentIndex + 1 >= session.words.length;
 
+    setLastSubmittedAnswer(answer);
     setSession(updated);
     setSubmissionCount((prev) => prev + 1);
     setLastAttemptCorrect(isCorrect);
@@ -162,6 +164,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
     setIsRevealingWord(false);
     setShowSentence(false);
     setLastAttemptCorrect(null);
+    setLastSubmittedAnswer('');
 
     const next = advanceToNextWord(session);
     setSession(next);
@@ -178,6 +181,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
     setIsRevealingWord(false);
     setShowSentence(false);
     setLastAttemptCorrect(null);
+    setLastSubmittedAnswer('');
     setSubmissionCount(0);
     setLiveElapsedSeconds(0);
     startTimeRef.current = newSession.startTime;
@@ -381,6 +385,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
             onNextWord={handleNextWord}
             lastAttemptCorrect={lastAttemptCorrect}
             isRevealingWord={isRevealingWord}
+            lastSubmittedAnswer={lastSubmittedAnswer}
           />
         </SpellingCard>
       </div>

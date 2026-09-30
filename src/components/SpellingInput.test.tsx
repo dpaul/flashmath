@@ -49,4 +49,26 @@ describe('SpellingInput Component', () => {
     fireEvent.click(nextBtn);
     expect(handleNext).toHaveBeenCalledTimes(1);
   });
+
+  it('shows both the misspelled word and correct spelling with error highlighting', () => {
+    const handleSubmit = vi.fn();
+    const handleNext = vi.fn();
+
+    render(
+      <SpellingInput
+        targetWord="dictator"
+        onSubmit={handleSubmit}
+        onNextWord={handleNext}
+        lastAttemptCorrect={false}
+        isRevealingWord={true}
+        lastSubmittedAnswer="dictater"
+      />
+    );
+
+    expect(screen.getByText(/correct spelling:/i)).toBeInTheDocument();
+    expect(screen.getByText(/dictator/i)).toBeInTheDocument();
+    expect(screen.getByText(/you typed:/i)).toBeInTheDocument();
+    expect(screen.getByText(/changed/i)).toBeInTheDocument();
+    expect(screen.getByText('Transformed')).toBeInTheDocument();
+  });
 });

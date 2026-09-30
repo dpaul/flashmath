@@ -79,6 +79,7 @@ describe('SpellingPracticeView Component', () => {
     fireEvent.keyDown(input, { key: 'Enter' });
 
     expect(await screen.findByText(/correct spelling:/i)).toBeInTheDocument();
+    expect(screen.getByText(/you typed:/i)).toBeInTheDocument();
 
     const nextBtn = screen.getByRole('button', { name: /next word/i });
     fireEvent.click(nextBtn);
