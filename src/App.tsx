@@ -13,6 +13,7 @@ import { RecentProblemStream, SolvedProblemRecord } from './components/RecentPro
 import { ModeSelector } from './components/ModeSelector';
 import { SpellingLevelSelect } from './components/SpellingLevelSelect';
 import { SpellingPracticeView } from './components/SpellingPracticeView';
+import { SpellingHistoryPage } from './components/SpellingHistoryPage';
 import { ThemeToggle } from './components/ThemeToggle';
 import { ThemeProvider } from './context/ThemeContext';
 import { X, TrendingUp, Flame, LayoutGrid } from 'lucide-react';
@@ -22,7 +23,8 @@ export type ActiveAppView =
   | 'math'
   | 'history'
   | 'spelling-levels'
-  | 'spelling-practice';
+  | 'spelling-practice'
+  | 'spelling-history';
 
 export const AppContent: React.FC = () => {
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
@@ -138,34 +140,23 @@ export const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#fcf9f2] dark:bg-[#1a1d20] text-[#073642] dark:text-[#eceff1] flex flex-col justify-between selection:bg-amber-100 selection:text-[#cb4b16] dark:selection:bg-[#eed082]/25 dark:selection:text-[#eed082] antialiased relative overflow-x-hidden font-sans transition-colors duration-200">
-      {/* Subtle Background Glow Elements - Warm in Light, Slate Dust in Dark */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30 dark:opacity-20 z-0">
+      {/* Subtle Background Decor - Warm glows in light mode, fine matte texture in dark mode */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
         <div
-          className="absolute -top-24 -left-20 w-96 h-96 rounded-full dark:hidden"
+          className="absolute -top-24 -left-20 w-96 h-96 rounded-full dark:hidden opacity-30"
           style={{ background: 'radial-gradient(circle, #faecd0 0%, transparent 70%)' }}
         />
         <div
-          className="absolute top-1/3 -right-24 w-[32rem] h-[32rem] rounded-full dark:hidden"
+          className="absolute top-1/3 -right-24 w-[32rem] h-[32rem] rounded-full dark:hidden opacity-30"
           style={{ background: 'radial-gradient(circle, #e3f4f1 0%, transparent 70%)' }}
         />
         <div
-          className="absolute -bottom-20 left-1/4 w-[28rem] h-[28rem] rounded-full dark:hidden"
+          className="absolute -bottom-20 left-1/4 w-[28rem] h-[28rem] rounded-full dark:hidden opacity-30"
           style={{ background: 'radial-gradient(circle, #ffeedd 0%, transparent 70%)' }}
         />
 
-        {/* Chalkboard Slate Ambient glows in dark mode */}
-        <div
-          className="hidden dark:block absolute -top-24 -left-20 w-96 h-96 rounded-full"
-          style={{ background: 'radial-gradient(circle, #2d353c 0%, transparent 70%)' }}
-        />
-        <div
-          className="hidden dark:block absolute top-1/3 -right-24 w-[32rem] h-[32rem] rounded-full"
-          style={{ background: 'radial-gradient(circle, #28323a 0%, transparent 70%)' }}
-        />
-        <div
-          className="hidden dark:block absolute -bottom-20 left-1/4 w-[28rem] h-[28rem] rounded-full"
-          style={{ background: 'radial-gradient(circle, #2a3036 0%, transparent 70%)' }}
-        />
+        {/* Subtle mineral chalkboard texture overlay in dark mode */}
+        <div className="hidden dark:block absolute inset-0 chalkboard-texture opacity-30 pointer-events-none" />
       </div>
 
       {/* Top Header */}
@@ -237,6 +228,15 @@ export const AppContent: React.FC = () => {
                 >
                   <span>Back to Sprint</span>
                 </button>
+              ) : activeView === 'spelling-history' ? (
+                <button
+                  type="button"
+                  onClick={() => setActiveView('spelling-levels')}
+                  aria-label="Back to Levels"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#eee8d5] dark:bg-[#24292e] hover:bg-[#e4d9c7] dark:hover:bg-[#2d353c] text-[#073642] dark:text-[#eceff1] text-xs font-semibold transition border border-[#e4d9c7] dark:border-[#353c43] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2aa198]/30"
+                >
+                  <span>Back to Levels</span>
+                </button>
               ) : activeView === 'math' ? (
                 <button
                   type="button"
@@ -246,6 +246,16 @@ export const AppContent: React.FC = () => {
                 >
                   <TrendingUp className="w-3.5 h-3.5 text-[#cb4b16] dark:text-[#eb937d]" />
                   <span>History</span>
+                </button>
+              ) : activeView === 'spelling-levels' || activeView === 'spelling-practice' ? (
+                <button
+                  type="button"
+                  onClick={() => setActiveView('spelling-history')}
+                  aria-label="View Spelling History"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#eee8d5] dark:bg-[#24292e] hover:bg-[#e4d9c7] dark:hover:bg-[#2d353c] text-[#073642] dark:text-[#eceff1] text-xs font-semibold transition border border-[#e4d9c7] dark:border-[#353c43] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2aa198]/30 shadow-sm"
+                >
+                  <TrendingUp className="w-3.5 h-3.5 text-[#2aa198] dark:text-[#7ec7b8]" />
+                  <span>Spelling History</span>
                 </button>
               ) : null}
             </div>
@@ -276,6 +286,10 @@ export const AppContent: React.FC = () => {
               setActiveView('spelling-practice');
             }}
             onBackToHome={() => setActiveView('mode-select')}
+            onOpenHistory={(levelId) => {
+              if (levelId) setSelectedSpellingLevelId(levelId);
+              setActiveView('spelling-history');
+            }}
           />
         )}
 
@@ -284,6 +298,21 @@ export const AppContent: React.FC = () => {
             levelId={selectedSpellingLevelId}
             onBackToLevels={() => setActiveView('spelling-levels')}
             onBackToHome={() => setActiveView('mode-select')}
+            onOpenHistory={(levelId) => {
+              setSelectedSpellingLevelId(levelId);
+              setActiveView('spelling-history');
+            }}
+          />
+        )}
+
+        {activeView === 'spelling-history' && (
+          <SpellingHistoryPage
+            initialLevelId={selectedSpellingLevelId}
+            onBack={() => setActiveView('spelling-levels')}
+            onPracticeLevel={(levelId) => {
+              setSelectedSpellingLevelId(levelId);
+              setActiveView('spelling-practice');
+            }}
           />
         )}
 

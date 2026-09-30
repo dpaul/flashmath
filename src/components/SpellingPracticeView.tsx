@@ -10,6 +10,7 @@ import {
   BookOpen,
   Play,
   MessageSquareQuote,
+  TrendingUp,
 } from 'lucide-react';
 import {
   getSpellingLevelById,
@@ -31,6 +32,7 @@ export interface SpellingPracticeViewProps {
   levelId: string;
   onBackToLevels: () => void;
   onBackToHome: () => void;
+  onOpenHistory?: (levelId: string) => void;
 }
 
 function formatDuration(seconds: number): string {
@@ -46,6 +48,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
   levelId,
   onBackToLevels,
   onBackToHome,
+  onOpenHistory,
 }) => {
   const level = getSpellingLevelById(levelId);
   const [session, setSession] = useState<SpellingSession>(() => createSpellingSession(levelId));
@@ -111,6 +114,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
         correctCount: completedSession.correctCount,
         totalWords: completedSession.words.length,
         bestStreak: completedSession.bestStreak,
+        missedWords: completedSession.missedWords,
       });
     },
     [levelId]
@@ -133,6 +137,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
       correct: isCorrect ? 1 : 0,
       streak: updated.bestStreak,
       missed: isCorrect ? [] : [session.currentWord],
+      word: session.currentWord,
     });
 
     if (isCorrect) {
@@ -289,6 +294,18 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
             <BookOpen className="w-4 h-4" />
             <span>Choose Level</span>
           </button>
+
+          {onOpenHistory && (
+            <button
+              type="button"
+              onClick={() => onOpenHistory(levelId)}
+              aria-label="View History"
+              className="w-full sm:w-auto h-13 px-6 rounded-2xl bg-[#eee8d5] dark:bg-[#24292e] hover:bg-[#e4d9c7] dark:hover:bg-[#2d353c] active:translate-y-0.5 text-[#073642] dark:text-[#eceff1] font-semibold text-base flex items-center justify-center gap-2 border border-[#e4d9c7] dark:border-[#353c43] cursor-pointer"
+            >
+              <TrendingUp className="w-4 h-4 text-[#cb4b16] dark:text-[#eb937d]" />
+              <span>Word Set History</span>
+            </button>
+          )}
 
           <button
             type="button"

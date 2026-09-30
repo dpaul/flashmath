@@ -138,6 +138,32 @@ describe('FlashMath App Integration', () => {
     expect(screen.getByText(/FlashMath Learning Hub/i)).toBeInTheDocument();
   });
 
+  it('navigates to Spelling Word Set History from level select and supports level tab switching', () => {
+    render(<App />);
+
+    // Click Spelling Practice on landing page
+    fireEvent.click(screen.getByRole('button', { name: /start spelling practice/i }));
+
+    // Click Spelling History in header or top bar
+    const historyBtn = screen.getAllByRole('button', { name: /spelling history/i })[0];
+    fireEvent.click(historyBtn);
+
+    // Verify Spelling History Page is displayed
+    expect(screen.getByText(/Spelling Word Set History/i)).toBeInTheDocument();
+    expect(screen.getByText(/Words Gotten Wrong Most/i)).toBeInTheDocument();
+    expect(screen.getByText(/% Correct Over Time/i)).toBeInTheDocument();
+
+    // Switch to September 28, 2026
+    const sep28Tab = screen.getByRole('button', { name: 'September 28, 2026' });
+    fireEvent.click(sep28Tab);
+    expect(screen.getByText(/Latin roots \(dict, aud, vis\)/i)).toBeInTheDocument();
+
+    // Back to levels
+    const backBtn = screen.getAllByRole('button', { name: /back to levels/i })[0];
+    fireEvent.click(backBtn);
+    expect(screen.getByText(/Spelling Levels/i)).toBeInTheDocument();
+  });
+
   it('supports Space to skip problem and Escape to finish early in math sprint', () => {
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /start math sprint/i }));
