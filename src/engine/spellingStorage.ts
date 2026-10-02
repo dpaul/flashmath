@@ -78,19 +78,21 @@ export function loadLevelStats(levelId: string): SpellingLevelStats {
     const parsed = JSON.parse(raw);
 
     const runs: SpellingRunRecord[] = Array.isArray(parsed.runs)
-      ? parsed.runs.map((r: any, idx: number) => ({
-          id: r.id || `run_${idx}_${r.timestamp}`,
-          timestamp: r.timestamp || new Date().toISOString(),
-          durationSeconds: r.durationSeconds ?? 0,
-          correctCount: r.correctCount ?? 0,
-          totalWords: r.totalWords ?? 0,
-          bestStreak: r.bestStreak ?? 0,
-          accuracyPercentage:
-            r.accuracyPercentage !== undefined
-              ? r.accuracyPercentage
-              : Math.round(((r.correctCount || 0) / Math.max(1, r.totalWords || 1)) * 100),
-          missedWords: Array.isArray(r.missedWords) ? r.missedWords : [],
-        }))
+      ? parsed.runs
+          .map((r: any, idx: number) => ({
+            id: r.id || `run_${idx}_${r.timestamp}`,
+            timestamp: r.timestamp || new Date().toISOString(),
+            durationSeconds: r.durationSeconds ?? 0,
+            correctCount: r.correctCount ?? 0,
+            totalWords: r.totalWords ?? 0,
+            bestStreak: r.bestStreak ?? 0,
+            accuracyPercentage:
+              r.accuracyPercentage !== undefined
+                ? r.accuracyPercentage
+                : Math.round(((r.correctCount || 0) / Math.max(1, r.totalWords || 1)) * 100),
+            missedWords: Array.isArray(r.missedWords) ? r.missedWords : [],
+          }))
+          .filter((r: SpellingRunRecord) => (r.totalWords ?? 0) > 0 || (r.correctCount ?? 0) > 0)
       : [];
 
     const wordStats: Record<string, WordMistakeStats> =
@@ -115,6 +117,11 @@ export function loadLevelStats(levelId: string): SpellingLevelStats {
       }
     }
 
+    const lastScore =
+      parsed.lastScore && (parsed.lastScore.total > 0 || parsed.lastScore.correct > 0)
+        ? parsed.lastScore
+        : undefined;
+
     return {
       levelId,
       totalAttempts: parsed.totalAttempts ?? 0,
@@ -122,7 +129,7 @@ export function loadLevelStats(levelId: string): SpellingLevelStats {
       bestStreak: parsed.bestStreak ?? 0,
       bestTimeSeconds: parsed.bestTimeSeconds,
       lastDurationSeconds: parsed.lastDurationSeconds,
-      lastScore: parsed.lastScore,
+      lastScore,
       missedWords,
       wordStats,
       lastPracticedAt: parsed.lastPracticedAt ?? '',
@@ -161,6 +168,11 @@ export function updateLevelStatsFromSession(
   }
 ): SpellingLevelStats {
   const current = loadLevelStats(levelId);
+
+  // If there are no attempts and no correct answers, do not record empty activity
+  if ((sessionResult.attempts ?? 0) <= 0 && (sessionResult.correct ?? 0) <= 0) {
+    return current;
+  }
 
   // Combine and deduplicate missed words
   const missedSet = new Set([...current.missedWords, ...sessionResult.missed]);
@@ -218,6 +230,14 @@ export function recordCompletedSpellingRun(
   }
 ): SpellingLevelStats {
   const current = loadLevelStats(levelId);
+  const total = run.totalWords ?? 0;
+  const correct = run.correctCount ?? 0;
+
+  // Filter out 0/0 scores - abandoned runs with 0 words/attempts should not be counted in history
+  if (total <= 0 && correct <= 0) {
+    return current;
+  }
+
   const runs = current.runs ? [...current.runs] : [];
   const accuracyPercentage = Math.round(
     (run.correctCount / Math.max(1, run.totalWords)) * 100

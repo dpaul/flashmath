@@ -18,6 +18,7 @@ export const MAX_HISTORY_ENTRIES = 100;
 
 /**
  * Loads the list of previous sprint runs from localStorage.
+ * Filters out 0/0 scores so abandoned or empty runs are not counted in history.
  */
 export function loadRunHistory(): SprintRunRecord[] {
   try {
@@ -25,7 +26,11 @@ export function loadRunHistory(): SprintRunRecord[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    return parsed;
+    return parsed.filter((r) => {
+      const attempts = r.totalAttempted ?? r.totalAnswered ?? 0;
+      const score = r.score ?? r.correctCount ?? 0;
+      return attempts > 0 || score > 0;
+    });
   } catch {
     return [];
   }
@@ -34,10 +39,19 @@ export function loadRunHistory(): SprintRunRecord[] {
 /**
  * Records a new sprint run, applying a FIFO cap at MAX_HISTORY_ENTRIES (100).
  * Prevents duplicates from duplicate IDs or rapid successive invocations (e.g. React StrictMode).
+ * Rejects 0/0 scores from being recorded into history.
  */
 export function recordSprintRun(
   run: Omit<SprintRunRecord, 'id' | 'timestamp'> & { id?: string; timestamp?: string }
-): SprintRunRecord {
+): SprintRunRecord | null {
+  const attempts = run.totalAttempted ?? run.totalAnswered ?? 0;
+  const score = run.score ?? run.correctCount ?? 0;
+
+  // Filter out 0/0 scores - abandoned runs with 0 attempts should not be counted
+  if (attempts <= 0 && score <= 0) {
+    return null;
+  }
+
   const current = loadRunHistory();
   const id = run.id || `run-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
   const timestamp = run.timestamp || new Date().toISOString();

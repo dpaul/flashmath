@@ -6,6 +6,8 @@ import {
   calculatePPM,
   SPRINT_DURATION_SECONDS,
 } from './gameReducer';
+import { loadRunHistory } from './historyStorage';
+import { loadPersonalBests } from './storage';
 
 describe('Game Reducer & Calculations', () => {
   beforeEach(() => {
@@ -104,5 +106,51 @@ describe('Game Reducer & Calculations', () => {
 
     expect(seenProblems.length).toBe(40);
     expect(new Set(seenProblems).size).toBe(40);
+  });
+
+  it('does not record a sprint run or increment totalGamesPlayed when finished early with 0 attempts', () => {
+    let state = gameReducer(initialGameState, { type: 'START_GAME' });
+    state = gameReducer(state, { type: 'END_GAME' });
+
+    expect(state.phase).toBe('completed');
+    expect(state.stats.totalAttempted).toBe(0);
+    expect(state.isNewHighScore).toBe(false);
+    expect(state.isNewBestStreak).toBe(false);
+    expect(state.personalBests.totalGamesPlayed).toBe(0);
+
+    // Verify localStorage state
+    expect(loadRunHistory()).toHaveLength(0);
+    expect(loadPersonalBests().totalGamesPlayed).toBe(0);
+  });
+
+  it('does not record a sprint run or increment totalGamesPlayed when timer expires with 0 attempts', () => {
+    let state = gameReducer(initialGameState, { type: 'START_GAME' });
+    const expiredState = { ...state, timeRemaining: 1 };
+    state = gameReducer(expiredState, { type: 'TICK' });
+
+    expect(state.phase).toBe('completed');
+    expect(state.stats.totalAttempted).toBe(0);
+    expect(state.personalBests.totalGamesPlayed).toBe(0);
+
+    expect(loadRunHistory()).toHaveLength(0);
+    expect(loadPersonalBests().totalGamesPlayed).toBe(0);
+  });
+
+  it('records a sprint run and increments totalGamesPlayed when at least one problem was attempted', () => {
+    let state = gameReducer(initialGameState, { type: 'START_GAME' });
+    const problem = state.currentProblem!;
+    state = gameReducer(state, {
+      type: 'SUBMIT_ANSWER',
+      payload: { answer: String(problem.product) },
+    });
+    state = gameReducer(state, { type: 'END_GAME' });
+
+    expect(state.phase).toBe('completed');
+    expect(state.stats.totalAttempted).toBe(1);
+    expect(state.stats.correctCount).toBe(1);
+    expect(state.personalBests.totalGamesPlayed).toBe(1);
+
+    expect(loadRunHistory()).toHaveLength(1);
+    expect(loadPersonalBests().totalGamesPlayed).toBe(1);
   });
 });

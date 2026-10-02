@@ -315,4 +315,68 @@ describe('Spelling History Storage', () => {
     expect(findLevelIdForWord('dictate')).toBe('2026-09-28');
     expect(findLevelIdForWord('nonexistentword123')).toBeUndefined();
   });
+
+  it('rejects recording 0/0 runs in recordCompletedSpellingRun', () => {
+    const stats = recordCompletedSpellingRun('grade-4', {
+      durationSeconds: 10,
+      correctCount: 0,
+      totalWords: 0,
+      bestStreak: 0,
+    });
+
+    expect(stats.runs).toEqual([]);
+    expect(stats.lastScore).toBeUndefined();
+  });
+
+  it('ignores sessions with 0 attempts and 0 correct in updateLevelStatsFromSession', () => {
+    const initial = loadLevelStats('grade-4');
+    const updated = updateLevelStatsFromSession('grade-4', {
+      attempts: 0,
+      correct: 0,
+      streak: 0,
+      missed: [],
+    });
+
+    expect(updated).toEqual(initial);
+    expect(updated.lastPracticedAt).toBe('');
+  });
+
+  it('filters out legacy 0/0 runs and 0/0 lastScore in loadLevelStats', () => {
+    const legacyData = {
+      levelId: 'grade-4',
+      totalAttempts: 10,
+      correctCount: 8,
+      bestStreak: 5,
+      lastScore: { correct: 0, total: 0 },
+      runs: [
+        {
+          id: 'run-valid',
+          timestamp: new Date().toISOString(),
+          durationSeconds: 40,
+          correctCount: 8,
+          totalWords: 10,
+          bestStreak: 5,
+          accuracyPercentage: 80,
+          missedWords: [],
+        },
+        {
+          id: 'run-zero-zero',
+          timestamp: new Date().toISOString(),
+          durationSeconds: 5,
+          correctCount: 0,
+          totalWords: 0,
+          bestStreak: 0,
+          accuracyPercentage: 0,
+          missedWords: [],
+        },
+      ],
+    };
+
+    localStorage.setItem('flashmath_spelling_stats_grade-4', JSON.stringify(legacyData));
+    const loaded = loadLevelStats('grade-4');
+
+    expect(loaded.runs).toHaveLength(1);
+    expect(loaded.runs?.[0].id).toBe('run-valid');
+    expect(loaded.lastScore).toBeUndefined();
+  });
 });

@@ -184,7 +184,7 @@ export const SpellingLevelSelect: React.FC<SpellingLevelSelectProps> = ({
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>{accuracyPct}%</span>
                       </div>
-                      {stats.lastScore && (
+                      {stats.lastScore && stats.lastScore.total > 0 && (
                         <div className="hidden sm:flex items-center gap-1 text-[#586e75] dark:text-[#94a3b8]">
                           <span>Last: {stats.lastScore.correct}/{stats.lastScore.total}</span>
                         </div>

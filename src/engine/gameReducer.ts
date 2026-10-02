@@ -86,26 +86,31 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         const accuracy = calculateAccuracy(state.stats.correctCount, state.stats.totalAttempted);
         const ppm = calculatePPM(state.stats.correctCount, finalElapsed);
 
+        const hasActivity = state.stats.totalAttempted > 0 || state.stats.correctCount > 0;
         const currentBests = state.personalBests;
-        const isNewHighScore = state.stats.correctCount > currentBests.highScore;
-        const isNewBestStreak = state.stats.bestStreak > currentBests.bestStreak;
+        const isNewHighScore = hasActivity && state.stats.correctCount > currentBests.highScore;
+        const isNewBestStreak = hasActivity && state.stats.bestStreak > currentBests.bestStreak;
 
-        const updatedBests = savePersonalBests({
-          highScore: Math.max(currentBests.highScore, state.stats.correctCount),
-          bestStreak: Math.max(currentBests.bestStreak, state.stats.bestStreak),
-          totalGamesPlayed: currentBests.totalGamesPlayed + 1,
-        });
+        const updatedBests = hasActivity
+          ? savePersonalBests({
+              highScore: Math.max(currentBests.highScore, state.stats.correctCount),
+              bestStreak: Math.max(currentBests.bestStreak, state.stats.bestStreak),
+              totalGamesPlayed: currentBests.totalGamesPlayed + 1,
+            })
+          : currentBests;
 
-        recordSprintRun({
-          id: state.runId,
-          score: state.stats.correctCount,
-          totalAttempted: state.stats.totalAttempted,
-          accuracyPercentage: accuracy,
-          problemsPerMinute: ppm,
-          bestStreak: state.stats.bestStreak,
-          missedCount: state.stats.missedProblems.length,
-          durationSeconds: SPRINT_DURATION_SECONDS,
-        });
+        if (hasActivity) {
+          recordSprintRun({
+            id: state.runId,
+            score: state.stats.correctCount,
+            totalAttempted: state.stats.totalAttempted,
+            accuracyPercentage: accuracy,
+            problemsPerMinute: ppm,
+            bestStreak: state.stats.bestStreak,
+            missedCount: state.stats.missedProblems.length,
+            durationSeconds: SPRINT_DURATION_SECONDS,
+          });
+        }
 
         return {
           ...state,
@@ -200,26 +205,31 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       const accuracy = calculateAccuracy(state.stats.correctCount, state.stats.totalAttempted);
       const ppm = calculatePPM(state.stats.correctCount, elapsed > 0 ? elapsed : SPRINT_DURATION_SECONDS);
 
+      const hasActivity = state.stats.totalAttempted > 0 || state.stats.correctCount > 0;
       const currentBests = state.personalBests;
-      const isNewHighScore = state.stats.correctCount > currentBests.highScore;
-      const isNewBestStreak = state.stats.bestStreak > currentBests.bestStreak;
+      const isNewHighScore = hasActivity && state.stats.correctCount > currentBests.highScore;
+      const isNewBestStreak = hasActivity && state.stats.bestStreak > currentBests.bestStreak;
 
-      const updatedBests = savePersonalBests({
-        highScore: Math.max(currentBests.highScore, state.stats.correctCount),
-        bestStreak: Math.max(currentBests.bestStreak, state.stats.bestStreak),
-        totalGamesPlayed: currentBests.totalGamesPlayed + 1,
-      });
+      const updatedBests = hasActivity
+        ? savePersonalBests({
+            highScore: Math.max(currentBests.highScore, state.stats.correctCount),
+            bestStreak: Math.max(currentBests.bestStreak, state.stats.bestStreak),
+            totalGamesPlayed: currentBests.totalGamesPlayed + 1,
+          })
+        : currentBests;
 
-      recordSprintRun({
-        id: state.runId,
-        score: state.stats.correctCount,
-        totalAttempted: state.stats.totalAttempted,
-        accuracyPercentage: accuracy,
-        problemsPerMinute: ppm,
-        bestStreak: state.stats.bestStreak,
-        missedCount: state.stats.missedProblems.length,
-        durationSeconds: elapsed > 0 ? elapsed : SPRINT_DURATION_SECONDS,
-      });
+      if (hasActivity) {
+        recordSprintRun({
+          id: state.runId,
+          score: state.stats.correctCount,
+          totalAttempted: state.stats.totalAttempted,
+          accuracyPercentage: accuracy,
+          problemsPerMinute: ppm,
+          bestStreak: state.stats.bestStreak,
+          missedCount: state.stats.missedProblems.length,
+          durationSeconds: elapsed > 0 ? elapsed : 1,
+        });
+      }
 
       return {
         ...state,

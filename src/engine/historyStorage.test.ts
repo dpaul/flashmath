@@ -30,9 +30,10 @@ describe('History Storage Module', () => {
       durationSeconds: 180,
     });
 
-    expect(record.id).toBeTruthy();
-    expect(record.timestamp).toBeTruthy();
-    expect(record.score).toBe(25);
+    expect(record).not.toBeNull();
+    expect(record!.id).toBeTruthy();
+    expect(record!.timestamp).toBeTruthy();
+    expect(record!.score).toBe(25);
 
     const loaded = loadRunHistory();
     expect(loaded.length).toBe(1);
@@ -90,11 +91,13 @@ describe('History Storage Module', () => {
 
     // First call records
     const record1 = recordSprintRun(runData);
+    expect(record1).not.toBeNull();
     expect(loadRunHistory().length).toBe(1);
 
     // Second call with same id returns existing without appending
     const record2 = recordSprintRun(runData);
-    expect(record2.id).toBe(record1.id);
+    expect(record2).not.toBeNull();
+    expect(record2!.id).toBe(record1!.id);
     expect(loadRunHistory().length).toBe(1);
 
     // Third call without explicit id but identical data within 3 seconds
@@ -107,7 +110,68 @@ describe('History Storage Module', () => {
       missedCount: 2,
       durationSeconds: 180,
     });
-    expect(record3.id).toBe(record1.id);
+    expect(record3).not.toBeNull();
+    expect(record3!.id).toBe(record1!.id);
     expect(loadRunHistory().length).toBe(1);
+  });
+
+  it('rejects recording 0/0 scores from sprint history', () => {
+    const result = recordSprintRun({
+      score: 0,
+      totalAttempted: 0,
+      accuracyPercentage: 0,
+      problemsPerMinute: 0,
+      bestStreak: 0,
+      missedCount: 0,
+      durationSeconds: 180,
+    });
+
+    expect(result).toBeNull();
+    expect(loadRunHistory()).toHaveLength(0);
+  });
+
+  it('filters out legacy 0/0 runs when loading run history', () => {
+    const legacyRuns = [
+      {
+        id: 'run-valid',
+        timestamp: new Date().toISOString(),
+        score: 15,
+        totalAttempted: 16,
+        accuracyPercentage: 93.8,
+        problemsPerMinute: 5,
+        bestStreak: 8,
+        missedCount: 1,
+        durationSeconds: 180,
+      },
+      {
+        id: 'run-zero-zero',
+        timestamp: new Date().toISOString(),
+        score: 0,
+        totalAttempted: 0,
+        accuracyPercentage: 0,
+        problemsPerMinute: 0,
+        bestStreak: 0,
+        missedCount: 0,
+        durationSeconds: 180,
+      },
+      {
+        id: 'run-zero-score-with-attempts',
+        timestamp: new Date().toISOString(),
+        score: 0,
+        totalAttempted: 3,
+        accuracyPercentage: 0,
+        problemsPerMinute: 0,
+        bestStreak: 0,
+        missedCount: 3,
+        durationSeconds: 180,
+      },
+    ];
+
+    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(legacyRuns));
+    const loaded = loadRunHistory();
+
+    expect(loaded).toHaveLength(2);
+    expect(loaded.map((r) => r.id)).toEqual(['run-valid', 'run-zero-score-with-attempts']);
+    expect(loaded.some((r) => r.id === 'run-zero-zero')).toBe(false);
   });
 });
