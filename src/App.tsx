@@ -11,6 +11,7 @@ import { TimerBar } from './components/TimerBar';
 import { HistoryPage } from './components/HistoryPage';
 import { RecentProblemStream, SolvedProblemRecord } from './components/RecentProblemStream';
 import { ModeSelector } from './components/ModeSelector';
+import { MathPracticeView } from './components/MathPracticeView';
 import { SpellingLevelSelect } from './components/SpellingLevelSelect';
 import { SpellingPracticeView } from './components/SpellingPracticeView';
 import { SpellingHistoryPage } from './components/SpellingHistoryPage';
@@ -21,6 +22,7 @@ import { X, TrendingUp, Flame, LayoutGrid } from 'lucide-react';
 export type ActiveAppView =
   | 'mode-select'
   | 'math'
+  | 'math-practice'
   | 'history'
   | 'spelling-levels'
   | 'spelling-practice'
@@ -219,7 +221,16 @@ export const AppContent: React.FC = () => {
                 </div>
               )}
 
-              {activeView === 'history' ? (
+              {activeView === 'math-practice' ? (
+                <button
+                  type="button"
+                  onClick={() => setActiveView('math')}
+                  aria-label="Back to Sprint"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#eee8d5] dark:bg-[#24292e] hover:bg-[#e4d9c7] dark:hover:bg-[#2d353c] text-[#073642] dark:text-[#eceff1] text-xs font-semibold transition border border-[#e4d9c7] dark:border-[#353c43] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#cb4b16]/30"
+                >
+                  <span>Back to Sprint</span>
+                </button>
+              ) : activeView === 'history' ? (
                 <button
                   type="button"
                   onClick={() => setActiveView('math')}
@@ -317,13 +328,28 @@ export const AppContent: React.FC = () => {
         )}
 
         {activeView === 'history' && (
-          <HistoryPage onBack={() => setActiveView('math')} />
+          <HistoryPage
+            onBack={() => setActiveView('math')}
+            onPracticeMissed={() => setActiveView('math-practice')}
+          />
+        )}
+
+        {activeView === 'math-practice' && (
+          <MathPracticeView
+            onBackToMath={() => setActiveView('math')}
+            onBackToHome={() => setActiveView('mode-select')}
+            onOpenHistory={() => setActiveView('history')}
+          />
         )}
 
         {activeView === 'math' && (
           <>
             {state.phase === 'idle' && (
-              <StartScreen personalBests={state.personalBests} onStart={handleStart} />
+              <StartScreen
+                personalBests={state.personalBests}
+                onStart={handleStart}
+                onPracticeMissed={() => setActiveView('math-practice')}
+              />
             )}
 
             {state.phase === 'running' && state.currentProblem && (
@@ -427,6 +453,7 @@ export const AppContent: React.FC = () => {
                 isNewBestStreak={state.isNewBestStreak}
                 onRestart={handleRestart}
                 onViewHistory={() => setActiveView('history')}
+                onPracticeMissed={() => setActiveView('math-practice')}
               />
             )}
           </>

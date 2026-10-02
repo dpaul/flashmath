@@ -2,6 +2,8 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { RunHistoryList } from './RunHistoryList';
 import { ClearHistoryModal } from './ClearHistoryModal';
+import { HistoryPage } from './HistoryPage';
+import * as mathMistakesStorage from '../engine/mathMistakesStorage';
 import { SprintRunRecord } from '../engine/types';
 
 describe('RunHistoryList Component', () => {
@@ -145,5 +147,38 @@ describe('ClearHistoryModal Component', () => {
 
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(onCancel).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('HistoryPage Component', () => {
+  it('renders Facts Gotten Wrong Most section with qualifying trouble facts', () => {
+    localStorage.clear();
+    // 6x7 missed 2 times (qualifies)
+    mathMistakesStorage.recordMathProblemAttempt(6, 7, false);
+    mathMistakesStorage.recordMathProblemAttempt(6, 7, false);
+
+    const onPracticeMissed = vi.fn();
+    render(<HistoryPage onBack={vi.fn()} onPracticeMissed={onPracticeMissed} />);
+
+    expect(screen.getByText('Facts Gotten Wrong Most')).toBeInTheDocument();
+    expect(screen.getByText(/1 trouble fact/i)).toBeInTheDocument();
+    expect(screen.getByText('6 × 7')).toBeInTheDocument();
+    expect(screen.getByText('= 42')).toBeInTheDocument();
+
+    const practiceBtn = screen.getByRole('button', {
+      name: /practice most missed multiplication facts/i,
+    });
+    fireEvent.click(practiceBtn);
+    expect(onPracticeMissed).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders empty message in Facts Gotten Wrong Most when no facts qualify', () => {
+    localStorage.clear();
+    render(<HistoryPage onBack={vi.fn()} onPracticeMissed={vi.fn()} />);
+
+    expect(screen.getByText('Facts Gotten Wrong Most')).toBeInTheDocument();
+    expect(
+      screen.getByText(/no trouble facts recorded yet/i)
+    ).toBeInTheDocument();
   });
 });

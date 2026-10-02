@@ -3,13 +3,14 @@ import { RotateCcw, Trophy, Flame, Target, Gauge, Award, TrendingUp } from 'luci
 import { GameStats, PersonalBests } from '../engine/types';
 import { MissedProblemsReview } from './MissedProblemsReview';
 
-interface ResultsScreenProps {
+export interface ResultsScreenProps {
   stats: GameStats;
   personalBests: PersonalBests;
   isNewHighScore: boolean;
   isNewBestStreak: boolean;
   onRestart: () => void;
   onViewHistory?: () => void;
+  onPracticeMissed?: () => void;
 }
 
 export const ResultsScreen: React.FC<ResultsScreenProps> = ({
@@ -19,6 +20,7 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
   isNewBestStreak,
   onRestart,
   onViewHistory,
+  onPracticeMissed,
 }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -118,7 +120,7 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
         </span>
 
         {onViewHistory && (
-          <div className="mt-4">
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
             <button
               type="button"
               onClick={onViewHistory}
@@ -127,6 +129,18 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
               <TrendingUp className="w-4 h-4 text-zen-terracotta dark:text-[#eb937d]" />
               <span>View History & Trends</span>
             </button>
+
+            {onPracticeMissed && (
+              <button
+                type="button"
+                onClick={onPracticeMissed}
+                aria-label="Practice Trouble Facts"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#fdf2eb] dark:bg-[#eb937d]/15 hover:bg-[#fae5d9] dark:hover:bg-[#eb937d]/25 text-[#cb4b16] dark:text-[#eb937d] border border-[#fbdcd0] dark:border-[#eb937d]/30 font-semibold text-sm transition-all cursor-pointer"
+              >
+                <Target className="w-4 h-4" />
+                <span>Practice Trouble Facts</span>
+              </button>
+            )}
           </div>
         )}
       </div>

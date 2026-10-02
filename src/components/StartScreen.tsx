@@ -1,13 +1,21 @@
 import React, { useEffect } from 'react';
-import { Sparkles, Trophy, Zap, Play, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Trophy, Zap, Play, CheckCircle2, Target, ChevronRight } from 'lucide-react';
 import { PersonalBests } from '../engine/types';
+import { getMostMissedMathProblems } from '../engine/mathMistakesStorage';
 
-interface StartScreenProps {
+export interface StartScreenProps {
   personalBests: PersonalBests;
   onStart: () => void;
+  onPracticeMissed?: () => void;
 }
 
-export const StartScreen: React.FC<StartScreenProps> = ({ personalBests, onStart }) => {
+export const StartScreen: React.FC<StartScreenProps> = ({
+  personalBests,
+  onStart,
+  onPracticeMissed,
+}) => {
+  const troubleProblems = getMostMissedMathProblems();
+  const troubleCount = troubleProblems.length;
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter' || e.code === 'Space') {
@@ -61,6 +69,78 @@ export const StartScreen: React.FC<StartScreenProps> = ({ personalBests, onStart
             {personalBests.bestStreak}
           </span>
           <span className="text-xs text-zen-base01 dark:text-[#94a3b8] mt-0.5">consecutive correct</span>
+        </div>
+      </div>
+
+      {/* Most Missed Problems Practice Card */}
+      <div className="w-full max-w-md mb-6">
+        <div
+          className={`flex flex-col rounded-3xl tactile-card border transition-all overflow-hidden ${
+            troubleCount > 0
+              ? 'bg-gradient-to-br from-white via-white to-[#fdf4ee] dark:from-[#24292e] dark:via-[#24292e] dark:to-[#2c2220] border-[#cb4b16]/30 dark:border-[#eb937d]/40 shadow-sm hover:border-[#cb4b16]/60 dark:hover:border-[#eb937d]/60 hover:shadow-md'
+              : 'bg-white dark:bg-[#24292e] border-[#ede5d0] dark:border-[#353c43] opacity-75'
+          }`}
+        >
+          <button
+            type="button"
+            onClick={() => {
+              if (troubleCount > 0 && onPracticeMissed) {
+                onPracticeMissed();
+              }
+            }}
+            disabled={troubleCount === 0 || !onPracticeMissed}
+            aria-label="Practice Most Missed Multiplication Problems"
+            className={`group relative flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 text-left w-full ${
+              troubleCount > 0 && onPracticeMissed ? 'cursor-pointer' : 'cursor-default'
+            }`}
+          >
+            <div className="flex items-start gap-3.5">
+              <div
+                className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 transition-transform ${
+                  troubleCount > 0
+                    ? 'bg-[#cb4b16]/10 dark:bg-[#eb937d]/15 text-[#cb4b16] dark:text-[#eb937d] group-hover:scale-110'
+                    : 'bg-[#eee8d5] dark:bg-[#181b1e] text-[#93a1a1] dark:text-[#718093]'
+                }`}
+              >
+                <Target className="w-5 h-5" />
+              </div>
+
+              <div>
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <h3 className="text-base font-bold text-zen-base03 dark:text-[#eceff1]">
+                    Most Missed Facts
+                  </h3>
+                  <span
+                    className={`text-xs px-2 py-0.5 rounded-full font-bold ${
+                      troubleCount > 0
+                        ? 'bg-[#cb4b16]/15 text-[#cb4b16] dark:text-[#eb937d] dark:bg-[#eb937d]/20'
+                        : 'bg-[#eee8d5] dark:bg-[#181b1e] text-[#93a1a1] dark:text-[#718093]'
+                    }`}
+                  >
+                    {troubleCount === 1 ? '1 trouble problem' : `${troubleCount} trouble problems`}
+                  </span>
+                </div>
+                <p className="text-xs text-zen-base00 dark:text-[#94a3b8] max-w-xs">
+                  {troubleCount > 0
+                    ? `Targeted untimed drill for ${troubleCount === 1 ? 'the 1 fact' : `the ${troubleCount} facts`} you have missed more than once. (Doesn't affect history)`
+                    : 'Facts you miss more than once will appear here for focused drill. (Does not affect history)'}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-3 sm:mt-0 flex items-center gap-2 self-end sm:self-center">
+              {troubleCount > 0 && onPracticeMissed ? (
+                <div className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#cb4b16] dark:bg-[#eb937d] text-white dark:text-[#1a1d20] font-bold text-xs shadow-xs group-hover:bg-[#b83e0f] dark:group-hover:bg-[#f0a693] transition-colors">
+                  <span>Practice</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </div>
+              ) : (
+                <span className="text-xs text-[#93a1a1] dark:text-[#718093] italic px-1">
+                  No repeated misses
+                </span>
+              )}
+            </div>
+          </button>
         </div>
       </div>
 

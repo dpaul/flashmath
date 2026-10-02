@@ -1,6 +1,7 @@
 import { generateProblem, evaluateAnswer } from './math';
 import { loadPersonalBests, savePersonalBests } from './storage';
 import { recordSprintRun } from './historyStorage';
+import { recordMathProblemAttempt } from './mathMistakesStorage';
 import { GameState, GameAction, GameStats } from './types';
 
 export const SPRINT_DURATION_SECONDS = 180;
@@ -129,6 +130,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
 
       const answer = action.payload.answer;
       const isCorrect = answer !== '' && evaluateAnswer(state.currentProblem, answer);
+      recordMathProblemAttempt(state.currentProblem.factorA, state.currentProblem.factorB, isCorrect);
       const totalAttempted = state.stats.totalAttempted + 1;
       const correctCount = isCorrect ? state.stats.correctCount + 1 : state.stats.correctCount;
       const incorrectCount = isCorrect ? state.stats.incorrectCount : state.stats.incorrectCount + 1;

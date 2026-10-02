@@ -201,5 +201,53 @@ describe('FlashMath App Integration', () => {
     expect(localStorage.getItem('flashmath_theme')).toBe('light');
     expect(screen.getByRole('button', { name: /switch to chalkboard dark mode/i })).toBeInTheDocument();
   });
+
+  it('navigates to Most Missed math practice drill from StartScreen and returns without polluting history', () => {
+    // Record 7x8 missed twice
+    localStorage.setItem(
+      'flashmath_math_problem_stats_v1',
+      JSON.stringify({
+        '7x8': {
+          id: '7x8',
+          factorA: 7,
+          factorB: 8,
+          product: 56,
+          attempts: 2,
+          misses: 2,
+          correct: 0,
+        },
+      })
+    );
+
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: /start math sprint/i }));
+
+    // StartScreen shows 1 trouble problem
+    expect(screen.getByText(/1 trouble problem/i)).toBeInTheDocument();
+    const practiceBtn = screen.getByRole('button', {
+      name: /practice most missed multiplication problems/i,
+    });
+    fireEvent.click(practiceBtn);
+
+    // Active in untimed practice view
+    expect(screen.getByText(/Untimed Practice/i)).toBeInTheDocument();
+    expect(screen.getByText(/Fact 1 of 1/i)).toBeInTheDocument();
+
+    // Answer correctly
+    const input = screen.getByLabelText(/your calculation answer/i);
+    fireEvent.change(input, { target: { value: '56' } });
+    fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+
+    // Completed drill
+    expect(screen.getByText(/Drill Complete!/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /back to math sprint/i })).toBeInTheDocument();
+
+    // Verify history was NOT polluted
+    expect(localStorage.getItem('flashmath_run_history_v1')).toBeNull();
+
+    // Click Back to Math Sprint
+    fireEvent.click(screen.getByRole('button', { name: /back to math sprint/i }));
+    expect(screen.getByRole('button', { name: /start challenge/i })).toBeInTheDocument();
+  });
 });
 
