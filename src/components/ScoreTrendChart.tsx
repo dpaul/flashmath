@@ -57,6 +57,9 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
   const avgY = padTop + usableHeight - (avgScore / maxScore) * usableHeight;
 
   const activeCoord = activeRunIndex !== null ? coords[activeRunIndex] : null;
+  const xRatio = activeCoord ? activeCoord.x / svgWidth : 0;
+  const yRatio = activeCoord ? activeCoord.y / svgHeight : 0;
+  const isNearTop = yRatio < 0.5;
 
   return (
     <div className="w-full p-6 rounded-3xl bg-white dark:bg-[#24292e] tactile-card border border-[#ede5d0] dark:border-[#353c43] flex flex-col relative select-none">
@@ -78,7 +81,7 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
       </div>
 
       {/* SVG Canvas */}
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full">
         <svg
           viewBox={`0 0 ${svgWidth} ${svgHeight}`}
           className="w-full h-auto overflow-visible"
@@ -159,6 +162,7 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
                   role="button"
                   tabIndex={0}
                   aria-label={`Run ${c.idx + 1}: ${c.run.score} correct`}
+                  onClick={() => setActiveRunIndex(activeRunIndex === c.idx ? null : c.idx)}
                   onMouseEnter={() => setActiveRunIndex(c.idx)}
                   onFocus={() => setActiveRunIndex(c.idx)}
                   onMouseLeave={() => setActiveRunIndex(null)}
@@ -184,20 +188,23 @@ export const ScoreTrendChart: React.FC<ScoreTrendChartProps> = ({ runs }) => {
         {/* Hover Floating Tooltip */}
         {activeCoord && (
           <div
-            className="absolute z-20 pointer-events-none transform -translate-x-1/2 -translate-y-full px-3 py-2 rounded-xl bg-zen-base03 dark:bg-[#181b1e] border border-zen-base02 dark:border-[#353c43] shadow-2xl text-xs font-mono text-white dark:text-[#eceff1] transition-all duration-100"
+            role="tooltip"
+            data-testid="score-trend-tooltip"
+            className="absolute z-20 pointer-events-none max-w-[calc(100%-16px)] px-3 py-2 rounded-xl bg-zen-base03 dark:bg-[#181b1e] border border-zen-base02 dark:border-[#353c43] shadow-2xl text-xs font-mono text-white dark:text-[#eceff1] transition-all duration-100"
             style={{
-              left: `${(activeCoord.x / svgWidth) * 100}%`,
-              top: `${(activeCoord.y / svgHeight) * 100}%`,
-              marginTop: '-10px',
+              left: `${(xRatio * 100).toFixed(2)}%`,
+              top: `${(yRatio * 100).toFixed(2)}%`,
+              transform: `translate(-${(xRatio * 100).toFixed(2)}%, ${isNearTop ? '0%' : '-100%'})`,
+              marginTop: isNearTop ? '12px' : '-12px',
             }}
           >
-            <div className="font-bold text-zen-amber dark:text-[#eed082]">
+            <div className="font-bold text-zen-amber dark:text-[#eed082] whitespace-nowrap">
               {activeCoord.run.score} solved
             </div>
-            <div className="text-[11px] text-zen-base2 dark:text-[#94a3b8]">
+            <div className="text-[11px] text-zen-base2 dark:text-[#94a3b8] whitespace-nowrap">
               {activeCoord.run.accuracyPercentage}% accuracy &bull; {activeCoord.run.problemsPerMinute} PPM
             </div>
-            <div className="text-[10px] text-zen-base1 dark:text-[#718093] mt-0.5">
+            <div className="text-[10px] text-zen-base1 dark:text-[#718093] mt-0.5 whitespace-nowrap">
               {new Date(activeCoord.run.timestamp).toLocaleDateString(undefined, {
                 month: 'short',
                 day: 'numeric',
