@@ -1,5 +1,6 @@
-import { MultiplicationProblem } from './math';
+import { MultiplicationProblem, ProblemPair } from './math';
 export type { SprintRunRecord } from './historyStorage';
+export type { ProblemPair };
 
 export type ActiveAppView =
   | 'mode-select'
@@ -46,6 +47,8 @@ export interface GameState {
   isNewBestStreak: boolean;
   lastAnswerCorrect: boolean | null;
   runId?: string;
+  problemDeck?: ProblemPair[];
+  recentProblemPairs?: ProblemPair[];
 }
 
 export type GameAction =

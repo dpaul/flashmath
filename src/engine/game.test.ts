@@ -85,4 +85,24 @@ describe('Game Reducer & Calculations', () => {
     expect(state.phase).toBe('idle');
     expect(state.timeRemaining).toBe(SPRINT_DURATION_SECONDS);
   });
+
+  it('serves problems using a shuffled deck and does not repeat consecutive questions', () => {
+    let state = gameReducer(initialGameState, { type: 'START_GAME' });
+    const seenProblems: string[] = [];
+
+    for (let i = 0; i < 40; i++) {
+      const problem = state.currentProblem!;
+      const key = `${problem.factorA}x${problem.factorB}`;
+      expect(seenProblems.includes(key)).toBe(false);
+      seenProblems.push(key);
+
+      state = gameReducer(state, {
+        type: 'SUBMIT_ANSWER',
+        payload: { answer: String(problem.product) },
+      });
+    }
+
+    expect(seenProblems.length).toBe(40);
+    expect(new Set(seenProblems).size).toBe(40);
+  });
 });

@@ -1,4 +1,8 @@
-import { generateProblem, evaluateAnswer } from './math';
+import {
+  evaluateAnswer,
+  createShuffledProblemDeck,
+  drawProblemFromDeck,
+} from './math';
 import { loadPersonalBests, savePersonalBests } from './storage';
 import { recordSprintRun } from './historyStorage';
 import { recordMathProblemAttempt } from './mathMistakesStorage';
@@ -39,19 +43,28 @@ export const initialGameState: GameState = {
   isNewHighScore: false,
   isNewBestStreak: false,
   lastAnswerCorrect: null,
+  problemDeck: [],
+  recentProblemPairs: [],
 };
 
 export function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case 'START_GAME': {
       const personalBests = loadPersonalBests();
-      const firstProblem = generateProblem();
+      const initialDeck = createShuffledProblemDeck(2, 12);
+      const {
+        problem: firstProblem,
+        remainingDeck,
+        recentProblems,
+      } = drawProblemFromDeck(initialDeck, []);
       const runId = `sprint-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
       return {
         ...state,
         phase: 'running',
         timeRemaining: SPRINT_DURATION_SECONDS,
         currentProblem: firstProblem,
+        problemDeck: remainingDeck,
+        recentProblemPairs: recentProblems,
         runId,
         stats: {
           ...emptyStats,
@@ -151,11 +164,22 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
             },
           ];
 
-      const nextProblem = generateProblem(state.currentProblem);
+      const previousPair = state.currentProblem
+        ? { factorA: state.currentProblem.factorA, factorB: state.currentProblem.factorB }
+        : undefined;
+      const history = state.recentProblemPairs || (previousPair ? [previousPair] : []);
+
+      const {
+        problem: nextProblem,
+        remainingDeck,
+        recentProblems,
+      } = drawProblemFromDeck(state.problemDeck || [], history);
 
       return {
         ...state,
         currentProblem: nextProblem,
+        problemDeck: remainingDeck,
+        recentProblemPairs: recentProblems,
         lastAnswerCorrect: isCorrect,
         stats: {
           ...state.stats,
