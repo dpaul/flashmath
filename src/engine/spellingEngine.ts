@@ -1,10 +1,8 @@
 import { SPELLING_LEVELS, SpellingLevel, getExampleSentence } from '../data/spellingLevels';
-import { getAllMostMissedWords } from './spellingStorage';
+import { getAllMostMissedWords, MOST_MISSED_LEVEL_ID } from './spellingStorage';
 
-export { SPELLING_LEVELS, getExampleSentence };
+export { SPELLING_LEVELS, getExampleSentence, MOST_MISSED_LEVEL_ID };
 export type { SpellingLevel };
-
-export const MOST_MISSED_LEVEL_ID = 'most-missed';
 
 export function getMostMissedSpellingLevel(limit = 20): SpellingLevel {
   const ranked = getAllMostMissedWords(limit);
@@ -21,7 +19,7 @@ export function getMostMissedSpellingLevel(limit = 20): SpellingLevel {
   return {
     id: MOST_MISSED_LEVEL_ID,
     name: 'Most Missed Words',
-    description: 'Targeted drill focusing on the spelling words you have missed most often.',
+    description: 'Targeted drill focusing on the spelling words you have missed more than once.',
     difficultyLabel: 'Trouble Words',
     words,
     sentences,

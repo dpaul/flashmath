@@ -167,13 +167,39 @@ describe('Spelling Engine & Level Configuration', () => {
     expect(emptySession.isComplete).toBe(true);
     expect(emptySession.words).toHaveLength(0);
 
-    // Record mistakes
+    // Record mistakes:
+    // 'thank' missed twice (qualifies)
     updateLevelStatsFromSession('2026-09-12', {
       attempts: 1,
       correct: 0,
       streak: 0,
-      missed: ['thank', 'fruit'],
+      missed: ['thank'],
       word: 'thank',
+    });
+    updateLevelStatsFromSession('2026-09-12', {
+      attempts: 1,
+      correct: 0,
+      streak: 0,
+      missed: ['thank'],
+      word: 'thank',
+    });
+
+    // 'fruit' missed only once (does NOT qualify)
+    updateLevelStatsFromSession('2026-09-12', {
+      attempts: 1,
+      correct: 0,
+      streak: 0,
+      missed: ['fruit'],
+      word: 'fruit',
+    });
+
+    // 'precede' missed twice (qualifies)
+    updateLevelStatsFromSession('2026-09-15', {
+      attempts: 1,
+      correct: 0,
+      streak: 0,
+      missed: ['precede'],
+      word: 'precede',
     });
     updateLevelStatsFromSession('2026-09-15', {
       attempts: 1,
@@ -185,9 +211,11 @@ describe('Spelling Engine & Level Configuration', () => {
 
     const populatedLevel = getSpellingLevelById(MOST_MISSED_LEVEL_ID);
     expect(populatedLevel).toBeDefined();
-    expect(populatedLevel?.words.length).toBeGreaterThanOrEqual(2);
+    expect(populatedLevel?.words).toHaveLength(2);
     expect(populatedLevel?.words).toContain('thank');
     expect(populatedLevel?.words).toContain('precede');
+    // 'fruit' missed only once is excluded
+    expect(populatedLevel?.words).not.toContain('fruit');
 
     // Example sentences are populated from level definitions
     expect(populatedLevel?.sentences?.['thank']).toBeDefined();
@@ -196,7 +224,7 @@ describe('Spelling Engine & Level Configuration', () => {
     // Initializing a session with most-missed level
     const session = createSpellingSession(MOST_MISSED_LEVEL_ID);
     expect(session.levelId).toBe(MOST_MISSED_LEVEL_ID);
-    expect(session.words.length).toBeGreaterThanOrEqual(2);
+    expect(session.words).toHaveLength(2);
     expect(session.isComplete).toBe(false);
     expect(session.currentWord).toBe(session.words[0]);
   });

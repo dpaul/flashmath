@@ -149,7 +149,14 @@ describe('SpellingPracticeView Component', () => {
   });
 
   it('runs practice session in most-missed mode and updates parent level stats', async () => {
-    // Save mistakes in 2026-09-12 for 'climb'
+    // Save mistakes in 2026-09-12 for 'climb' (missed more than once)
+    spellingStorage.updateLevelStatsFromSession('2026-09-12', {
+      attempts: 1,
+      correct: 0,
+      streak: 0,
+      missed: ['climb'],
+      word: 'climb',
+    });
     spellingStorage.updateLevelStatsFromSession('2026-09-12', {
       attempts: 1,
       correct: 0,

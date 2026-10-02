@@ -99,39 +99,14 @@ export const SpellingLevelSelect: React.FC<SpellingLevelSelectProps> = ({
                         : 'bg-[#eee8d5] dark:bg-[#181b1e] text-[#93a1a1] dark:text-[#718093]'
                     }`}
                   >
-                    {missedCount > 0 ? `${missedCount} trouble words` : '0 trouble words'}
+                    {missedCount === 1 ? '1 trouble word' : `${missedCount} trouble words`}
                   </span>
                 </div>
                 <p className="text-xs sm:text-sm text-zen-base00 dark:text-[#94a3b8] max-w-md">
                   {missedCount > 0
-                    ? 'Targeted drill focusing exclusively on your most frequently misspelled words across all sessions.'
-                    : 'As you practice spelling sessions, words you get wrong will automatically be gathered here for focused review.'}
+                    ? `Targeted drill focusing on ${missedCount === 1 ? 'the 1 word' : `the ${missedCount} words`} you have missed more than once.`
+                    : 'Words you miss more than once will automatically appear here for focused review.'}
                 </p>
-
-                {/* Trouble words preview chips */}
-                {missedCount > 0 && (
-                  <div className="flex flex-wrap gap-1.5 mt-3">
-                    <span className="text-[11px] font-medium text-[#93a1a1] dark:text-[#718093] self-center mr-1">
-                      Top misses:
-                    </span>
-                    {mostMissedWords.slice(0, 4).map((item) => (
-                      <span
-                        key={item.word}
-                        className="px-2 py-0.5 rounded-lg bg-white/90 dark:bg-[#181b1e] border border-[#cb4b16]/20 dark:border-[#eb937d]/30 font-mono text-xs text-[#073642] dark:text-[#eceff1]"
-                      >
-                        {item.word}{' '}
-                        <span className="text-[#cb4b16] dark:text-[#eb937d] text-[10px]">
-                          ({item.misses})
-                        </span>
-                      </span>
-                    ))}
-                    {missedCount > 4 && (
-                      <span className="text-[11px] text-[#93a1a1] dark:text-[#718093] self-center">
-                        +{missedCount - 4} more
-                      </span>
-                    )}
-                  </div>
-                )}
               </div>
             </div>
 
@@ -144,7 +119,7 @@ export const SpellingLevelSelect: React.FC<SpellingLevelSelectProps> = ({
                 </div>
               ) : (
                 <span className="text-xs text-[#93a1a1] dark:text-[#718093] italic px-2 py-1">
-                  No misses yet
+                  No repeated misses yet
                 </span>
               )}
             </div>

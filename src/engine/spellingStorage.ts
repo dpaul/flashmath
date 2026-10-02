@@ -1,5 +1,7 @@
 import { SPELLING_LEVELS } from '../data/spellingLevels';
 
+export const MOST_MISSED_LEVEL_ID = 'most-missed';
+
 export interface SpellingRunRecord {
   id?: string;
   timestamp: string; // ISO 8601
@@ -342,6 +344,9 @@ export function getAllSpellingStats(): Record<string, SpellingLevelStats> {
       const key = localStorage.key(i);
       if (key && key.startsWith(SPELLING_STORAGE_PREFIX)) {
         const levelId = key.replace(SPELLING_STORAGE_PREFIX, '');
+        if (levelId === MOST_MISSED_LEVEL_ID) {
+          continue;
+        }
         result[levelId] = loadLevelStats(levelId);
       }
     }
@@ -377,7 +382,7 @@ export function findLevelIdForWord(word: string): string | undefined {
   return undefined;
 }
 
-export function getAllMostMissedWords(limit?: number): RankedWordMistake[] {
+export function getAllMostMissedWords(limit?: number, minMisses = 2): RankedWordMistake[] {
   const allStats = getAllSpellingStats();
   const aggregated: Record<
     string,
@@ -389,7 +394,9 @@ export function getAllMostMissedWords(limit?: number): RankedWordMistake[] {
     }
   > = {};
 
-  for (const stats of Object.values(allStats)) {
+  for (const [lvlId, stats] of Object.entries(allStats)) {
+    if (lvlId === MOST_MISSED_LEVEL_ID) continue;
+
     // 1. Process wordStats
     if (stats.wordStats) {
       for (const [rawWord, data] of Object.entries(stats.wordStats)) {
@@ -436,13 +443,15 @@ export function getAllMostMissedWords(limit?: number): RankedWordMistake[] {
     }
   }
 
-  const result: RankedWordMistake[] = Object.values(aggregated).map((data) => ({
-    word: data.word,
-    misses: data.misses,
-    attempts: data.attempts,
-    errorRate: Math.round((data.misses / Math.max(1, data.attempts)) * 100),
-    lastMissedAt: data.lastMissedAt,
-  }));
+  const result: RankedWordMistake[] = Object.values(aggregated)
+    .filter((data) => data.misses >= minMisses)
+    .map((data) => ({
+      word: data.word,
+      misses: data.misses,
+      attempts: data.attempts,
+      errorRate: Math.round((data.misses / Math.max(1, data.attempts)) * 100),
+      lastMissedAt: data.lastMissedAt,
+    }));
 
   result.sort((a, b) => {
     if (b.misses !== a.misses) return b.misses - a.misses;

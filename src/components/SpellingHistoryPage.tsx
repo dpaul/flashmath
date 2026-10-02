@@ -17,6 +17,7 @@ import {
   loadLevelStats,
   clearLevelStats,
   getMostMissedWordsForLevel,
+  getAllMostMissedWords,
   SpellingRunRecord,
 } from '../engine/spellingStorage';
 import { speakWord } from '../services/speechSynthesis';
@@ -53,6 +54,7 @@ export const SpellingHistoryPage: React.FC<SpellingHistoryPageProps> = ({
 
   const stats = loadLevelStats(selectedLevelId);
   const mostMissedWords = getMostMissedWordsForLevel(selectedLevelId);
+  const qualifyingTroubleWords = getAllMostMissedWords();
   const runs: SpellingRunRecord[] = stats.runs || [];
 
   const totalRuns = runs.length;
@@ -240,9 +242,9 @@ export const SpellingHistoryPage: React.FC<SpellingHistoryPageProps> = ({
           {mostMissedWords.length > 0 && (
             <div className="flex items-center gap-2">
               <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-[#cb4b16]/10 dark:bg-[#eb937d]/15 text-[#cb4b16] dark:text-[#eb937d]">
-                {mostMissedWords.length} trouble words
+                {mostMissedWords.length} trouble word{mostMissedWords.length === 1 ? '' : 's'}
               </span>
-              {onPracticeLevel && (
+              {onPracticeLevel && qualifyingTroubleWords.length > 0 && (
                 <button
                   type="button"
                   onClick={() => onPracticeLevel('most-missed')}

@@ -87,20 +87,66 @@ describe('SpellingLevelSelect Component', () => {
 
     expect(screen.getByText('Most Missed Words')).toBeInTheDocument();
     expect(screen.getByText(/0 trouble words/i)).toBeInTheDocument();
-    expect(screen.getByText(/No misses yet/i)).toBeInTheDocument();
+    expect(screen.getByText(/No repeated misses yet/i)).toBeInTheDocument();
 
     const missedBtn = screen.getByRole('button', { name: /practice most missed words/i });
     expect(missedBtn).toBeDisabled();
   });
 
-  it('renders active Most Missed Words mode card with trouble words and launches session on click', () => {
-    // Record mistakes
+  it('does not qualify words that have only been missed once', () => {
+    // Record a single miss for 'banana'
     spellingStorage.updateLevelStatsFromSession('2026-09-12', {
       attempts: 1,
       correct: 0,
       streak: 0,
-      missed: ['fruit', 'climb'],
+      missed: ['banana'],
+      word: 'banana',
+    });
+
+    render(
+      <SpellingLevelSelect
+        onSelectLevel={vi.fn()}
+        onBackToHome={vi.fn()}
+      />
+    );
+
+    expect(screen.getByText(/0 trouble words/i)).toBeInTheDocument();
+    expect(screen.queryByText('banana')).not.toBeInTheDocument();
+
+    const missedBtn = screen.getByRole('button', { name: /practice most missed words/i });
+    expect(missedBtn).toBeDisabled();
+  });
+
+  it('renders active Most Missed Words card showing only count (without words) for words missed more than once', () => {
+    // Record 'fruit' missed twice and 'climb' missed twice
+    spellingStorage.updateLevelStatsFromSession('2026-09-12', {
+      attempts: 1,
+      correct: 0,
+      streak: 0,
+      missed: ['fruit'],
       word: 'fruit',
+    });
+    spellingStorage.updateLevelStatsFromSession('2026-09-12', {
+      attempts: 1,
+      correct: 0,
+      streak: 0,
+      missed: ['fruit'],
+      word: 'fruit',
+    });
+
+    spellingStorage.updateLevelStatsFromSession('2026-09-12', {
+      attempts: 1,
+      correct: 0,
+      streak: 0,
+      missed: ['climb'],
+      word: 'climb',
+    });
+    spellingStorage.updateLevelStatsFromSession('2026-09-12', {
+      attempts: 1,
+      correct: 0,
+      streak: 0,
+      missed: ['climb'],
+      word: 'climb',
     });
 
     const handleSelect = vi.fn();
@@ -113,8 +159,10 @@ describe('SpellingLevelSelect Component', () => {
 
     expect(screen.getByText('Most Missed Words')).toBeInTheDocument();
     expect(screen.getByText(/2 trouble words/i)).toBeInTheDocument();
-    expect(screen.getByText('fruit')).toBeInTheDocument();
-    expect(screen.getByText('climb')).toBeInTheDocument();
+
+    // Verify words are NOT written down on the main screen to avoid giving away answers
+    expect(screen.queryByText('fruit')).not.toBeInTheDocument();
+    expect(screen.queryByText('climb')).not.toBeInTheDocument();
 
     const missedBtn = screen.getByRole('button', { name: /practice most missed words/i });
     expect(missedBtn).not.toBeDisabled();

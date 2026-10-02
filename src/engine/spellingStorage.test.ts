@@ -283,8 +283,9 @@ describe('Spelling History Storage', () => {
       word: 'precede',
     });
 
+    // By default, getAllMostMissedWords filters for words missed more than once (misses >= 2)
     const allMissed = getAllMostMissedWords();
-    expect(allMissed).toHaveLength(3);
+    expect(allMissed).toHaveLength(2);
 
     // #1: 'precede' (3 misses)
     expect(allMissed[0].word).toBe('precede');
@@ -294,15 +295,18 @@ describe('Spelling History Storage', () => {
     expect(allMissed[1].word).toBe('climb');
     expect(allMissed[1].misses).toBe(2);
 
-    // #3: 'chief' (1 miss)
-    expect(allMissed[2].word).toBe('chief');
-    expect(allMissed[2].misses).toBe(1);
+    // 'chief' (1 miss) is excluded from the default query because it was only missed once
+    expect(allMissed.some((w) => w.word === 'chief')).toBe(false);
+
+    // If minMisses = 1 is passed, 'chief' with 1 miss is included
+    const allWithSingleMiss = getAllMostMissedWords(undefined, 1);
+    expect(allWithSingleMiss).toHaveLength(3);
+    expect(allWithSingleMiss[2].word).toBe('chief');
 
     // Test limit parameter
-    const top2 = getAllMostMissedWords(2);
-    expect(top2).toHaveLength(2);
-    expect(top2[0].word).toBe('precede');
-    expect(top2[1].word).toBe('climb');
+    const top1 = getAllMostMissedWords(1);
+    expect(top1).toHaveLength(1);
+    expect(top1[0].word).toBe('precede');
   });
 
   it('finds the parent level id for words', () => {
