@@ -1,7 +1,32 @@
 import { SPELLING_LEVELS, SpellingLevel, getExampleSentence } from '../data/spellingLevels';
+import { getAllMostMissedWords } from './spellingStorage';
 
 export { SPELLING_LEVELS, getExampleSentence };
 export type { SpellingLevel };
+
+export const MOST_MISSED_LEVEL_ID = 'most-missed';
+
+export function getMostMissedSpellingLevel(limit = 20): SpellingLevel {
+  const ranked = getAllMostMissedWords(limit);
+  const words = ranked.map((r) => r.word);
+
+  const sentences: Record<string, string> = {};
+  for (const w of words) {
+    const s = getExampleSentence(w);
+    if (s) {
+      sentences[w.toLowerCase()] = s;
+    }
+  }
+
+  return {
+    id: MOST_MISSED_LEVEL_ID,
+    name: 'Most Missed Words',
+    description: 'Targeted drill focusing on the spelling words you have missed most often.',
+    difficultyLabel: 'Trouble Words',
+    words,
+    sentences,
+  };
+}
 
 export interface SpellingSession {
   levelId: string;
@@ -20,6 +45,9 @@ export interface SpellingSession {
 }
 
 export function getSpellingLevelById(levelId: string): SpellingLevel | undefined {
+  if (levelId === MOST_MISSED_LEVEL_ID) {
+    return getMostMissedSpellingLevel();
+  }
   if (levelId === 'level-1') return SPELLING_LEVELS[0];
   if (levelId === 'level-2') return SPELLING_LEVELS[1];
   if (levelId === 'level-3' || levelId === 'rptt' || levelId === 'roots') return SPELLING_LEVELS[2];
@@ -37,7 +65,6 @@ export function maskWordInSentence(sentence: string, word: string): string {
   return sentence.replace(regex, '_____');
 }
 
-
 export function shuffleArray<T>(array: readonly T[]): T[] {
   const result = [...array];
   for (let i = result.length - 1; i > 0; i--) {
@@ -47,13 +74,28 @@ export function shuffleArray<T>(array: readonly T[]): T[] {
   return result;
 }
 
-export function createSpellingSession(levelId: string): SpellingSession {
+export function createSpellingSession(levelId: string, customWords?: string[]): SpellingSession {
   const level = getSpellingLevelById(levelId);
-  if (!level || level.words.length === 0) {
-    throw new Error(`Spelling level '${levelId}' not found or has no words.`);
+  const wordList = customWords && customWords.length > 0 ? customWords : (level?.words || []);
+
+  if (wordList.length === 0) {
+    return {
+      levelId,
+      words: [],
+      currentIndex: 0,
+      currentWord: '',
+      totalAttempts: 0,
+      correctCount: 0,
+      currentStreak: 0,
+      bestStreak: 0,
+      missedWords: [],
+      isComplete: true,
+      startTime: Date.now(),
+      elapsedSeconds: 0,
+    };
   }
 
-  const shuffledWords = shuffleArray(level.words);
+  const shuffledWords = shuffleArray(wordList);
 
   return {
     levelId,

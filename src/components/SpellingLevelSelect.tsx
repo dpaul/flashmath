@@ -1,7 +1,8 @@
 import React from 'react';
-import { ArrowLeft, BookOpen, Flame, CheckCircle2, ChevronRight, Clock, TrendingUp, BarChart3 } from 'lucide-react';
+import { ArrowLeft, BookOpen, Flame, CheckCircle2, ChevronRight, Clock, TrendingUp, BarChart3, Target } from 'lucide-react';
 import { SPELLING_LEVELS, SpellingLevel } from '../data/spellingLevels';
-import { loadLevelStats } from '../engine/spellingStorage';
+import { loadLevelStats, getAllMostMissedWords } from '../engine/spellingStorage';
+import { MOST_MISSED_LEVEL_ID } from '../engine/spellingEngine';
 
 export interface SpellingLevelSelectProps {
   onSelectLevel: (levelId: string) => void;
@@ -14,6 +15,9 @@ export const SpellingLevelSelect: React.FC<SpellingLevelSelectProps> = ({
   onBackToHome,
   onOpenHistory,
 }) => {
+  const mostMissedWords = getAllMostMissedWords();
+  const missedCount = mostMissedWords.length;
+
   return (
     <div className="w-full max-w-2xl mx-auto flex flex-col items-center p-4 sm:p-8 animate-fadeIn">
       {/* Top bar */}
@@ -46,8 +50,115 @@ export const SpellingLevelSelect: React.FC<SpellingLevelSelectProps> = ({
           Spelling Levels
         </h2>
         <p className="text-sm text-zen-base00 dark:text-[#94a3b8] max-w-md">
-          Choose a vocabulary collection to practice. All practice is untimed with speech synthesis.
+          Choose a vocabulary collection or target your most missed words. All practice is untimed with speech synthesis.
         </p>
+      </div>
+
+      {/* Most Missed Words Mode Card */}
+      <div className="w-full mb-6">
+        <div
+          className={`flex flex-col rounded-3xl tactile-card border transition-all overflow-hidden ${
+            missedCount > 0
+              ? 'bg-gradient-to-br from-white via-white to-[#fdf4ee] dark:from-[#24292e] dark:via-[#24292e] dark:to-[#2c2220] border-[#cb4b16]/30 dark:border-[#eb937d]/40 shadow-sm hover:border-[#cb4b16]/60 dark:hover:border-[#eb937d]/60 hover:shadow-md'
+              : 'bg-white dark:bg-[#24292e] border-[#ede5d0] dark:border-[#353c43] opacity-75'
+          }`}
+        >
+          <button
+            type="button"
+            onClick={() => {
+              if (missedCount > 0) {
+                onSelectLevel(MOST_MISSED_LEVEL_ID);
+              }
+            }}
+            disabled={missedCount === 0}
+            aria-label="Practice Most Missed Words"
+            className={`group relative flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 text-left w-full ${
+              missedCount > 0 ? 'cursor-pointer' : 'cursor-default'
+            }`}
+          >
+            <div className="flex items-start gap-4">
+              <div
+                className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-transform ${
+                  missedCount > 0
+                    ? 'bg-[#cb4b16]/10 dark:bg-[#eb937d]/15 text-[#cb4b16] dark:text-[#eb937d] group-hover:scale-110'
+                    : 'bg-[#eee8d5] dark:bg-[#181b1e] text-[#93a1a1] dark:text-[#718093]'
+                }`}
+              >
+                <Target className="w-6 h-6" />
+              </div>
+
+              <div>
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <h3 className="text-xl font-bold text-zen-base03 dark:text-[#eceff1]">
+                    Most Missed Words
+                  </h3>
+                  <span
+                    className={`text-xs px-2.5 py-0.5 rounded-full font-bold ${
+                      missedCount > 0
+                        ? 'bg-[#cb4b16]/15 text-[#cb4b16] dark:text-[#eb937d] dark:bg-[#eb937d]/20'
+                        : 'bg-[#eee8d5] dark:bg-[#181b1e] text-[#93a1a1] dark:text-[#718093]'
+                    }`}
+                  >
+                    {missedCount > 0 ? `${missedCount} trouble words` : '0 trouble words'}
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-zen-base00 dark:text-[#94a3b8] max-w-md">
+                  {missedCount > 0
+                    ? 'Targeted drill focusing exclusively on your most frequently misspelled words across all sessions.'
+                    : 'As you practice spelling sessions, words you get wrong will automatically be gathered here for focused review.'}
+                </p>
+
+                {/* Trouble words preview chips */}
+                {missedCount > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mt-3">
+                    <span className="text-[11px] font-medium text-[#93a1a1] dark:text-[#718093] self-center mr-1">
+                      Top misses:
+                    </span>
+                    {mostMissedWords.slice(0, 4).map((item) => (
+                      <span
+                        key={item.word}
+                        className="px-2 py-0.5 rounded-lg bg-white/90 dark:bg-[#181b1e] border border-[#cb4b16]/20 dark:border-[#eb937d]/30 font-mono text-xs text-[#073642] dark:text-[#eceff1]"
+                      >
+                        {item.word}{' '}
+                        <span className="text-[#cb4b16] dark:text-[#eb937d] text-[10px]">
+                          ({item.misses})
+                        </span>
+                      </span>
+                    ))}
+                    {missedCount > 4 && (
+                      <span className="text-[11px] text-[#93a1a1] dark:text-[#718093] self-center">
+                        +{missedCount - 4} more
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Action pill / arrow */}
+            <div className="mt-4 sm:mt-0 flex items-center gap-3 self-end sm:self-center">
+              {missedCount > 0 ? (
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#cb4b16] dark:bg-[#eb937d] text-white dark:text-[#1a1d20] font-bold text-xs shadow-xs group-hover:bg-[#b83e0f] dark:group-hover:bg-[#f0a693] transition-colors">
+                  <span>Practice Missed Words</span>
+                  <ChevronRight className="w-4 h-4" />
+                </div>
+              ) : (
+                <span className="text-xs text-[#93a1a1] dark:text-[#718093] italic px-2 py-1">
+                  No misses yet
+                </span>
+              )}
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div className="w-full flex items-center justify-between mb-3 px-1">
+        <h3 className="text-sm font-bold uppercase tracking-wider text-[#586e75] dark:text-[#94a3b8]">
+          Word Collections
+        </h3>
+        <span className="text-xs text-[#93a1a1] dark:text-[#718093]">
+          {SPELLING_LEVELS.length} lists
+        </span>
       </div>
 
       {/* Levels List */}

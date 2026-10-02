@@ -1,3 +1,5 @@
+import { SPELLING_LEVELS } from '../data/spellingLevels';
+
 export interface SpellingRunRecord {
   id?: string;
   timestamp: string; // ISO 8601
@@ -362,4 +364,94 @@ export function clearAllSpellingStats(): void {
   } catch {
     // Graceful handling
   }
+}
+
+export function findLevelIdForWord(word: string): string | undefined {
+  if (!word) return undefined;
+  const normalized = word.trim().toLowerCase();
+  for (const level of SPELLING_LEVELS) {
+    if (level.words.some((w) => w.trim().toLowerCase() === normalized)) {
+      return level.id;
+    }
+  }
+  return undefined;
+}
+
+export function getAllMostMissedWords(limit?: number): RankedWordMistake[] {
+  const allStats = getAllSpellingStats();
+  const aggregated: Record<
+    string,
+    {
+      word: string;
+      misses: number;
+      attempts: number;
+      lastMissedAt?: string;
+    }
+  > = {};
+
+  for (const stats of Object.values(allStats)) {
+    // 1. Process wordStats
+    if (stats.wordStats) {
+      for (const [rawWord, data] of Object.entries(stats.wordStats)) {
+        if (data.misses > 0) {
+          const lower = rawWord.trim().toLowerCase();
+          const wordText = data.word || rawWord;
+          if (!aggregated[lower]) {
+            aggregated[lower] = {
+              word: wordText,
+              misses: data.misses,
+              attempts: Math.max(data.attempts, data.misses),
+              lastMissedAt: data.lastMissedAt,
+            };
+          } else {
+            aggregated[lower].misses += data.misses;
+            aggregated[lower].attempts += Math.max(data.attempts, data.misses);
+            if (data.lastMissedAt) {
+              if (
+                !aggregated[lower].lastMissedAt ||
+                new Date(data.lastMissedAt).getTime() >
+                  new Date(aggregated[lower].lastMissedAt!).getTime()
+              ) {
+                aggregated[lower].lastMissedAt = data.lastMissedAt;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // 2. Process legacy missedWords
+    if (stats.missedWords && stats.missedWords.length > 0) {
+      for (const w of stats.missedWords) {
+        const lower = w.trim().toLowerCase();
+        if (!aggregated[lower]) {
+          aggregated[lower] = {
+            word: w,
+            misses: 1,
+            attempts: 1,
+            lastMissedAt: stats.lastPracticedAt,
+          };
+        }
+      }
+    }
+  }
+
+  const result: RankedWordMistake[] = Object.values(aggregated).map((data) => ({
+    word: data.word,
+    misses: data.misses,
+    attempts: data.attempts,
+    errorRate: Math.round((data.misses / Math.max(1, data.attempts)) * 100),
+    lastMissedAt: data.lastMissedAt,
+  }));
+
+  result.sort((a, b) => {
+    if (b.misses !== a.misses) return b.misses - a.misses;
+    if (b.errorRate !== a.errorRate) return b.errorRate - a.errorRate;
+    if (a.lastMissedAt && b.lastMissedAt) {
+      return new Date(b.lastMissedAt).getTime() - new Date(a.lastMissedAt).getTime();
+    }
+    return a.word.localeCompare(b.word);
+  });
+
+  return typeof limit === 'number' && limit > 0 ? result.slice(0, limit) : result;
 }

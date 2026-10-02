@@ -76,4 +76,50 @@ describe('SpellingLevelSelect Component', () => {
 
     expect(handleBack).toHaveBeenCalledTimes(1);
   });
+
+  it('renders Most Missed Words mode card with 0 trouble words when none are recorded', () => {
+    render(
+      <SpellingLevelSelect
+        onSelectLevel={vi.fn()}
+        onBackToHome={vi.fn()}
+      />
+    );
+
+    expect(screen.getByText('Most Missed Words')).toBeInTheDocument();
+    expect(screen.getByText(/0 trouble words/i)).toBeInTheDocument();
+    expect(screen.getByText(/No misses yet/i)).toBeInTheDocument();
+
+    const missedBtn = screen.getByRole('button', { name: /practice most missed words/i });
+    expect(missedBtn).toBeDisabled();
+  });
+
+  it('renders active Most Missed Words mode card with trouble words and launches session on click', () => {
+    // Record mistakes
+    spellingStorage.updateLevelStatsFromSession('2026-09-12', {
+      attempts: 1,
+      correct: 0,
+      streak: 0,
+      missed: ['fruit', 'climb'],
+      word: 'fruit',
+    });
+
+    const handleSelect = vi.fn();
+    render(
+      <SpellingLevelSelect
+        onSelectLevel={handleSelect}
+        onBackToHome={vi.fn()}
+      />
+    );
+
+    expect(screen.getByText('Most Missed Words')).toBeInTheDocument();
+    expect(screen.getByText(/2 trouble words/i)).toBeInTheDocument();
+    expect(screen.getByText('fruit')).toBeInTheDocument();
+    expect(screen.getByText('climb')).toBeInTheDocument();
+
+    const missedBtn = screen.getByRole('button', { name: /practice most missed words/i });
+    expect(missedBtn).not.toBeDisabled();
+
+    fireEvent.click(missedBtn);
+    expect(handleSelect).toHaveBeenCalledWith('most-missed');
+  });
 });

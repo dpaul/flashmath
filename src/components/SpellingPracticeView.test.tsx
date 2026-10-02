@@ -147,5 +147,58 @@ describe('SpellingPracticeView Component', () => {
     expect(preview).toBeInTheDocument();
     expect(preview).toHaveTextContent('_____');
   });
+
+  it('runs practice session in most-missed mode and updates parent level stats', async () => {
+    // Save mistakes in 2026-09-12 for 'climb'
+    spellingStorage.updateLevelStatsFromSession('2026-09-12', {
+      attempts: 1,
+      correct: 0,
+      streak: 0,
+      missed: ['climb'],
+      word: 'climb',
+    });
+
+    const updateStatsSpy = vi.spyOn(spellingStorage, 'updateLevelStatsFromSession');
+
+    render(
+      <SpellingPracticeView
+        levelId="most-missed"
+        onBackToLevels={vi.fn()}
+        onBackToHome={vi.fn()}
+      />
+    );
+
+    expect(screen.getByText(/Most Missed Words/i)).toBeInTheDocument();
+    expect(speechService.speakWord).toHaveBeenCalledWith('climb');
+
+    const input = screen.getByLabelText(/type spelling/i);
+    fireEvent.change(input, { target: { value: 'climb' } });
+    fireEvent.keyDown(input, { key: 'Enter' });
+
+    // Expect stats update for both 'most-missed' and parent level '2026-09-12'
+    await waitFor(() => {
+      expect(updateStatsSpy).toHaveBeenCalledWith(
+        'most-missed',
+        expect.objectContaining({ attempts: 1, correct: 1 })
+      );
+      expect(updateStatsSpy).toHaveBeenCalledWith(
+        '2026-09-12',
+        expect.objectContaining({ attempts: 1, correct: 1 })
+      );
+    });
+  });
+
+  it('renders graceful empty state when most-missed mode is launched with no recorded missed words', () => {
+    render(
+      <SpellingPracticeView
+        levelId="most-missed"
+        onBackToLevels={vi.fn()}
+        onBackToHome={vi.fn()}
+      />
+    );
+
+    expect(screen.getByText(/No Trouble Words Recorded!/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /choose level/i })).toBeInTheDocument();
+  });
 });
 

@@ -18,11 +18,13 @@ import {
   submitSpellingAttempt,
   advanceToNextWord,
   getExampleSentence,
+  MOST_MISSED_LEVEL_ID,
   SpellingSession,
 } from '../engine/spellingEngine';
 import {
   updateLevelStatsFromSession,
   recordCompletedSpellingRun,
+  findLevelIdForWord,
 } from '../engine/spellingStorage';
 import { speakWord, speakSentence } from '../services/speechSynthesis';
 import { SpellingCard } from './SpellingCard';
@@ -142,6 +144,20 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
       word: session.currentWord,
     });
 
+    // If practicing most-missed words, also update stats in the word's home level
+    if (levelId === MOST_MISSED_LEVEL_ID) {
+      const origLevelId = findLevelIdForWord(session.currentWord);
+      if (origLevelId) {
+        updateLevelStatsFromSession(origLevelId, {
+          attempts: 1,
+          correct: isCorrect ? 1 : 0,
+          streak: updated.bestStreak,
+          missed: isCorrect ? [] : [session.currentWord],
+          word: session.currentWord,
+        });
+      }
+    }
+
     if (isCorrect) {
       setShowSentence(false);
       if (isLastWord) {
@@ -189,8 +205,35 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
 
   // If level is complete, show the Results screen
   if (session.isComplete) {
-    const finalDuration = session.elapsedSeconds || liveElapsedSeconds || 1;
     const totalWords = session.words.length;
+
+    if (totalWords === 0) {
+      return (
+        <main className="w-full max-w-2xl mx-auto flex flex-col items-center justify-center p-6 sm:p-8 animate-fadeIn text-center">
+          <div className="w-16 h-16 rounded-3xl bg-[#2aa198]/10 dark:bg-[#7ec7b8]/15 text-[#2aa198] dark:text-[#7ec7b8] flex items-center justify-center mb-4 shadow-sm">
+            <CheckCircle2 className="w-8 h-8 text-[#2aa198] dark:text-[#7ec7b8]" />
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl font-black text-zen-base03 dark:text-[#eceff1] mb-2">
+            No Trouble Words Recorded!
+          </h2>
+          <p className="text-sm text-zen-base00 dark:text-[#94a3b8] mb-8 max-w-sm">
+            You don't have any missed words recorded yet. Practice other spelling levels to track words you need to review.
+          </p>
+
+          <button
+            type="button"
+            onClick={onBackToLevels}
+            aria-label="Choose Level"
+            className="h-12 px-6 rounded-2xl bg-[#2aa198] hover:bg-[#258b83] text-white font-bold text-sm cursor-pointer shadow-sm"
+          >
+            Choose a Level to Practice
+          </button>
+        </main>
+      );
+    }
+
+    const finalDuration = session.elapsedSeconds || liveElapsedSeconds || 1;
     const accuracyPct = Math.round((session.correctCount / totalWords) * 100);
 
     return (

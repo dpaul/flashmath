@@ -10,6 +10,7 @@ import {
   Play,
   RotateCcw,
   Sparkles,
+  Target,
 } from 'lucide-react';
 import { SPELLING_LEVELS, SpellingLevel, getExampleSentence } from '../data/spellingLevels';
 import {
@@ -237,9 +238,22 @@ export const SpellingHistoryPage: React.FC<SpellingHistoryPageProps> = ({
           </div>
 
           {mostMissedWords.length > 0 && (
-            <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-[#cb4b16]/10 dark:bg-[#eb937d]/15 text-[#cb4b16] dark:text-[#eb937d]">
-              {mostMissedWords.length} trouble words
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-[#cb4b16]/10 dark:bg-[#eb937d]/15 text-[#cb4b16] dark:text-[#eb937d]">
+                {mostMissedWords.length} trouble words
+              </span>
+              {onPracticeLevel && (
+                <button
+                  type="button"
+                  onClick={() => onPracticeLevel('most-missed')}
+                  aria-label="Practice Most Missed Words"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[#cb4b16] hover:bg-[#b83e0f] text-white font-bold text-xs shadow-xs cursor-pointer active:scale-95 transition-all"
+                >
+                  <Target className="w-3.5 h-3.5" />
+                  <span>Practice Most Missed</span>
+                </button>
+              )}
+            </div>
           )}
         </div>
 

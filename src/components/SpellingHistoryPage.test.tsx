@@ -123,4 +123,34 @@ describe('SpellingHistoryPage Component', () => {
 
     expect(spellingStorage.loadLevelStats('2026-09-12').totalAttempts).toBe(0);
   });
+
+  it('provides a Practice Most Missed button when trouble words exist and triggers onPracticeLevel', () => {
+    spellingStorage.saveLevelStats({
+      levelId: '2026-09-12',
+      totalAttempts: 5,
+      correctCount: 3,
+      bestStreak: 2,
+      missedWords: ['fruit', 'smell'],
+      wordStats: {
+        fruit: { word: 'fruit', attempts: 2, misses: 2 },
+        smell: { word: 'smell', attempts: 3, misses: 1 },
+      },
+      lastPracticedAt: new Date().toISOString(),
+    });
+
+    const handlePractice = vi.fn();
+    render(
+      <SpellingHistoryPage
+        initialLevelId="2026-09-12"
+        onBack={vi.fn()}
+        onPracticeLevel={handlePractice}
+      />
+    );
+
+    const practiceMissedBtn = screen.getByRole('button', { name: /practice most missed/i });
+    expect(practiceMissedBtn).toBeInTheDocument();
+
+    fireEvent.click(practiceMissedBtn);
+    expect(handlePractice).toHaveBeenCalledWith('most-missed');
+  });
 });

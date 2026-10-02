@@ -9,7 +9,10 @@ import {
   advanceToNextWord,
   getExampleSentence,
   maskWordInSentence,
+  MOST_MISSED_LEVEL_ID,
+  getMostMissedSpellingLevel,
 } from './spellingEngine';
+import { updateLevelStatsFromSession } from './spellingStorage';
 
 describe('Spelling Engine & Level Configuration', () => {
   it('defines at least one default level (e.g. 4th Grade) with ~10 words', () => {
@@ -149,6 +152,53 @@ describe('Spelling Engine & Level Configuration', () => {
     const sentence2 = 'Sharp scissors can be dangerous.';
     const masked2 = maskWordInSentence(sentence2, 'sharp');
     expect(masked2).toBe('_____ scissors can be dangerous.');
+  });
+
+  it('generates a dynamic most-missed level populated from stored mistakes', () => {
+    localStorage.clear();
+
+    // 0 missed words initially
+    const emptyLevel = getMostMissedSpellingLevel();
+    expect(emptyLevel.id).toBe(MOST_MISSED_LEVEL_ID);
+    expect(emptyLevel.name).toBe('Most Missed Words');
+    expect(emptyLevel.words).toHaveLength(0);
+
+    const emptySession = createSpellingSession(MOST_MISSED_LEVEL_ID);
+    expect(emptySession.isComplete).toBe(true);
+    expect(emptySession.words).toHaveLength(0);
+
+    // Record mistakes
+    updateLevelStatsFromSession('2026-09-12', {
+      attempts: 1,
+      correct: 0,
+      streak: 0,
+      missed: ['thank', 'fruit'],
+      word: 'thank',
+    });
+    updateLevelStatsFromSession('2026-09-15', {
+      attempts: 1,
+      correct: 0,
+      streak: 0,
+      missed: ['precede'],
+      word: 'precede',
+    });
+
+    const populatedLevel = getSpellingLevelById(MOST_MISSED_LEVEL_ID);
+    expect(populatedLevel).toBeDefined();
+    expect(populatedLevel?.words.length).toBeGreaterThanOrEqual(2);
+    expect(populatedLevel?.words).toContain('thank');
+    expect(populatedLevel?.words).toContain('precede');
+
+    // Example sentences are populated from level definitions
+    expect(populatedLevel?.sentences?.['thank']).toBeDefined();
+    expect(populatedLevel?.sentences?.['precede']).toBeDefined();
+
+    // Initializing a session with most-missed level
+    const session = createSpellingSession(MOST_MISSED_LEVEL_ID);
+    expect(session.levelId).toBe(MOST_MISSED_LEVEL_ID);
+    expect(session.words.length).toBeGreaterThanOrEqual(2);
+    expect(session.isComplete).toBe(false);
+    expect(session.currentWord).toBe(session.words[0]);
   });
 });
 
