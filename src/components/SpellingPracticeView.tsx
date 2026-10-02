@@ -84,6 +84,8 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
   const speakCurrent = useCallback(() => {
     if (!session.isComplete && session.currentWord) {
       speakWord(session.currentWord);
+      const input = document.getElementById('spelling-word-input');
+      input?.focus();
     }
   }, [session.isComplete, session.currentWord]);
 
@@ -91,6 +93,8 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
     if (!session.isComplete && currentSentence) {
       speakSentence(currentSentence);
       setShowSentence(true);
+      const input = document.getElementById('spelling-word-input');
+      input?.focus();
     }
   }, [session.isComplete, currentSentence]);
 
@@ -439,6 +443,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
         <span>•</span>
         <button
           type="button"
+          onMouseDown={(e) => e.preventDefault()}
           onClick={speakCurrent}
           className="hover:text-[#073642] dark:hover:text-[#eceff1] underline flex items-center gap-1 cursor-pointer"
         >
@@ -450,6 +455,7 @@ export const SpellingPracticeView: React.FC<SpellingPracticeViewProps> = ({
             <span>•</span>
             <button
               type="button"
+              onMouseDown={(e) => e.preventDefault()}
               onClick={speakCurrentSentence}
               className="hover:text-[#073642] dark:hover:text-[#eceff1] underline flex items-center gap-1 cursor-pointer"
             >

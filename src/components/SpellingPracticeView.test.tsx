@@ -207,5 +207,34 @@ describe('SpellingPracticeView Component', () => {
     expect(screen.getByText(/No Trouble Words Recorded!/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /choose level/i })).toBeInTheDocument();
   });
+
+  it('retains focus on the text input when clicking "Listen to Word" or "Use it in a sentence"', () => {
+    render(
+      <SpellingPracticeView
+        levelId="2026-09-12"
+        onBackToLevels={vi.fn()}
+        onBackToHome={vi.fn()}
+      />
+    );
+
+    const input = screen.getByLabelText(/type spelling here/i);
+    expect(document.activeElement).toBe(input);
+
+    const listenBtn = screen.getByRole('button', { name: /listen to word|repeat word/i });
+    const mousedownEvent = new MouseEvent('mousedown', { cancelable: true, bubbles: true });
+    listenBtn.dispatchEvent(mousedownEvent);
+    expect(mousedownEvent.defaultPrevented).toBe(true);
+
+    fireEvent.click(listenBtn);
+    expect(document.activeElement).toBe(input);
+
+    const sentenceBtn = screen.getByRole('button', { name: /use it in a sentence/i });
+    const sentenceMousedown = new MouseEvent('mousedown', { cancelable: true, bubbles: true });
+    sentenceBtn.dispatchEvent(sentenceMousedown);
+    expect(sentenceMousedown.defaultPrevented).toBe(true);
+
+    fireEvent.click(sentenceBtn);
+    expect(document.activeElement).toBe(input);
+  });
 });
 

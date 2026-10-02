@@ -103,5 +103,44 @@ describe('SpellingCard Component', () => {
 
     expect(screen.getByTestId('sentence-preview')).toHaveTextContent('I want to thank you for helping me.');
   });
+
+  it('prevents default on mousedown for audio buttons and focuses input on click', () => {
+    const handleSpeak = vi.fn();
+    const handleSpeakSentence = vi.fn();
+    render(
+      <SpellingCard
+        word="thank"
+        streak={0}
+        lastAttemptCorrect={null}
+        levelName="September 12, 2026"
+        cardNumber={1}
+        onSpeak={handleSpeak}
+        sentence="I want to thank you for helping me."
+        onSpeakSentence={handleSpeakSentence}
+      >
+        <input id="spelling-word-input" />
+      </SpellingCard>
+    );
+
+    const input = document.getElementById('spelling-word-input') as HTMLInputElement;
+    input.focus();
+    expect(document.activeElement).toBe(input);
+
+    const listenBtn = screen.getByRole('button', { name: /listen to word/i });
+    const mdEvent1 = new MouseEvent('mousedown', { cancelable: true, bubbles: true });
+    listenBtn.dispatchEvent(mdEvent1);
+    expect(mdEvent1.defaultPrevented).toBe(true);
+
+    fireEvent.click(listenBtn);
+    expect(document.activeElement).toBe(input);
+
+    const sentenceBtn = screen.getByRole('button', { name: /use it in a sentence/i });
+    const mdEvent2 = new MouseEvent('mousedown', { cancelable: true, bubbles: true });
+    sentenceBtn.dispatchEvent(mdEvent2);
+    expect(mdEvent2.defaultPrevented).toBe(true);
+
+    fireEvent.click(sentenceBtn);
+    expect(document.activeElement).toBe(input);
+  });
 });
 

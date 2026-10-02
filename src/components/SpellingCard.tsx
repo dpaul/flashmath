@@ -87,8 +87,13 @@ export const SpellingCard: React.FC<SpellingCardProps> = memo(({
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               type="button"
-              onClick={onSpeak}
-              aria-label="Repeat word pronunciation"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => {
+                onSpeak();
+                const input = document.getElementById('spelling-word-input');
+                input?.focus();
+              }}
+              aria-label="Listen to Word"
               className="group relative flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-2xl bg-[#eee8d5]/70 dark:bg-[#181b1e] hover:bg-[#eee8d5] dark:hover:bg-[#282e34] text-[#073642] dark:text-[#eceff1] font-semibold text-base border border-[#e4d9c7] dark:border-[#353c43] shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
             >
               <Volume2 className="w-5 h-5 text-[#2aa198] dark:text-[#7ec7b8] group-hover:scale-110 transition-transform" />
@@ -98,7 +103,12 @@ export const SpellingCard: React.FC<SpellingCardProps> = memo(({
             {sentence && onSpeakSentence && (
               <button
                 type="button"
-                onClick={onSpeakSentence}
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  onSpeakSentence();
+                  const input = document.getElementById('spelling-word-input');
+                  input?.focus();
+                }}
                 aria-label="Use it in a sentence"
                 className="group relative flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-2xl bg-[#eee8d5]/70 dark:bg-[#181b1e] hover:bg-[#eee8d5] dark:hover:bg-[#282e34] text-[#073642] dark:text-[#eceff1] font-semibold text-base border border-[#e4d9c7] dark:border-[#353c43] shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
               >
