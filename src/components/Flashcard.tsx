@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { Flame } from 'lucide-react';
 import { MultiplicationProblem } from '../engine/math';
-import { FuzzyParticles, AmbientSmoke } from './FuzzyParticles';
 
 interface FlashcardProps {
   problem: MultiplicationProblem;
@@ -34,21 +33,6 @@ export const Flashcard: React.FC<FlashcardProps> = memo(({
 
   return (
     <div className="relative w-full max-w-md sm:max-w-xl mx-auto my-2 overflow-visible">
-      {/* Continuous ambient smoke floating behind the card edges, scaling with streak */}
-      <AmbientSmoke
-        streak={streak}
-        status={lastAnswerCorrect === false ? 'incorrect' : 'correct'}
-      />
-
-      {/* Dense fuzzy smoke pulse/burst billowing outward from behind the edges on answer submission */}
-      {lastAnswerCorrect !== null && (
-        <FuzzyParticles
-          key={`burst-${submissionCount}-${lastAnswerCorrect}`}
-          type={lastAnswerCorrect ? 'correct' : 'incorrect'}
-          streak={streak}
-        />
-      )}
-
       {/* Chalkboard Slate Tactile Hero Card */}
       <div
         role="region"
