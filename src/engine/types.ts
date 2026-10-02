@@ -1,6 +1,15 @@
 import { MultiplicationProblem } from './math';
 export type { SprintRunRecord } from './historyStorage';
 
+export type ActiveAppView =
+  | 'mode-select'
+  | 'math'
+  | 'math-practice'
+  | 'history'
+  | 'spelling-levels'
+  | 'spelling-practice'
+  | 'spelling-history';
+
 export type GamePhase = 'idle' | 'running' | 'completed';
 
 export interface MissedProblem {

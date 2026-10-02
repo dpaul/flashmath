@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import App from './App';
 import * as speechService from './services/speechSynthesis';
 
@@ -14,6 +14,8 @@ describe('FlashMath App Integration', () => {
     vi.clearAllMocks();
     localStorage.clear();
     document.documentElement.classList.remove('dark');
+    window.location.hash = '';
+    window.history.replaceState(null, '', '/');
   });
 
   it('renders ModeSelector by default with Math and Spelling options', () => {
@@ -248,6 +250,49 @@ describe('FlashMath App Integration', () => {
     // Click Back to Math Sprint
     fireEvent.click(screen.getByRole('button', { name: /back to math sprint/i }));
     expect(screen.getByRole('button', { name: /start challenge/i })).toBeInTheDocument();
+  });
+
+  it('updates the browser URL hash on navigation and supports browser back and forward button navigation', async () => {
+    render(<App />);
+
+    // Initially at mode select
+    expect(screen.getByText(/FlashMath Learning Hub/i)).toBeInTheDocument();
+
+    // Navigate to math sprint
+    fireEvent.click(screen.getByRole('button', { name: /start math sprint/i }));
+    expect(window.location.hash).toBe('#/math');
+    expect(screen.getByRole('button', { name: /start challenge/i })).toBeInTheDocument();
+
+    // Navigate to history from math
+    fireEvent.click(screen.getByRole('button', { name: /view history/i }));
+    expect(window.location.hash).toBe('#/math/history');
+    expect(screen.getByText(/Sprint History & Trends/i)).toBeInTheDocument();
+
+    // Simulate browser Back button: URL goes back to #/math
+    window.location.hash = '#/math';
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /start challenge/i })).toBeInTheDocument();
+    });
+
+    // Simulate browser Back button again: URL goes back to #/
+    window.location.hash = '#/';
+    await waitFor(() => {
+      expect(screen.getByText(/FlashMath Learning Hub/i)).toBeInTheDocument();
+    });
+
+    // Simulate browser Forward button: URL goes forward to #/math
+    window.location.hash = '#/math';
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /start challenge/i })).toBeInTheDocument();
+    });
+  });
+
+  it('supports deep linking directly to sub-views via URL hash on load', () => {
+    window.location.hash = '#/spelling/practice?level=2026-09-12';
+    render(<App />);
+
+    expect(screen.getByText(/September 12, 2026/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/type spelling here/i)).toBeInTheDocument();
   });
 });
 

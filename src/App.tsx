@@ -18,22 +18,34 @@ import { SpellingHistoryPage } from './components/SpellingHistoryPage';
 import { ThemeToggle } from './components/ThemeToggle';
 import { ThemeProvider } from './context/ThemeContext';
 import { X, TrendingUp, Flame, LayoutGrid } from 'lucide-react';
+import { useAppRouter } from './engine/router';
+import { ActiveAppView } from './engine/types';
 
-export type ActiveAppView =
-  | 'mode-select'
-  | 'math'
-  | 'math-practice'
-  | 'history'
-  | 'spelling-levels'
-  | 'spelling-practice'
-  | 'spelling-history';
+export type { ActiveAppView };
 
 export const AppContent: React.FC = () => {
+  const { route, navigate } = useAppRouter();
+  const activeView = route.view;
+
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
   const [inputValue, setInputValue] = useState('');
-  const [activeView, setActiveView] = useState<ActiveAppView>('mode-select');
-  const [selectedSpellingLevelId, setSelectedSpellingLevelId] = useState<string>('2026-09-12');
+  const [fallbackLevelId, setFallbackLevelId] = useState<string>('2026-09-12');
+  const selectedSpellingLevelId =
+    'levelId' in route && route.levelId ? route.levelId : fallbackLevelId;
   const [recentProblems, setRecentProblems] = useState<SolvedProblemRecord[]>([]);
+
+  useEffect(() => {
+    if ('levelId' in route && route.levelId) {
+      setFallbackLevelId(route.levelId);
+    }
+  }, [route]);
+
+  // Reset active sprint if user navigates away from math
+  useEffect(() => {
+    if (activeView !== 'math' && state.phase === 'running') {
+      dispatch({ type: 'RESET_GAME' });
+    }
+  }, [activeView, state.phase]);
 
   // Stable tick callback
   const handleTick = useCallback(() => {
@@ -42,14 +54,14 @@ export const AppContent: React.FC = () => {
 
   // Timer loop
   useSprintTimer({
-    isRunning: state.phase === 'running',
+    isRunning: state.phase === 'running' && activeView === 'math',
     onTick: handleTick,
   });
 
   const handleStart = () => {
     setInputValue('');
     setRecentProblems([]);
-    setActiveView('math');
+    navigate({ view: 'math' });
     dispatch({ type: 'START_GAME' });
   };
 
@@ -78,7 +90,7 @@ export const AppContent: React.FC = () => {
   const handleRestart = () => {
     setInputValue('');
     setRecentProblems([]);
-    setActiveView('math');
+    navigate({ view: 'math' });
     dispatch({ type: 'RESET_GAME' });
   };
 
@@ -166,7 +178,7 @@ export const AppContent: React.FC = () => {
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <button
             type="button"
-            onClick={() => setActiveView('mode-select')}
+            onClick={() => navigate({ view: 'mode-select' })}
             aria-label="FlashMath Home"
             className="flex items-center gap-2.5 cursor-pointer bg-transparent border-none text-left p-0"
           >
@@ -206,7 +218,7 @@ export const AppContent: React.FC = () => {
               {activeView !== 'mode-select' && (
                 <button
                   type="button"
-                  onClick={() => setActiveView('mode-select')}
+                  onClick={() => navigate({ view: 'mode-select' })}
                   aria-label="Switch Modes"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#eee8d5] dark:bg-[#24292e] hover:bg-[#e4d9c7] dark:hover:bg-[#2d353c] text-[#073642] dark:text-[#eceff1] text-xs font-semibold transition border border-[#e4d9c7] dark:border-[#353c43] cursor-pointer shadow-sm"
                 >
@@ -224,7 +236,7 @@ export const AppContent: React.FC = () => {
               {activeView === 'math-practice' ? (
                 <button
                   type="button"
-                  onClick={() => setActiveView('math')}
+                  onClick={() => navigate({ view: 'math' })}
                   aria-label="Back to Sprint"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#eee8d5] dark:bg-[#24292e] hover:bg-[#e4d9c7] dark:hover:bg-[#2d353c] text-[#073642] dark:text-[#eceff1] text-xs font-semibold transition border border-[#e4d9c7] dark:border-[#353c43] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#cb4b16]/30"
                 >
@@ -233,7 +245,7 @@ export const AppContent: React.FC = () => {
               ) : activeView === 'history' ? (
                 <button
                   type="button"
-                  onClick={() => setActiveView('math')}
+                  onClick={() => navigate({ view: 'math' })}
                   aria-label="Back to Sprint"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#eee8d5] dark:bg-[#24292e] hover:bg-[#e4d9c7] dark:hover:bg-[#2d353c] text-[#073642] dark:text-[#eceff1] text-xs font-semibold transition border border-[#e4d9c7] dark:border-[#353c43] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#cb4b16]/30"
                 >
@@ -242,7 +254,7 @@ export const AppContent: React.FC = () => {
               ) : activeView === 'spelling-history' ? (
                 <button
                   type="button"
-                  onClick={() => setActiveView('spelling-levels')}
+                  onClick={() => navigate({ view: 'spelling-levels' })}
                   aria-label="Back to Levels"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#eee8d5] dark:bg-[#24292e] hover:bg-[#e4d9c7] dark:hover:bg-[#2d353c] text-[#073642] dark:text-[#eceff1] text-xs font-semibold transition border border-[#e4d9c7] dark:border-[#353c43] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2aa198]/30"
                 >
@@ -251,7 +263,7 @@ export const AppContent: React.FC = () => {
               ) : activeView === 'math' ? (
                 <button
                   type="button"
-                  onClick={() => setActiveView('history')}
+                  onClick={() => navigate({ view: 'history' })}
                   aria-label="View History"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#eee8d5] dark:bg-[#24292e] hover:bg-[#e4d9c7] dark:hover:bg-[#2d353c] text-[#073642] dark:text-[#eceff1] text-xs font-semibold transition border border-[#e4d9c7] dark:border-[#353c43] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#cb4b16]/30 shadow-sm"
                 >
@@ -261,7 +273,7 @@ export const AppContent: React.FC = () => {
               ) : activeView === 'spelling-levels' || activeView === 'spelling-practice' ? (
                 <button
                   type="button"
-                  onClick={() => setActiveView('spelling-history')}
+                  onClick={() => navigate({ view: 'spelling-history', levelId: selectedSpellingLevelId })}
                   aria-label="View Spelling History"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#eee8d5] dark:bg-[#24292e] hover:bg-[#e4d9c7] dark:hover:bg-[#2d353c] text-[#073642] dark:text-[#eceff1] text-xs font-semibold transition border border-[#e4d9c7] dark:border-[#353c43] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2aa198]/30 shadow-sm"
                 >
@@ -280,9 +292,9 @@ export const AppContent: React.FC = () => {
           <ModeSelector
             onSelectMode={(mode) => {
               if (mode === 'math') {
-                setActiveView('math');
+                navigate({ view: 'math' });
               } else {
-                setActiveView('spelling-levels');
+                navigate({ view: 'spelling-levels' });
               }
             }}
             mathHighScore={state.personalBests.highScore}
@@ -293,13 +305,14 @@ export const AppContent: React.FC = () => {
         {activeView === 'spelling-levels' && (
           <SpellingLevelSelect
             onSelectLevel={(levelId) => {
-              setSelectedSpellingLevelId(levelId);
-              setActiveView('spelling-practice');
+              navigate({ view: 'spelling-practice', levelId });
             }}
-            onBackToHome={() => setActiveView('mode-select')}
+            onBackToHome={() => navigate({ view: 'mode-select' })}
             onOpenHistory={(levelId) => {
-              if (levelId) setSelectedSpellingLevelId(levelId);
-              setActiveView('spelling-history');
+              navigate({
+                view: 'spelling-history',
+                levelId: levelId || selectedSpellingLevelId,
+              });
             }}
           />
         )}
@@ -307,11 +320,10 @@ export const AppContent: React.FC = () => {
         {activeView === 'spelling-practice' && (
           <SpellingPracticeView
             levelId={selectedSpellingLevelId}
-            onBackToLevels={() => setActiveView('spelling-levels')}
-            onBackToHome={() => setActiveView('mode-select')}
+            onBackToLevels={() => navigate({ view: 'spelling-levels' })}
+            onBackToHome={() => navigate({ view: 'mode-select' })}
             onOpenHistory={(levelId) => {
-              setSelectedSpellingLevelId(levelId);
-              setActiveView('spelling-history');
+              navigate({ view: 'spelling-history', levelId });
             }}
           />
         )}
@@ -319,26 +331,28 @@ export const AppContent: React.FC = () => {
         {activeView === 'spelling-history' && (
           <SpellingHistoryPage
             initialLevelId={selectedSpellingLevelId}
-            onBack={() => setActiveView('spelling-levels')}
+            onBack={() => navigate({ view: 'spelling-levels' })}
             onPracticeLevel={(levelId) => {
-              setSelectedSpellingLevelId(levelId);
-              setActiveView('spelling-practice');
+              navigate({ view: 'spelling-practice', levelId });
+            }}
+            onSelectLevel={(levelId) => {
+              navigate({ view: 'spelling-history', levelId });
             }}
           />
         )}
 
         {activeView === 'history' && (
           <HistoryPage
-            onBack={() => setActiveView('math')}
-            onPracticeMissed={() => setActiveView('math-practice')}
+            onBack={() => navigate({ view: 'math' })}
+            onPracticeMissed={() => navigate({ view: 'math-practice' })}
           />
         )}
 
         {activeView === 'math-practice' && (
           <MathPracticeView
-            onBackToMath={() => setActiveView('math')}
-            onBackToHome={() => setActiveView('mode-select')}
-            onOpenHistory={() => setActiveView('history')}
+            onBackToMath={() => navigate({ view: 'math' })}
+            onBackToHome={() => navigate({ view: 'mode-select' })}
+            onOpenHistory={() => navigate({ view: 'history' })}
           />
         )}
 
@@ -348,7 +362,7 @@ export const AppContent: React.FC = () => {
               <StartScreen
                 personalBests={state.personalBests}
                 onStart={handleStart}
-                onPracticeMissed={() => setActiveView('math-practice')}
+                onPracticeMissed={() => navigate({ view: 'math-practice' })}
               />
             )}
 
@@ -452,8 +466,8 @@ export const AppContent: React.FC = () => {
                 isNewHighScore={state.isNewHighScore}
                 isNewBestStreak={state.isNewBestStreak}
                 onRestart={handleRestart}
-                onViewHistory={() => setActiveView('history')}
-                onPracticeMissed={() => setActiveView('math-practice')}
+                onViewHistory={() => navigate({ view: 'history' })}
+                onPracticeMissed={() => navigate({ view: 'math-practice' })}
               />
             )}
           </>

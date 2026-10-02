@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ArrowLeft,
   Volume2,
@@ -27,6 +27,7 @@ export interface SpellingHistoryPageProps {
   initialLevelId?: string;
   onBack: () => void;
   onPracticeLevel?: (levelId: string) => void;
+  onSelectLevel?: (levelId: string) => void;
 }
 
 function formatDuration(seconds: number): string {
@@ -42,10 +43,17 @@ export const SpellingHistoryPage: React.FC<SpellingHistoryPageProps> = ({
   initialLevelId,
   onBack,
   onPracticeLevel,
+  onSelectLevel,
 }) => {
   const [selectedLevelId, setSelectedLevelId] = useState<string>(
     initialLevelId || SPELLING_LEVELS[0]?.id || '2026-09-12'
   );
+
+  useEffect(() => {
+    if (initialLevelId && initialLevelId !== selectedLevelId) {
+      setSelectedLevelId(initialLevelId);
+    }
+  }, [initialLevelId]);
   const [isConfirmingClear, setIsConfirmingClear] = useState<boolean>(false);
   const [expandedSentenceWord, setExpandedSentenceWord] = useState<string | null>(null);
 
@@ -160,6 +168,7 @@ export const SpellingHistoryPage: React.FC<SpellingHistoryPageProps> = ({
               type="button"
               onClick={() => {
                 setSelectedLevelId(lvl.id);
+                onSelectLevel?.(lvl.id);
                 setIsConfirmingClear(false);
               }}
               className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer text-center ${
